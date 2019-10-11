@@ -1,0 +1,41 @@
+package net.kaaass.kmall.util;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+
+import java.util.stream.Stream;
+
+@Getter
+@AllArgsConstructor
+public enum StatusEnum {
+    SUCCESS(200, ""), // 成功则不返回message段
+
+    NOT_FOUND(404, "未找到相关信息"),
+
+    INTERNAL_ERROR(500, "服务器内部错误");
+
+    private int code;
+    private String description;
+
+    public boolean isSuccess() {
+        return code == StatusEnum.SUCCESS.code;
+    }
+
+    public HttpStatus toHttpStatus() {
+        var httpStatus = HttpStatus.resolve(code);
+        if (httpStatus == null) {
+            // 未知响应码
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return httpStatus;
+    }
+
+    public static String descriptionFor(int code) {
+        return Stream.of(StatusEnum.values())
+                .filter((cur) -> cur.code == code)
+                .map((cur) -> cur.description)
+                .findAny().orElse(Constants.UNKNOWN);
+    }
+}
