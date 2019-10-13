@@ -41,6 +41,7 @@ public class CommentEntity {
     public CommentDto toCommentDto() {
         CommentDto ret = new CommentDto();
         ret.setId(id);
+        ret.setUid(uid);
         ret.setRate(rate);
         ret.setTitle(title);
         ret.setContent(content);
