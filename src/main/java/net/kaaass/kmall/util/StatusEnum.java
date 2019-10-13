@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 public enum StatusEnum {
     SUCCESS(200, ""), // 成功则不返回message段
 
+    BAD_REQUEST(400, "请求错误"),
+    FORBIDDEN(403, "请登录后访问"),
     NOT_FOUND(404, "未找到相关信息"),
 
     INTERNAL_ERROR(500, "服务器内部错误");

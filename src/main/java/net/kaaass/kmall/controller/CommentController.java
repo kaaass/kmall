@@ -6,21 +6,25 @@ import net.kaaass.kmall.dao.repository.CommentRepository;
 import net.kaaass.kmall.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/comment")
-public class CommentController {
+@PreAuthorize("permitAll()")
+public class CommentController extends BaseController {
 
     @Autowired
     private CommentRepository repository;
 
     @GetMapping("/")
+    @PreAuthorize("permitAll()")
     public List<CommentDto> getAllEntries(Pageable page) {
-        return repository.findAllByOrderByTimeDesc(page).stream()
+        return repository.findAllByOrderByCommentTimeDesc(page).stream()
                 .map(CommentEntity::toCommentDto)
                 .collect(Collectors.toList());
     }
@@ -32,7 +36,9 @@ public class CommentController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('USER')")
     public CommentEntity addComment(@RequestBody CommentDto entry) {
+        entry.setUid(getUid());
         return repository.save(entry.toCommentEntity());
     }
 }

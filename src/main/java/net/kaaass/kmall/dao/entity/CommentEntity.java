@@ -19,6 +19,9 @@ public class CommentEntity {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private String id;
 
+    @Column(name = "uid")
+    private String uid;
+
     @Column(name = "title")
     private String title;
 
@@ -28,12 +31,12 @@ public class CommentEntity {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "time",
+    @Column(name = "comment_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             insertable = false,
             updatable = false)
     @Generated(GenerationTime.INSERT)
-    private Timestamp time;
+    private Timestamp commentTime;
 
     public CommentDto toCommentDto() {
         CommentDto ret = new CommentDto();
@@ -41,7 +44,7 @@ public class CommentEntity {
         ret.setRate(rate);
         ret.setTitle(title);
         ret.setContent(content);
-        ret.setTime(time.toLocalDateTime());
+        ret.setTime(commentTime.toLocalDateTime());
         return ret;
     }
 }
