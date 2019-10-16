@@ -6,6 +6,8 @@ import net.kaaass.kmall.dao.repository.UserMetadataRepository;
 import net.kaaass.kmall.dto.UserAuthDto;
 
 import javax.validation.constraints.Max;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,6 +44,7 @@ public class UserMetadataManager {
                     return newEntity;
                 });
         metadata.setValue(value);
+        metadata.setLastUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         metadataRepository.save(metadata);
     }
 }

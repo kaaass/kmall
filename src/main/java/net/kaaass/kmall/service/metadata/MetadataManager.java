@@ -9,6 +9,8 @@ import net.kaaass.kmall.dto.UserAuthDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,6 +43,7 @@ public class MetadataManager {
                     return newEntity;
                 });
         metadata.setValue(value);
+        metadata.setLastUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         metadataRepository.save(metadata);
     }
 }
