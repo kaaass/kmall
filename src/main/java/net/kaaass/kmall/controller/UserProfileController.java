@@ -1,9 +1,17 @@
 package net.kaaass.kmall.controller;
 
+import net.kaaass.kmall.controller.request.UserInfoModifyRequest;
+import net.kaaass.kmall.dao.entity.MediaEntity;
+import net.kaaass.kmall.dao.entity.UserAuthEntity;
+import net.kaaass.kmall.dao.entity.UserInfoEntity;
 import net.kaaass.kmall.dao.repository.UserAddressRepository;
+import net.kaaass.kmall.dao.repository.UserInfoRepository;
 import net.kaaass.kmall.dto.UserAddressDto;
+import net.kaaass.kmall.dto.UserInfoDto;
+import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.UserMapper;
+import net.kaaass.kmall.service.metadata.ResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +28,31 @@ public class UserProfileController extends BaseController {
 
     @Autowired
     private UserAddressRepository addressRepository;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private ResourceManager resourceManager;
+
+    @GetMapping("/")
+    public UserInfoDto getUserProfile() {
+        return UserMapper.INSTANCE.userInfoEntityToDto(userInfoRepository.findByAuth(getAuthEntity()));
+    }
+
+    @PostMapping("/")
+    public UserInfoDto modifyUserProfile(@RequestBody UserInfoModifyRequest request) throws BadRequestException {
+        var auth = getAuthEntity();
+        var entity = userInfoRepository.findByAuth(auth);
+        entity.setAuth(auth);
+        var avatar = resourceManager.getEntity(request.getAvatar())
+                        .orElseThrow(() -> new BadRequestException("头像资源不存在！"));
+        entity.setAvatar(avatar);
+        entity.setWechat(request.getWechat());
+        entity.setLastUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
+        var result = userInfoRepository.save(entity);
+        return UserMapper.INSTANCE.userInfoEntityToDto(result);
+    }
 
     /*
      * 收货地址相关

@@ -2,7 +2,9 @@ package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.dao.entity.UserAuthEntity;
+import net.kaaass.kmall.dao.entity.UserInfoEntity;
 import net.kaaass.kmall.dao.repository.UserAuthRepository;
+import net.kaaass.kmall.dao.repository.UserInfoRepository;
 import net.kaaass.kmall.dto.AuthTokenDto;
 import net.kaaass.kmall.dto.UserAuthDto;
 import net.kaaass.kmall.security.JwtTokenUtil;
@@ -41,6 +43,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private UserAuthRepository authRepository;
 
+    @Autowired
+    private UserInfoRepository infoRepository;
+
     @Override
     public Optional<UserAuthDto> register(UserAuthDto userToAdd) {
         // 登录信息
@@ -53,6 +58,10 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception e) {
             return Optional.empty();
         }
+        // 用户信息
+        UserInfoEntity infoEntity = new UserInfoEntity();
+        infoEntity.setAuth(authEntity);
+        infoRepository.save(infoEntity);
         // TODO 增加其他用户相关信息
         // 拼接结果
         UserAuthDto result = new UserAuthDto();
