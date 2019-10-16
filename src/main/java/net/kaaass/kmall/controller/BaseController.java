@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class BaseController {
-    private static UserDetails getUserDetail() {
+    private static UserDetails getAuthUserDetail() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication auth = context.getAuthentication();
         return (UserDetails) auth.getPrincipal();
@@ -17,6 +17,6 @@ public class BaseController {
      * @return
      */
     protected static String getUid() {
-        return getUserDetail().getUsername();
+        return getAuthUserDetail().getUsername();
     }
 }

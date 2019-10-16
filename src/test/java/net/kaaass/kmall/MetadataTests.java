@@ -34,7 +34,7 @@ public class MetadataTests {
     @Before
     public void prepareUser() {
         authDto = authRepository.findByPhone("admin")
-                .map(UserMapper.INSTANCE::userAuthToUserAuthDto)
+                .map(UserMapper.INSTANCE::userAuthEntityToDto)
                 .orElseThrow();
     }
 
