@@ -1,7 +1,9 @@
 package net.kaaass.kmall.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import net.kaaass.kmall.dao.entity.CommentEntity;
+import net.kaaass.kmall.util.DateToLongSerializer;
 import org.springframework.lang.Nullable;
 
 import java.sql.Timestamp;
@@ -17,6 +19,7 @@ public class CommentDto {
     private int rate;
     private String content;
     @Nullable
+    @JsonSerialize(using = DateToLongSerializer.class)
     private LocalDateTime time;
 
     public CommentEntity toCommentEntity() {
