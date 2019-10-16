@@ -8,7 +8,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @Data
@@ -46,7 +45,6 @@ public class UserAuthEntity {
     private Timestamp registerTime;
 
     @Column(name = "last_login_time",
-            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @Generated(GenerationTime.INSERT)
+            columnDefinition = "TIMESTAMP DEFAULT NULL")
     private Timestamp lastLoginTime;
 }

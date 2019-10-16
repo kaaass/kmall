@@ -1,6 +1,7 @@
 package net.kaaass.kmall.controller;
 
 import net.kaaass.kmall.dao.entity.CommentEntity;
+import net.kaaass.kmall.dao.repository.UserMetadataRepository;
 import net.kaaass.kmall.dto.CommentDto;
 import net.kaaass.kmall.dao.repository.CommentRepository;
 import net.kaaass.kmall.exception.NotFoundException;
@@ -20,6 +21,9 @@ public class CommentController extends BaseController {
 
     @Autowired
     private CommentRepository repository;
+
+    @Autowired
+    private UserMetadataRepository metadataRepository;
 
     @GetMapping("/")
     @PreAuthorize("permitAll()")
