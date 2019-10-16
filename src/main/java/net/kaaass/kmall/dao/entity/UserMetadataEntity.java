@@ -30,6 +30,6 @@ public class UserMetadataEntity {
 
     @Column(name = "last_update_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @Generated(GenerationTime.ALWAYS)
+    @Generated(GenerationTime.INSERT)
     private Timestamp lastUpdateTime;
 }
