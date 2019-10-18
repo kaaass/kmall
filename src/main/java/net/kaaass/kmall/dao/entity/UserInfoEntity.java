@@ -18,7 +18,7 @@ public class UserInfoEntity {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private String id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "uid",
             unique = true)
     private UserAuthEntity auth;

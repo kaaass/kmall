@@ -6,14 +6,12 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Data
+@Table(name = "user_address")
 public class UserAddressEntity {
     @Id
     @GenericGenerator(name = Constants.ID_GENERATOR, strategy = Constants.UUID)
@@ -21,7 +19,7 @@ public class UserAddressEntity {
     private String id;
 
     @Column(name = "uid")
-    private String uid;
+    private String uid; // TODO 改为ManyToOne
 
     @Column(name = "area",
             columnDefinition = "TEXT DEFAULT NULL")

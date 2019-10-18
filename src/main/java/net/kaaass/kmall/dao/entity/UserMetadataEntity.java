@@ -19,7 +19,7 @@ public class UserMetadataEntity {
     private String id;
 
     @Column(name = "uid")
-    private String uid;
+    private String uid; // TODO 改为ManyToOne
 
     @Column(name = "meta_key")
     private String key;

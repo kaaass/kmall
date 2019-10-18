@@ -11,24 +11,24 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-@Table(name = "media")
-public class MediaEntity {
+@Table(name = "category")
+public class CategoryEntity {
+
     @Id
     @GenericGenerator(name = Constants.ID_GENERATOR, strategy = Constants.UUID)
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private String id;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "category_name")
+    private String name;
 
-    @Column(name = "url")
-    private String url;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private CategoryEntity parent = null;
 
-    @Column(name = "uploader_uid")
-    private String uploaderUid;
-
-    @Column(name = "upload_time",
-            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "create_time",
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+            updatable = false)
     @Generated(GenerationTime.INSERT)
-    private Timestamp uploadTime;
+    private Timestamp createTime;
 }

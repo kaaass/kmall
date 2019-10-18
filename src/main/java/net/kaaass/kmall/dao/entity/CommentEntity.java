@@ -20,7 +20,7 @@ public class CommentEntity {
     private String id;
 
     @Column(name = "uid")
-    private String uid;
+    private String uid; // TODO 改为ManyToOne
 
     @Column(name = "title")
     private String title;
