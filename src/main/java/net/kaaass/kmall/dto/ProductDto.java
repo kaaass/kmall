@@ -17,4 +17,6 @@ public class ProductDto {
     private int buyLimit;
 
     private CategoryDto category;
+
+    private ProductStorageDto storage;
 }

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.dao.entity.CategoryEntity;
 import net.kaaass.kmall.dao.entity.ProductEntity;
+import net.kaaass.kmall.dao.entity.ProductStorageEntity;
 import net.kaaass.kmall.dao.repository.CategoryRepository;
 import net.kaaass.kmall.dao.repository.ProductRepository;
 import net.kaaass.kmall.dto.ProductDto;
@@ -44,6 +45,9 @@ public class ProductServiceImpl implements ProductService {
         entity.setPrice(productToAdd.getPrice());
         entity.setMailPrice(productToAdd.getMailPrice());
         entity.setBuyLimit(productToAdd.getBuyLimit());
+        var storage = new ProductStorageEntity();
+        storage.setRest(productToAdd.getRest());
+        entity.setStorage(storage);
         try {
             var thumbnail = resourceManager.getEntity(productToAdd.getThumbnailId()).orElseThrow();
             entity.setThumbnail(thumbnail);

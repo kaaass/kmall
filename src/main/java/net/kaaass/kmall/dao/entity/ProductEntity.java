@@ -42,6 +42,11 @@ public class ProductEntity {
 
     // TODO 添加belongTo字段，以实现商品选择不同颜色种类
 
+    @OneToOne(targetEntity = ProductStorageEntity.class,
+            cascade = {CascadeType.ALL})
+    @JoinColumn(name = "storage_id")
+    private ProductStorageEntity storage;
+
     @Column(name = "create_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             updatable = false)

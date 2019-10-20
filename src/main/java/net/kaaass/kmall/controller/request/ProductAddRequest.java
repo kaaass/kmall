@@ -16,4 +16,6 @@ public class ProductAddRequest {
     private int buyLimit;
 
     private String categoryId;
+
+    private int rest;
 }
