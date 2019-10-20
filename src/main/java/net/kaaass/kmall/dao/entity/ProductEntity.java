@@ -40,7 +40,7 @@ public class ProductEntity {
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
-    // 添加belongTo字段，以实现商品选择不同颜色种类
+    // TODO 添加belongTo字段，以实现商品选择不同颜色种类
 
     @Column(name = "create_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",

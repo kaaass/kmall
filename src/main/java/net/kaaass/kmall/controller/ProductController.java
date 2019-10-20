@@ -26,7 +26,7 @@ public class ProductController {
         return productService.addProduct(productDto).orElseThrow();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/")
     public ProductDto getProductById(@PathVariable String id) throws NotFoundException {
         return productService.getById(id)
                 .orElseThrow(() -> new NotFoundException("未找到此商品！"));

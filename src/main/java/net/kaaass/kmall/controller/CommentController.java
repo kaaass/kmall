@@ -33,7 +33,7 @@ public class CommentController extends BaseController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/")
     public CommentDto findById(@PathVariable String id) throws NotFoundException {
         return repository.findById(id).map(CommentEntity::toCommentDto)
                 .orElseThrow(() -> new NotFoundException("未找到评论"));

@@ -14,4 +14,6 @@ public interface CategoryService {
     Optional<CategoryDto> getById(String id);
 
     List<CategoryDto> getAll(Pageable pageable);
+
+    // TODO 某category所有叶子
 }

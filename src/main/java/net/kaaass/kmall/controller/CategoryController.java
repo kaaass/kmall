@@ -30,7 +30,7 @@ public class CategoryController {
         return categoryService.add(categoryDto).orElseThrow();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/")
     public CategoryDto getCategoryById(@PathVariable String id) throws NotFoundException {
         return categoryService.getById(id)
                 .orElseThrow(() -> new NotFoundException("未找到此分类！"));

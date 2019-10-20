@@ -58,7 +58,7 @@ public class UserProfileController extends BaseController {
      * 收货地址相关
      */
 
-    @GetMapping("/address/all")
+    @GetMapping("/address/")
     public List<UserAddressDto> getAllAddresses() throws NotFoundException {
         return addressRepository.findAllByUid(getUid())
                 .stream()
@@ -66,7 +66,7 @@ public class UserProfileController extends BaseController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/address/{id}")
+    @GetMapping("/address/{id}/")
     public UserAddressDto getAddressDtoById(@PathVariable String id) throws NotFoundException {
         return addressRepository.findById(id)
                 .filter(addressEntity -> addressEntity.getUid().equals(getUid())) // 本人收货地址
@@ -74,7 +74,7 @@ public class UserProfileController extends BaseController {
                 .orElseThrow(() -> new NotFoundException("未找到此收货地址！"));
     }
 
-    @PostMapping("/address")
+    @PostMapping("/address/")
     public UserAddressDto addUserAddress(@RequestBody UserAddressDto userAddressDto) {
         // TODO validate,去重
         var entity = UserMapper.INSTANCE.userAddressDtoToEntity(userAddressDto);

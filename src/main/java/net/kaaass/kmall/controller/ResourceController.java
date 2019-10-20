@@ -21,7 +21,7 @@ public class ResourceController extends BaseController {
     @Autowired
     private MediaRepository mediaRepository;
 
-    @GetMapping("/all")
+    @GetMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public List<MediaDto> getAllResource(Pageable page) {
         return mediaRepository.findAllByOrderByUploadTimeDesc(page)
