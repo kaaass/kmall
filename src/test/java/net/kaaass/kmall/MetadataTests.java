@@ -31,6 +31,9 @@ public class MetadataTests {
     @Autowired
     MetadataRepository metadataRepository;
 
+    @Autowired
+    MetadataManager metadataManager;
+
     @Before
     public void prepareUser() {
         authDto = authRepository.findByPhone("admin")
@@ -51,12 +54,22 @@ public class MetadataTests {
 
     @Test
     public void testGlobalMetadata() {
-        var manager = new MetadataManager(metadataRepository);
-        manager.set("test", "testVal");
-        assertEquals("testVal", manager.get("test"));
-        assertEquals("unknownVal", manager.get("nope", "unknownVal"));
+        metadataManager.set("test", "testVal");
+        assertEquals("testVal", metadataManager.get("test"));
+        assertEquals("unknownVal", metadataManager.get("nope", "unknownVal"));
 
-        var map = manager.getAll();
+        var map = metadataManager.getAll();
+        assertEquals("testVal", map.get("test"));
+    }
+
+    @Test
+    public void testProductMetadata() {
+        var productId = "ff8081816ddfbcd8016ddfd1f8250004";
+        metadataManager.setForProduct(productId, "test", "testVal");
+        assertEquals("testVal", metadataManager.getForProduct(productId, "test"));
+        assertEquals("unknownVal", metadataManager.getForProduct(productId, "nope", "unknownVal"));
+
+        var map = metadataManager.getAllForProduct(productId);
         assertEquals("testVal", map.get("test"));
     }
 }

@@ -2,8 +2,10 @@ package net.kaaass.kmall.mapper;
 
 import net.kaaass.kmall.dao.entity.CategoryEntity;
 import net.kaaass.kmall.dao.entity.ProductEntity;
+import net.kaaass.kmall.dao.entity.ProductMetadataEntity;
 import net.kaaass.kmall.dto.CategoryDto;
 import net.kaaass.kmall.dto.ProductDto;
+import net.kaaass.kmall.dto.ProductMetadataDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -14,4 +16,6 @@ public interface ProductMapper {
     ProductDto productEntityToDto(ProductEntity productEntity);
 
     CategoryDto categoryEntityToDto(CategoryEntity categoryEntity);
+
+    ProductMetadataDto productMetadataEntityToDto(ProductMetadataEntity productMetadataEntity);
 }
