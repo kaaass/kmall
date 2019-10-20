@@ -17,7 +17,7 @@ public class StringUtils {
         var dateStr = new SimpleDateFormat("yyyyMMdd").format(new Date());
         var oldOrderNumStr = lastOrderId.substring(lastOrderId.length() - 4, lastOrderId.length());
         var oldNum = Integer.valueOf(oldOrderNumStr);
-        var orderNum = String.format("%4d", oldNum + 1);
+        var orderNum = String.format("%04d", oldNum + 1);
         return dateStr + orderNum;
     }
 }
