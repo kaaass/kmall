@@ -16,7 +16,8 @@ public enum StatusEnum {
     FORBIDDEN(403, "请登录后访问"),
     NOT_FOUND(404, "未找到相关信息"),
 
-    INTERNAL_ERROR(500, "服务器内部错误");
+    INTERNAL_ERROR(500, "服务器内部错误"),
+    SERVICE_UNAVAILIBLE(503, "服务器暂不可用");
 
     private int code;
     private String description;
