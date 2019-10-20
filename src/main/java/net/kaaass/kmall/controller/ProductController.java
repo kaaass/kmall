@@ -36,4 +36,9 @@ public class ProductController {
     public List<ProductDto> getAllProducts(Pageable pageable) {
         return productService.getAll(pageable);
     }
+
+    @GetMapping("/category/{categoryId}/")
+    public List<ProductDto> getAllProductsByCategory(@PathVariable String categoryId, Pageable pageable) throws NotFoundException {
+        return productService.getAllByCategory(categoryId, pageable);
+    }
 }

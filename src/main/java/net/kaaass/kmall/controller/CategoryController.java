@@ -32,8 +32,7 @@ public class CategoryController {
 
     @GetMapping("/{id}/")
     public CategoryDto getCategoryById(@PathVariable String id) throws NotFoundException {
-        return categoryService.getById(id)
-                .orElseThrow(() -> new NotFoundException("未找到此分类！"));
+        return categoryService.getById(id);
     }
 
     @GetMapping("/")

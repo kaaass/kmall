@@ -2,21 +2,21 @@ package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.controller.request.ProductAddRequest;
-import net.kaaass.kmall.dao.entity.CategoryEntity;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.ProductStorageEntity;
 import net.kaaass.kmall.dao.repository.CategoryRepository;
 import net.kaaass.kmall.dao.repository.ProductRepository;
 import net.kaaass.kmall.dto.ProductDto;
+import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.ProductMapper;
+import net.kaaass.kmall.service.CategoryService;
 import net.kaaass.kmall.service.ProductService;
 import net.kaaass.kmall.service.metadata.ResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +31,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * 增加商品
@@ -85,5 +88,22 @@ public class ProductServiceImpl implements ProductService {
                 .stream()
                 .map(ProductMapper.INSTANCE::productEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 通过分类获得商品
+     * @param categoryId
+     * @param pageable
+     * @return
+     */
+    @Override
+    public List<ProductDto> getAllByCategory(String categoryId, Pageable pageable) throws NotFoundException {
+        var root = categoryService.getEntityById(categoryId);
+        var categories = categoryService.getAllSubs(root);
+        log.debug("子分类：{}", categories);
+        return productRepository.findAllByCategoryIn(categories, pageable)
+                    .stream()
+                    .map(ProductMapper.INSTANCE::productEntityToDto)
+                    .collect(Collectors.toList());
     }
 }
