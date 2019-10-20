@@ -71,9 +71,14 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public Optional<ProductDto> getById(String id) {
+    public ProductDto getById(String id) throws NotFoundException {
+        return ProductMapper.INSTANCE.productEntityToDto(getEntityById(id));
+    }
+
+    @Override
+    public ProductEntity getEntityById(String id) throws NotFoundException {
         return productRepository.findById(id)
-                .map(ProductMapper.INSTANCE::productEntityToDto);
+                .orElseThrow(() -> new NotFoundException("未找到此商品！"));
     }
 
     /**

@@ -28,8 +28,7 @@ public class ProductController {
 
     @GetMapping("/{id}/")
     public ProductDto getProductById(@PathVariable String id) throws NotFoundException {
-        return productService.getById(id)
-                .orElseThrow(() -> new NotFoundException("未找到此商品！"));
+        return productService.getById(id);
     }
 
     @GetMapping("/")
