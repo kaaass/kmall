@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "order")
+@Table(name = "table_order")
 public class OrderEntity {
     /**
      * 订单号
@@ -57,11 +57,9 @@ public class OrderEntity {
     @Generated(GenerationTime.INSERT)
     private Timestamp createTime;
 
-    @Column(name = "pay_time",
-            columnDefinition = "TIMESTAMP DEFAULT NULL")
+    @Column(name = "pay_time")
     private Timestamp payTime;
 
-    @Column(name = "deliver_time",
-            columnDefinition = "TIMESTAMP DEFAULT NULL")
+    @Column(name = "deliver_time")
     private Timestamp deliverTime;
 }

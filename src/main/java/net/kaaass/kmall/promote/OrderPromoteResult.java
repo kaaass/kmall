@@ -3,6 +3,7 @@ package net.kaaass.kmall.promote;
 import lombok.Data;
 import net.kaaass.kmall.dto.OrderItemDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,5 +13,5 @@ public class OrderPromoteResult {
 
     private float mailPrice;
 
-    private List<OrderItemDto> products;
+    private List<OrderItemDto> products = new ArrayList<>();
 }

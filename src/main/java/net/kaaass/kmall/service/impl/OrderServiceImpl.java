@@ -17,12 +17,17 @@ import net.kaaass.kmall.promote.OrderPromoteContext;
 import net.kaaass.kmall.promote.PromoteManager;
 import net.kaaass.kmall.service.OrderRequestContext;
 import net.kaaass.kmall.service.OrderService;
+import net.kaaass.kmall.util.Constants;
 import net.kaaass.kmall.util.StringUtils;
 import org.aspectj.bridge.IMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,7 +129,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private String getLastOrderId() {
-        // TODO
-        return "";
+        Timestamp start = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
+        Timestamp end = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
+        log.debug("查询与日期 {} 与 {} 之间", start, end);
+        var result = orderRepository.findByCreateTimeBetweenOrderByCreateTimeDesc(start, end);
+        return result.map(OrderEntity::getId)
+                    .orElse(Constants.INIT_ORDER_ID);
     }
 }

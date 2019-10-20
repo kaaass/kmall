@@ -13,4 +13,6 @@ public class Constants {
     public static final String ROLE_USER = "ROLE_USER";
 
     public static final String MEDIA_TYPE_IMAGE = "image";
+
+    public static final String INIT_ORDER_ID = "197001010000";
 }
