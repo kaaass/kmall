@@ -15,4 +15,6 @@ public class Constants {
     public static final String MEDIA_TYPE_IMAGE = "image";
 
     public static final String INIT_ORDER_ID = "197001010000";
+
+    public static final String KEY_DISCOUNT = "discount";
 }

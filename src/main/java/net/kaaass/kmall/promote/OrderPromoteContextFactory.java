@@ -32,8 +32,6 @@ public class OrderPromoteContextFactory {
     public OrderPromoteContext buildFromRequestContext(OrderRequestContext requestContext) throws NotFoundException {
         var result = new OrderPromoteContext();
         var request = requestContext.getRequest();
-        float totalPrice = 0;
-        float totalMailPrice = 0;
         var products = new ArrayList<PromoteItem>();
         // 商品
         for (var cartItem : request.getCartItems()) {
@@ -44,8 +42,8 @@ public class OrderPromoteContextFactory {
         }
         result.setProducts(products);
         // 价格
-        result.setPrice(totalPrice);
-        result.setMailPrice(totalMailPrice);
+        result.setPrice(0);
+        result.setMailPrice(0);
         // 用户id
         result.setUid(requestContext.getUid());
         // 地址

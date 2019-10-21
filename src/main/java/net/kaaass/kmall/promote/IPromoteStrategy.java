@@ -1,5 +1,8 @@
 package net.kaaass.kmall.promote;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import net.kaaass.kmall.vo.PromoteStrategyInfoVo;
 
 /**
@@ -9,7 +12,20 @@ import net.kaaass.kmall.vo.PromoteStrategyInfoVo;
  */
 public interface IPromoteStrategy<S extends OrderPromoteContext, T extends OrderPromoteContext> {
 
-    T doPromote(S context);
+    Result<T> doPromote(S context);
 
     PromoteStrategyInfoVo getPromoteInfo();
+
+    @Getter
+    @AllArgsConstructor
+    public static class Result<T extends OrderPromoteContext> {
+
+        boolean ok = false;
+
+        T context;
+
+        public Result(boolean ok) {
+            this.ok = ok;
+        }
+    }
 }

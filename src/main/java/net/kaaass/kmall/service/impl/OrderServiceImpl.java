@@ -120,6 +120,7 @@ public class OrderServiceImpl implements OrderService {
         log.debug("请求上下文：{}", promoteContext);
         // 打折处理
         var promoteResult = promoteManager.doOnOrder(promoteContext);
+        log.debug("打折结果：{}", promoteResult);
         // 处理返回
         entity.setPrice(promoteResult.getPrice());
         entity.setMailPrice(promoteResult.getMailPrice());

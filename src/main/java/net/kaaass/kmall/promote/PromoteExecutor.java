@@ -25,7 +25,11 @@ public class PromoteExecutor {
     public OrderPromoteResult execute(OrderPromoteContext context) {
         OrderPromoteContext currentContext = context;
         for (var strategy : strategies) {
-            currentContext = strategy.doPromote(context);
+            var result = strategy.doPromote(currentContext);
+            if (result.ok) {
+                currentContext = result.getContext();
+                currentContext.getPromotes().add(strategy.getPromoteInfo()); // 添加打折信息
+            }
         }
         return collector.collect(currentContext);
     }
