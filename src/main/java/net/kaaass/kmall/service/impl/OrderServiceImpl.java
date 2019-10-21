@@ -13,13 +13,13 @@ import net.kaaass.kmall.exception.ForbiddenException;
 import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.OrderMapper;
-import net.kaaass.kmall.promote.OrderPromoteContext;
+import net.kaaass.kmall.promote.OrderPromoteContextFactory;
 import net.kaaass.kmall.promote.PromoteManager;
 import net.kaaass.kmall.service.OrderRequestContext;
 import net.kaaass.kmall.service.OrderService;
+import net.kaaass.kmall.service.UserService;
 import net.kaaass.kmall.util.Constants;
 import net.kaaass.kmall.util.StringUtils;
-import org.aspectj.bridge.IMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,10 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private UserAddressRepository userAddressRepository;
+    private UserService userService;
+
+    @Autowired
+    private OrderPromoteContextFactory orderPromoteContextFactory;
 
     @Override
     public OrderEntity getEntityById(String id) throws NotFoundException {
@@ -107,25 +110,25 @@ public class OrderServiceImpl implements OrderService {
         entity.setUid(context.getUid());
         entity.setRequestId(context.getRequestId());
         var request = context.getRequest();
-        var address = userAddressRepository.findById(request.getAddressId())
-                        .filter(addressEntity -> addressEntity.getUid().equals(context.getUid()))
-                        .orElseThrow(() -> new NotFoundException("未找到该地址！"));
+        var address = userService.getAddressEntityByIdAndCheck(request.getAddressId(), context.getUid());
         entity.setAddress(address);
-        var promoteContext = buildPromoteContext(context);
+        /*
+         打折逻辑
+         */
+        // 拼接上下文
+        var promoteContext = orderPromoteContextFactory.buildFromRequestContext(context);
+        log.debug("请求上下文：{}", promoteContext);
+        // 打折处理
         var promoteResult = promoteManager.doOnOrder(promoteContext);
+        // 处理返回
         entity.setPrice(promoteResult.getPrice());
         entity.setMailPrice(promoteResult.getMailPrice());
         entity.setProducts(promoteResult.getProducts()
                             .stream()
                             .map(OrderMapper.INSTANCE::orderItemDtoToEntity)
                             .collect(Collectors.toList()));
-        orderRepository.save(entity);
+        // orderRepository.save(entity);
         // TODO 删除购物车中已有的商品
-    }
-
-    private OrderPromoteContext buildPromoteContext(OrderRequestContext context) {
-        // TODO
-        return null;
     }
 
     private String getLastOrderId() {
