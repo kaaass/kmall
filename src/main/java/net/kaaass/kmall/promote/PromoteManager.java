@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PromoteManager {
 
+    public PromoteExecutor buildExecutorFromDbms() {
+        return null;
+    }
+
     public OrderPromoteResult doOnOrder(OrderPromoteContext context) {
-        // TODO
-        return new OrderPromoteResult();
+        var executor = buildExecutorFromDbms();
+        return executor.execute(context);
     }
 }
