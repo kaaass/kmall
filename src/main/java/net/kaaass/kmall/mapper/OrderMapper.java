@@ -22,5 +22,7 @@ public interface OrderMapper {
 
     PromoteStrategyDto promoteStrategyEntitiyToDto(PromoteStrategyEntity promoteStrategyEntity);
 
+    PromoteStrategyEntity promoteStrategyDtoToEntitiy(PromoteStrategyDto promoteStrategyDto);
+
     PromoteStrategyInfoVo promoteStrategyDtoToInfoVo(PromoteStrategyDto promoteStrategyDto);
 }
