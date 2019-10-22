@@ -2,8 +2,11 @@ package net.kaaass.kmall.mapper;
 
 import net.kaaass.kmall.dao.entity.OrderEntity;
 import net.kaaass.kmall.dao.entity.OrderItemEntity;
+import net.kaaass.kmall.dao.entity.PromoteStrategyEntity;
 import net.kaaass.kmall.dto.OrderDto;
 import net.kaaass.kmall.dto.OrderItemDto;
+import net.kaaass.kmall.dto.PromoteStrategyDto;
+import net.kaaass.kmall.vo.PromoteStrategyInfoVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -16,4 +19,8 @@ public interface OrderMapper {
     OrderItemDto orderItemEntityToDto(OrderItemEntity orderItemEntity);
 
     OrderItemEntity orderItemDtoToEntity(OrderItemDto orderItemDto);
+
+    PromoteStrategyDto promoteStrategyEntitiyToDto(PromoteStrategyEntity promoteStrategyEntity);
+
+    PromoteStrategyInfoVo promoteStrategyDtoToInfoVo(PromoteStrategyDto promoteStrategyDto);
 }

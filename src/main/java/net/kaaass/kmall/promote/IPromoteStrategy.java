@@ -1,7 +1,6 @@
 package net.kaaass.kmall.promote;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import net.kaaass.kmall.vo.PromoteStrategyInfoVo;
 
