@@ -17,4 +17,5 @@ public class Constants {
     public static final String INIT_ORDER_ID = "197001010000";
 
     public static final String KEY_DISCOUNT = "discount";
+    public static final String KEY_DETAIL = "detail";
 }

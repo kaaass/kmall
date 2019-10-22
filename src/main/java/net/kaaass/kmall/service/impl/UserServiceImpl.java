@@ -34,4 +34,10 @@ public class UserServiceImpl implements UserService {
     public UserAddressDto getAddressById(String id) throws NotFoundException {
         return UserMapper.INSTANCE.userAddressEntityToDto(getAddressEntityById(id));
     }
+
+    @Override
+    public UserAddressEntity getDefaultAddressEntityById(String id) throws NotFoundException {
+        return userAddressRepository.findByUidAndDefaultAddressTrue(id)
+                .orElseThrow(() -> new NotFoundException("未找到该地址！"));
+    }
 }

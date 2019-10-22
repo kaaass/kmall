@@ -4,6 +4,7 @@ import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.service.ProductService;
+import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 @PreAuthorize("permitAll()")
-public class ProductController {
+public class ProductController extends BaseController {
 
     @Autowired
     private ProductService productService;
@@ -29,6 +30,12 @@ public class ProductController {
     @GetMapping("/{id}/")
     public ProductDto getProductById(@PathVariable String id) throws NotFoundException {
         return productService.getById(id);
+    }
+
+    @GetMapping("/{id}/extra/")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ProductExtraVo getExtraById(@PathVariable String id, @RequestParam int count) throws NotFoundException {
+        return productService.getExtraById(id, count, getUid());
     }
 
     @GetMapping("/")

@@ -11,4 +11,6 @@ public interface UserService {
     UserAddressEntity getAddressEntityByIdAndCheck(String id, String uid) throws NotFoundException;
 
     UserAddressDto getAddressById(String id) throws NotFoundException;
+
+    UserAddressEntity getDefaultAddressEntityById(String id) throws NotFoundException;
 }

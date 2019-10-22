@@ -1,6 +1,7 @@
 package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.ProductStorageEntity;
@@ -11,7 +12,12 @@ import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.ProductMapper;
 import net.kaaass.kmall.service.CategoryService;
 import net.kaaass.kmall.service.ProductService;
+import net.kaaass.kmall.service.PromoteService;
+import net.kaaass.kmall.service.UserService;
+import net.kaaass.kmall.service.metadata.MetadataManager;
 import net.kaaass.kmall.service.metadata.ResourceManager;
+import net.kaaass.kmall.util.Constants;
+import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,6 +40,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private MetadataManager metadataManager;
+
+    @Autowired
+    private PromoteService promoteService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 增加商品
@@ -79,6 +94,15 @@ public class ProductServiceImpl implements ProductService {
     public ProductEntity getEntityById(String id) throws NotFoundException {
         return productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("未找到此商品！"));
+    }
+
+    @Override
+    public ProductExtraVo getExtraById(String id, int count, String uid) throws NotFoundException {
+        var extra = new ProductExtraVo();
+        extra.setDetail(metadataManager.getForProduct(id, Constants.KEY_DETAIL));
+        var defaultAddress = userService.getDefaultAddressEntityById(uid).getId();
+        extra.setPromotes(promoteService.getForSingleProduct(id, count, uid, defaultAddress));
+        return extra;
     }
 
     /**
