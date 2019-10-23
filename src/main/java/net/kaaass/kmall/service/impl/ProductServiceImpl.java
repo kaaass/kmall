@@ -6,6 +6,7 @@ import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.ProductStorageEntity;
 import net.kaaass.kmall.dao.repository.CategoryRepository;
+import net.kaaass.kmall.dao.repository.OrderItemRepository;
 import net.kaaass.kmall.dao.repository.ProductRepository;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.NotFoundException;
@@ -22,6 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,6 +54,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     /**
      * 增加商品
@@ -105,7 +113,9 @@ public class ProductServiceImpl implements ProductService {
             defaultAddress = userService.getDefaultAddressEntityById(uid).getId();
         } catch (NotFoundException ignored) {
         }
-        extra.setPromotes(promoteService.getForSingleProduct(id, count, uid, defaultAddress));
+        var entity = getEntityById(id);
+        extra.setPromotes(promoteService.getForSingleProduct(entity, count, uid, defaultAddress));
+        extra.setMonthPurchase(getMonthPurchaseById(entity));
         return extra;
     }
 
@@ -138,5 +148,17 @@ public class ProductServiceImpl implements ProductService {
                     .stream()
                     .map(ProductMapper.INSTANCE::productEntityToDto)
                     .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取商品单月销售
+     * @param productEntity
+     * @return
+     */
+    private int getMonthPurchaseById(ProductEntity productEntity) {
+        Timestamp start = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.MIDNIGHT));
+        Timestamp end = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
+        log.debug("查询与日期 {} 与 {} 之间", start, end);
+        return orderItemRepository.sumCountByIdBetween(productEntity, start, end);
     }
 }

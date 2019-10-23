@@ -1,13 +1,15 @@
 package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
+import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.PromoteStrategyEntity;
 import net.kaaass.kmall.dao.repository.PromoteStrategyRepository;
 import net.kaaass.kmall.dto.PromoteStrategyDto;
 import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.OrderMapper;
+import net.kaaass.kmall.mapper.ProductMapper;
+import net.kaaass.kmall.mapper.PromoteMapper;
 import net.kaaass.kmall.promote.*;
 import net.kaaass.kmall.service.ProductService;
 import net.kaaass.kmall.service.PromoteService;
@@ -72,8 +74,8 @@ public class PromoteServiceImpl implements PromoteService {
     }
 
     @Override
-    public OrderPromoteResult getForSingleProduct(String productId, int count, String uid, String addressId) throws NotFoundException {
-        var productDto = productService.getById(productId);
+    public OrderPromoteResult getForSingleProduct(ProductEntity productEntity, int count, String uid, String addressId) throws NotFoundException {
+        var productDto = ProductMapper.INSTANCE.productEntityToDto(productEntity);
         var context = contextFactory.buildFromSingleProduct(productDto, count, uid, addressId);
         return promoteManager.doOnOrder(context);
     }

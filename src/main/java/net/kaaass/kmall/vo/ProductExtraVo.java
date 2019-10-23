@@ -6,7 +6,7 @@ import net.kaaass.kmall.promote.OrderPromoteResult;
 @Data
 public class ProductExtraVo {
 
-    // TODO 月销
+    private int monthPurchase;
 
     private String detail;
 

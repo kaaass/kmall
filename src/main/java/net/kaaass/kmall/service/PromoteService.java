@@ -1,5 +1,6 @@
 package net.kaaass.kmall.service;
 
+import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.PromoteStrategyEntity;
 import net.kaaass.kmall.dto.PromoteStrategyDto;
 import net.kaaass.kmall.exception.BadRequestException;
@@ -20,5 +21,5 @@ public interface PromoteService {
 
     void checkConfigure(String promoteId) throws NotFoundException, BadRequestException;
 
-    OrderPromoteResult getForSingleProduct(String productId, int count, String uid, String addressId) throws NotFoundException;
+    OrderPromoteResult getForSingleProduct(ProductEntity productEntity, int count, String uid, String addressId) throws NotFoundException;
 }
