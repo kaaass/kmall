@@ -100,7 +100,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductExtraVo getExtraById(String id, int count, String uid) throws NotFoundException {
         var extra = new ProductExtraVo();
         extra.setDetail(metadataManager.getForProduct(id, Constants.KEY_DETAIL));
-        var defaultAddress = userService.getDefaultAddressEntityById(uid).getId();
+        String defaultAddress = null;
+        try {
+            defaultAddress = userService.getDefaultAddressEntityById(uid).getId();
+        } catch (NotFoundException ignored) {
+        }
         extra.setPromotes(promoteService.getForSingleProduct(id, count, uid, defaultAddress));
         return extra;
     }

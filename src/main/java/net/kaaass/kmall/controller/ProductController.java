@@ -33,9 +33,13 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/{id}/extra/")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ProductExtraVo getExtraById(@PathVariable String id, @RequestParam int count) throws NotFoundException {
-        return productService.getExtraById(id, count, getUid());
+        String uid = null;
+        try {
+            uid = getUid();
+        } catch (Exception ignored) {
+        }
+        return productService.getExtraById(id, count, uid);
     }
 
     @GetMapping("/")
