@@ -7,8 +7,8 @@ import net.kaaass.kmall.controller.request.OrderCreateRequest;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
 import net.kaaass.kmall.dao.entity.OrderEntity;
 import net.kaaass.kmall.dao.repository.OrderRepository;
-import net.kaaass.kmall.dao.repository.UserAddressRepository;
 import net.kaaass.kmall.dto.OrderDto;
+import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.ForbiddenException;
 import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
@@ -17,6 +17,7 @@ import net.kaaass.kmall.promote.OrderPromoteContextFactory;
 import net.kaaass.kmall.promote.PromoteManager;
 import net.kaaass.kmall.service.OrderRequestContext;
 import net.kaaass.kmall.service.OrderService;
+import net.kaaass.kmall.service.OrderType;
 import net.kaaass.kmall.service.UserService;
 import net.kaaass.kmall.util.Constants;
 import net.kaaass.kmall.util.StringUtils;
@@ -59,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
         if (!result.getUid().equals(uid)) {
             throw new ForbiddenException("未找到该订单！");
         }
-        return null;
+        return result;
     }
 
     @Override
@@ -127,16 +128,30 @@ public class OrderServiceImpl implements OrderService {
         entity.setProducts(promoteResult.getProducts()
                             .stream()
                             .map(OrderMapper.INSTANCE::orderItemDtoToEntity)
+                            .peek(orderItemEntity -> orderItemEntity.setUid(context.getUid()))
+                            .peek(orderItemEntity -> orderItemEntity.setOrder(entity))
                             .collect(Collectors.toList()));
-        // orderRepository.save(entity);
+        orderRepository.save(entity);
         // TODO 删除购物车中已有的商品
+    }
+
+    @Override
+    public OrderDto setPaid(String id, String uid) throws NotFoundException, ForbiddenException, BadRequestException {
+        var entity = uid == null ? getEntityById(id) :
+                getEntityByIdAndCheck(id, uid);
+        if (!entity.getType().less(OrderType.PAID)) {
+            throw new BadRequestException("该订单已付款或已取消！");
+        }
+        entity.setType(OrderType.PAID);
+        entity.setPayTime(Timestamp.valueOf(LocalDateTime.now()));
+        return OrderMapper.INSTANCE.orderEntityToDto(orderRepository.save(entity));
     }
 
     private String getLastOrderId() {
         Timestamp start = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
         Timestamp end = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
         log.debug("查询与日期 {} 与 {} 之间", start, end);
-        var result = orderRepository.findByCreateTimeBetweenOrderByCreateTimeDesc(start, end);
+        var result = orderRepository.findFirstByCreateTimeBetweenOrderByCreateTimeDesc(start, end);
         return result.map(OrderEntity::getId)
                     .orElse(Constants.INIT_ORDER_ID);
     }

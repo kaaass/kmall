@@ -7,15 +7,25 @@ public enum OrderType {
     /**
      * 已创建
      */
-    CREATED,
+    CREATED(0),
 
     /**
      * 已付款
      */
-    PAYED,
+    PAID(1),
 
     /**
      * 已完成
      */
-    FINISHED
+    FINISHED(2);
+
+    private int order;
+
+    OrderType(int order) {
+        this.order = order;
+    }
+
+    public boolean less(OrderType type) {
+        return order < type.order;
+    }
 }

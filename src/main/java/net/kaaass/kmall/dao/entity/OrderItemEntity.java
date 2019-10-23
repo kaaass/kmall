@@ -21,7 +21,7 @@ public class OrderItemEntity {
     @Column(name = "uid")
     private String uid;  // TODO 更改为ManyToOne
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
 
