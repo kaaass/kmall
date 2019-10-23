@@ -147,6 +147,18 @@ public class OrderServiceImpl implements OrderService {
         return OrderMapper.INSTANCE.orderEntityToDto(orderRepository.save(entity));
     }
 
+    @Override
+    public OrderDto setDelivered(String id, String deliverCode) throws NotFoundException, BadRequestException {
+        var entity = getEntityById(id);
+        if (entity.getType() != OrderType.PAID) {
+            throw new BadRequestException("只有已付款的订单可以发货！");
+        }
+        entity.setType(OrderType.DELIVERED);
+        entity.setDeliverCode(deliverCode);
+        entity.setDeliverTime(Timestamp.valueOf(LocalDateTime.now()));
+        return OrderMapper.INSTANCE.orderEntityToDto(orderRepository.save(entity));
+    }
+
     private String getLastOrderId() {
         Timestamp start = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
         Timestamp end = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));

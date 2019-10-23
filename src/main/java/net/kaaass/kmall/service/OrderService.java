@@ -29,4 +29,6 @@ public interface OrderService {
     void doCreate(OrderRequestContext context) throws NotFoundException;
 
     OrderDto setPaid(String id, String uid) throws NotFoundException, ForbiddenException, BadRequestException;
+
+    OrderDto setDelivered(String id, String deliverCode) throws NotFoundException, BadRequestException;
 }

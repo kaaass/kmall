@@ -15,9 +15,24 @@ public enum OrderType {
     PAID(1),
 
     /**
-     * 已完成
+     * 已发货
      */
-    FINISHED(2);
+    DELIVERED(2),
+
+    /**
+     * 已评价
+     */
+    COMMENTED(3),
+
+    /**
+     * 已退款
+     */
+    REFUNDED(4),
+
+    /**
+     * 已取消
+     */
+    CANCELED(5);
 
     private int order;
 
