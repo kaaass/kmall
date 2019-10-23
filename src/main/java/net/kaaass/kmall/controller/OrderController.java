@@ -72,4 +72,10 @@ public class OrderController extends BaseController {
     OrderDto setCanceled(@PathVariable String id) throws BadRequestException, NotFoundException, ForbiddenException {
         return orderService.setCanceled(id, getUid());
     }
+
+    @PostMapping("/{id}/refund/")
+    @PreAuthorize("hasRole('ADMIN')")
+    OrderDto setRefunded(@PathVariable String id) throws NotFoundException, BadRequestException {
+        return orderService.setRefunded(id);
+    }
 }

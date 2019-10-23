@@ -33,4 +33,6 @@ public interface OrderService {
     OrderDto setDelivered(String id, String deliverCode) throws NotFoundException, BadRequestException;
 
     OrderDto setCanceled(String id, String uid) throws NotFoundException, ForbiddenException, BadRequestException;
+
+    OrderDto setRefunded(String id) throws NotFoundException, BadRequestException;
 }

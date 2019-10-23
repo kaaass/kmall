@@ -43,4 +43,8 @@ public enum OrderType {
     public boolean less(OrderType type) {
         return order < type.order;
     }
+
+    public boolean great(OrderType type) {
+        return order > type.order;
+    }
 }
