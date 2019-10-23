@@ -62,4 +62,7 @@ public class OrderEntity {
 
     @Column(name = "deliver_time")
     private Timestamp deliverTime;
+
+    @Column(name = "finish_time")
+    private Timestamp finishTime;
 }

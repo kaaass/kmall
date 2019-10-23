@@ -39,4 +39,7 @@ public class OrderDto {
 
     @JsonSerialize(using = DateToLongSerializer.class)
     private Date deliverTime;
+
+    @JsonSerialize(using = DateToLongSerializer.class)
+    private Date finishTime;
 }

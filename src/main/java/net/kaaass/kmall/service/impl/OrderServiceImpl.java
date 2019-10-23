@@ -159,6 +159,17 @@ public class OrderServiceImpl implements OrderService {
         return OrderMapper.INSTANCE.orderEntityToDto(orderRepository.save(entity));
     }
 
+    @Override
+    public OrderDto setCanceled(String id, String uid) throws NotFoundException, ForbiddenException, BadRequestException {
+        var entity = getEntityByIdAndCheck(id, uid);
+        if (!entity.getType().less(OrderType.PAID)) {
+            throw new BadRequestException("该订单已付款或已取消！");
+        }
+        entity.setType(OrderType.CANCELED);
+        entity.setFinishTime(Timestamp.valueOf(LocalDateTime.now()));
+        return OrderMapper.INSTANCE.orderEntityToDto(orderRepository.save(entity));
+    }
+
     private String getLastOrderId() {
         Timestamp start = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
         Timestamp end = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));

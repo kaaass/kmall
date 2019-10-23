@@ -55,16 +55,21 @@ public class OrderController extends BaseController {
         return orderService.setPaid(id, getUid());
     }
 
-    @PostMapping("/{id}/paid/")
+    @PostMapping("/{id}/pay/")
     @PreAuthorize("hasRole('ADMIN')")
     OrderDto setPaid(@PathVariable String id) throws NotFoundException, ForbiddenException, BadRequestException {
         return orderService.setPaid(id, null);
     }
 
-    @PostMapping("/{id}/delivered/")
+    @PostMapping("/{id}/deliver/")
     @PreAuthorize("hasRole('ADMIN')")
     OrderDto setDelivered(@PathVariable String id, @RequestParam String deliverCode) throws NotFoundException, BadRequestException {
         // TODO 检查输入
         return orderService.setDelivered(id, deliverCode);
+    }
+
+    @PostMapping("/{id}/cancel/")
+    OrderDto setCanceled(@PathVariable String id) throws BadRequestException, NotFoundException, ForbiddenException {
+        return orderService.setCanceled(id, getUid());
     }
 }
