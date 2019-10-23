@@ -22,8 +22,11 @@ public class CommentEntity {
     @Column(name = "uid")
     private String uid; // TODO 改为ManyToOne
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "order_id")
+    private String orderId;
+
+    @Column(name = "product_id")
+    private String productId;
 
     @Column(name = "rate")
     private int rate;
@@ -37,15 +40,4 @@ public class CommentEntity {
             updatable = false)
     @Generated(GenerationTime.INSERT)
     private Timestamp commentTime;
-
-    public CommentDto toCommentDto() {
-        CommentDto ret = new CommentDto();
-        ret.setId(id);
-        ret.setUid(uid);
-        ret.setRate(rate);
-        ret.setTitle(title);
-        ret.setContent(content);
-        ret.setTime(commentTime.toLocalDateTime());
-        return ret;
-    }
 }

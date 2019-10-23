@@ -9,4 +9,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<CommentEntity, String> {
 
     List<CommentEntity> findAllByOrderByCommentTimeDesc(Pageable page);
+
+    List<CommentEntity> findAllByProductIdOrderByRateDescCommentTimeDesc(String productId, Pageable page);
 }

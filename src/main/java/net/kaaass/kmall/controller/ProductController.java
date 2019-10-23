@@ -1,9 +1,11 @@
 package net.kaaass.kmall.controller;
 
 import net.kaaass.kmall.controller.request.ProductAddRequest;
+import net.kaaass.kmall.dto.CommentDto;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.service.ProductService;
+import net.kaaass.kmall.vo.CommentVo;
 import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -50,5 +52,10 @@ public class ProductController extends BaseController {
     @GetMapping("/category/{categoryId}/")
     public List<ProductDto> getAllProductsByCategory(@PathVariable String categoryId, Pageable pageable) throws NotFoundException {
         return productService.getAllByCategory(categoryId, pageable);
+    }
+
+    @GetMapping("/{id}/comments/")
+    public List<CommentVo> getComments(@PathVariable String id, Pageable pageable) {
+        return productService.getComments(id, pageable);
     }
 }

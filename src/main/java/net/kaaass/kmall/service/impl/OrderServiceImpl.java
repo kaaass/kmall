@@ -3,9 +3,12 @@ package net.kaaass.kmall.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import net.kaaass.kmall.controller.request.CommentRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
+import net.kaaass.kmall.dao.entity.CommentEntity;
 import net.kaaass.kmall.dao.entity.OrderEntity;
+import net.kaaass.kmall.dao.repository.CommentRepository;
 import net.kaaass.kmall.dao.repository.OrderRepository;
 import net.kaaass.kmall.dto.OrderDto;
 import net.kaaass.kmall.exception.BadRequestException;
@@ -47,6 +50,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderPromoteContextFactory orderPromoteContextFactory;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     public OrderEntity getEntityById(String id) throws NotFoundException {
@@ -178,6 +184,29 @@ public class OrderServiceImpl implements OrderService {
         }
         entity.setType(OrderType.REFUNDED);
         entity.setRefundTime(Timestamp.valueOf(LocalDateTime.now()));
+        return OrderMapper.INSTANCE.orderEntityToDto(orderRepository.save(entity));
+    }
+
+    @Override
+    public OrderDto setCommented(String id, String uid, CommentRequest commentRequest) throws NotFoundException, ForbiddenException, BadRequestException {
+        var entity = getEntityByIdAndCheck(id, uid);
+        if (entity.getType() != OrderType.DELIVERED) {
+            throw new BadRequestException("该订单当前不能评价！");
+        }
+        entity.setType(OrderType.COMMENTED);
+        entity.setFinishTime(Timestamp.valueOf(LocalDateTime.now()));
+
+        for (var comment : commentRequest.getComments()) {
+            var commentEntity = new CommentEntity();
+            commentEntity.setUid(uid);
+            commentEntity.setOrderId(id);
+            commentEntity.setProductId(comment.getProductId());
+            commentEntity.setRate(comment.getRate());
+            commentEntity.setContent(comment.getContent());
+            commentEntity.setCommentTime(Timestamp.valueOf(LocalDateTime.now()));
+            commentRepository.save(commentEntity);
+        }
+
         return OrderMapper.INSTANCE.orderEntityToDto(orderRepository.save(entity));
     }
 

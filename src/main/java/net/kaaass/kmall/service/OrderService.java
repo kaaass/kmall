@@ -1,5 +1,6 @@
 package net.kaaass.kmall.service;
 
+import net.kaaass.kmall.controller.request.CommentRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
 import net.kaaass.kmall.dao.entity.OrderEntity;
@@ -35,4 +36,6 @@ public interface OrderService {
     OrderDto setCanceled(String id, String uid) throws NotFoundException, ForbiddenException, BadRequestException;
 
     OrderDto setRefunded(String id) throws NotFoundException, BadRequestException;
+
+    OrderDto setCommented(String id, String uid, CommentRequest commentRequest) throws NotFoundException, ForbiddenException, BadRequestException;
 }

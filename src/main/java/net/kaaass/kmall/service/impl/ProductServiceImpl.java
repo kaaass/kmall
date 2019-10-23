@@ -6,11 +6,13 @@ import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.ProductStorageEntity;
 import net.kaaass.kmall.dao.repository.CategoryRepository;
+import net.kaaass.kmall.dao.repository.CommentRepository;
 import net.kaaass.kmall.dao.repository.OrderItemRepository;
 import net.kaaass.kmall.dao.repository.ProductRepository;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.ProductMapper;
+import net.kaaass.kmall.mapper.UserMapper;
 import net.kaaass.kmall.service.CategoryService;
 import net.kaaass.kmall.service.ProductService;
 import net.kaaass.kmall.service.PromoteService;
@@ -18,6 +20,7 @@ import net.kaaass.kmall.service.UserService;
 import net.kaaass.kmall.service.metadata.MetadataManager;
 import net.kaaass.kmall.service.metadata.ResourceManager;
 import net.kaaass.kmall.util.Constants;
+import net.kaaass.kmall.vo.CommentVo;
 import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +60,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     /**
      * 增加商品
@@ -148,6 +154,14 @@ public class ProductServiceImpl implements ProductService {
                     .stream()
                     .map(ProductMapper.INSTANCE::productEntityToDto)
                     .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CommentVo> getComments(String id, Pageable pageable) {
+        return commentRepository.findAllByProductIdOrderByRateDescCommentTimeDesc(id, pageable)
+                .stream()
+                .map(UserMapper.INSTANCE::commentEntityToVo)
+                .collect(Collectors.toList());
     }
 
     /**

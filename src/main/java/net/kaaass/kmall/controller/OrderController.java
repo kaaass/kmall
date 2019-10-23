@@ -1,6 +1,7 @@
 package net.kaaass.kmall.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import net.kaaass.kmall.controller.request.CommentRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
 import net.kaaass.kmall.dto.OrderDto;
@@ -77,5 +78,11 @@ public class OrderController extends BaseController {
     @PreAuthorize("hasRole('ADMIN')")
     OrderDto setRefunded(@PathVariable String id) throws NotFoundException, BadRequestException {
         return orderService.setRefunded(id);
+    }
+
+    @PostMapping("/{id}/comment/")
+    OrderDto setCommented(@PathVariable String id, @RequestBody CommentRequest commentRequest) throws NotFoundException, BadRequestException, ForbiddenException {
+        // TODO 校验
+        return orderService.setCommented(id, getUid(), commentRequest);
     }
 }
