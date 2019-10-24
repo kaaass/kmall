@@ -47,6 +47,11 @@ public class ProductEntity {
     @JoinColumn(name = "storage_id")
     private ProductStorageEntity storage;
 
+    @Column(name = "start_sell_time",
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Generated(GenerationTime.INSERT)
+    private Timestamp startSellTime;
+
     @Column(name = "create_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             updatable = false)

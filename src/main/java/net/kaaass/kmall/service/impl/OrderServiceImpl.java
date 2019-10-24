@@ -35,6 +35,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,9 +89,11 @@ public class OrderServiceImpl implements OrderService {
     public boolean checkRequest(String requestId) throws BadRequestException {
         var exist = orderRepository.existsByRequestId(requestId);
         if (exist) {
-            var entity = orderRepository.findByRequestId(requestId);
-            entity.filter(orderEntity -> orderEntity.getType() != OrderType.ERROR)
-                    .orElseThrow(() -> new BadRequestException("订单创建错误，请检查商品库存！"));
+            var entity = orderRepository.findByRequestId(requestId)
+                            .orElseThrow(() -> new BadRequestException("请求处理错误！"));
+            if (entity.getType() == OrderType.ERROR) {
+                throw new BadRequestException(entity.getReason());
+            }
         }
         return exist;
     }
@@ -152,6 +155,9 @@ public class OrderServiceImpl implements OrderService {
                 if (buyLimit > 0 && promoteItem.getCount() > buyLimit) {
                     throw new BadRequestException(String.format("本商品限购%d件！", buyLimit));
                 }
+                if (new Date().before(promoteItem.getProduct().getStartSellTime())) {
+                    throw new BadRequestException("商品还未开卖！");
+                }
             }
             // 打折处理
             var promoteResult = promoteManager.doOnOrder(promoteContext);
@@ -171,20 +177,22 @@ public class OrderServiceImpl implements OrderService {
                 var dest = product.getStorage().getRest() - orderItemEntity.getCount();
                 if (dest >= 0) {
                     product.getStorage().setRest(dest);
-                    productRepository.save(product);
                 } else {
                     throw new BadRequestException("本商品库存不足！");
                 }
             }
+            // 更新库存
+            entity.getProducts().forEach(orderItemEntity -> productRepository.save(orderItemEntity.getProduct()));
         } catch (BadRequestException e) {
             entity.setType(OrderType.ERROR);
+            entity.setReason(e.getMessage());
         }
         orderRepository.save(entity);
         /*
           删除购物车中已有的商品
         */
         for (var cartItem : context.getRequest().getCartItems()) {
-            cartRepository.deleteById(cartItem.getId());
+            // cartRepository.deleteById(cartItem.getId());
         }
     }
 

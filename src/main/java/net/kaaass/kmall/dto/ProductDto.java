@@ -1,6 +1,10 @@
 package net.kaaass.kmall.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import net.kaaass.kmall.util.DateToLongSerializer;
+
+import java.util.Date;
 
 @Data
 public class ProductDto {
@@ -19,4 +23,7 @@ public class ProductDto {
     private CategoryDto category;
 
     private ProductStorageDto storage;
+
+    @JsonSerialize(using = DateToLongSerializer.class)
+    private Date startSellTime;
 }

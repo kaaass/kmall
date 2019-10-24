@@ -29,6 +29,8 @@ public class OrderDto {
 
     private String deliverCode;
 
+    private String reason;
+
     private List<OrderItemDto> products = new ArrayList<>();
 
     @JsonSerialize(using = DateToLongSerializer.class)

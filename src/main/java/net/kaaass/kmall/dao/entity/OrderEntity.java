@@ -49,6 +49,12 @@ public class OrderEntity {
     @Column(name = "deliver_code")
     private String deliverCode = null;
 
+    /**
+     * 各类原因
+     */
+    @Column(name = "reason")
+    private String reason = null;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItemEntity> products = new ArrayList<>();
 
