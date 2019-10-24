@@ -192,7 +192,7 @@ public class OrderServiceImpl implements OrderService {
           删除购物车中已有的商品
         */
         for (var cartItem : context.getRequest().getCartItems()) {
-            // cartRepository.deleteById(cartItem.getId());
+            cartRepository.deleteById(cartItem.getId());
         }
     }
 
