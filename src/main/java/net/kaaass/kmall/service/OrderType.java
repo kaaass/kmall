@@ -32,7 +32,12 @@ public enum OrderType {
     /**
      * 已取消
      */
-    CANCELED(5);
+    CANCELED(5),
+
+    /**
+     * 创建错误
+     */
+    ERROR(6);
 
     private int order;
 

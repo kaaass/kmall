@@ -27,7 +27,7 @@ public class OrderController extends BaseController {
     private OrderService orderService;
 
     @GetMapping("/request/{requestId}/")
-    boolean checkRequest(@PathVariable String requestId) {
+    boolean checkRequest(@PathVariable String requestId) throws BadRequestException {
         return orderService.checkRequest(requestId);
     }
 

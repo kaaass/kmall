@@ -19,7 +19,7 @@ public interface OrderService {
 
     OrderEntity getEntityByIdAndCheck(String id, String uid) throws NotFoundException, ForbiddenException;
 
-    boolean checkRequest(String requestId);
+    boolean checkRequest(String requestId) throws BadRequestException;
 
     OrderDto getById(String id, String uid) throws NotFoundException, ForbiddenException;
 

@@ -8,8 +8,10 @@ import net.kaaass.kmall.controller.request.OrderCreateRequest;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
 import net.kaaass.kmall.dao.entity.CommentEntity;
 import net.kaaass.kmall.dao.entity.OrderEntity;
+import net.kaaass.kmall.dao.repository.CartRepository;
 import net.kaaass.kmall.dao.repository.CommentRepository;
 import net.kaaass.kmall.dao.repository.OrderRepository;
+import net.kaaass.kmall.dao.repository.ProductRepository;
 import net.kaaass.kmall.dto.OrderDto;
 import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.ForbiddenException;
@@ -54,6 +56,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
+
     @Override
     public OrderEntity getEntityById(String id) throws NotFoundException {
         return orderRepository.findById(id)
@@ -70,8 +78,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean checkRequest(String requestId) {
-        return orderRepository.existsByRequestId(requestId);
+    public boolean checkRequest(String requestId) throws BadRequestException {
+        var exist = orderRepository.existsByRequestId(requestId);
+        if (exist) {
+            var entity = orderRepository.findByRequestId(requestId);
+            entity.filter(orderEntity -> orderEntity.getType() != OrderType.ERROR)
+                    .orElseThrow(() -> new BadRequestException("订单创建错误，请检查商品库存！"));
+        }
+        return exist;
     }
 
     @Override
@@ -122,23 +136,50 @@ public class OrderServiceImpl implements OrderService {
         /*
          打折逻辑
          */
-        // 拼接上下文
-        var promoteContext = orderPromoteContextFactory.buildFromRequestContext(context);
-        log.debug("请求上下文：{}", promoteContext);
-        // 打折处理
-        var promoteResult = promoteManager.doOnOrder(promoteContext);
-        log.debug("打折结果：{}", promoteResult);
-        // 处理返回
-        entity.setPrice(promoteResult.getPrice());
-        entity.setMailPrice(promoteResult.getMailPrice());
-        entity.setProducts(promoteResult.getProducts()
-                            .stream()
-                            .map(OrderMapper.INSTANCE::orderItemDtoToEntity)
-                            .peek(orderItemEntity -> orderItemEntity.setUid(context.getUid()))
-                            .peek(orderItemEntity -> orderItemEntity.setOrder(entity))
-                            .collect(Collectors.toList()));
+        try {
+            // 拼接上下文
+            var promoteContext = orderPromoteContextFactory.buildFromRequestContext(context);
+            log.debug("请求上下文：{}", promoteContext);
+            // 检查购买限制
+            for (var promoteItem : promoteContext.getProducts()) {
+                var buyLimit = promoteItem.getProduct().getBuyLimit();
+                if (buyLimit > 0 && promoteItem.getCount() > buyLimit) {
+                    throw new BadRequestException(String.format("本商品限购%d件！", buyLimit));
+                }
+            }
+            // 打折处理
+            var promoteResult = promoteManager.doOnOrder(promoteContext);
+            log.debug("打折结果：{}", promoteResult);
+            // 处理返回
+            entity.setPrice(promoteResult.getPrice());
+            entity.setMailPrice(promoteResult.getMailPrice());
+            entity.setProducts(promoteResult.getProducts()
+                    .stream()
+                    .map(OrderMapper.INSTANCE::orderItemDtoToEntity)
+                    .peek(orderItemEntity -> orderItemEntity.setUid(context.getUid()))
+                    .peek(orderItemEntity -> orderItemEntity.setOrder(entity))
+                    .collect(Collectors.toList()));
+            // 检查库存数量
+            for (var orderItemEntity : entity.getProducts()) {
+                var product = orderItemEntity.getProduct();
+                var dest = product.getStorage().getRest() - orderItemEntity.getCount();
+                if (dest >= 0) {
+                    product.getStorage().setRest(dest);
+                    productRepository.save(product);
+                } else {
+                    throw new BadRequestException("本商品库存不足！");
+                }
+            }
+        } catch (BadRequestException e) {
+            entity.setType(OrderType.ERROR);
+        }
         orderRepository.save(entity);
-        // TODO 删除购物车中已有的商品
+        /*
+          删除购物车中已有的商品
+        */
+        for (var cartItem : context.getRequest().getCartItems()) {
+            cartRepository.deleteById(cartItem.getId());
+        }
     }
 
     @Override

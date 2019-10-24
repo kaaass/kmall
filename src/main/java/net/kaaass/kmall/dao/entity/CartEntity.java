@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-@Table(name = "category")
+@Table(name = "cart")
 public class CartEntity {
 
     @Id

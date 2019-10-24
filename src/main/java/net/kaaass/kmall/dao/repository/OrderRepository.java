@@ -12,6 +12,8 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
 
     boolean existsByRequestId(String requestId);
 
+    Optional<OrderEntity> findByRequestId(String requestId);
+
     List<OrderEntity> findAllByUidOrderByCreateTimeDesc(String uid, Pageable pageable);
 
     Optional<OrderEntity> findFirstByCreateTimeBetweenOrderByCreateTimeDesc(Timestamp start, Timestamp end);
