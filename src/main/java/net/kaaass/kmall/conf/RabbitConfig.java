@@ -1,6 +1,10 @@
 package net.kaaass.kmall.conf;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -35,7 +39,7 @@ public class RabbitConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        var connectionFactory = new CachingConnectionFactory(host,port);
+        var connectionFactory = new CachingConnectionFactory(host, port);
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
         connectionFactory.setVirtualHost("/");
@@ -47,5 +51,20 @@ public class RabbitConfig {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public RabbitTemplate rabbitTemplate() {
         return new RabbitTemplate(connectionFactory());
+    }
+
+    @Bean
+    public DirectExchange orderExchange() {
+        return new DirectExchange(EXCHANGE_ORDER);
+    }
+
+    @Bean
+    public Queue queueOrder() {
+        return new Queue(QUEUE_ORDER, true);
+    }
+
+    @Bean
+    public Binding bindingOrder() {
+        return BindingBuilder.bind(queueOrder()).to(orderExchange()).with(ROUTING_KEY_ORDER);
     }
 }

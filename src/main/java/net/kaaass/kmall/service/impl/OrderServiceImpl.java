@@ -24,6 +24,7 @@ import net.kaaass.kmall.service.OrderRequestContext;
 import net.kaaass.kmall.service.OrderService;
 import net.kaaass.kmall.service.OrderType;
 import net.kaaass.kmall.service.UserService;
+import net.kaaass.kmall.service.mq.OrderMessageProducer;
 import net.kaaass.kmall.util.Constants;
 import net.kaaass.kmall.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private OrderMessageProducer orderMessageProducer;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public OrderEntity getEntityById(String id) throws NotFoundException {
@@ -111,16 +118,15 @@ public class OrderServiceImpl implements OrderService {
         var result = new OrderRequestResponse();
         result.setRequestId(requestId);
         // 准备上下文
-        var mapper = new ObjectMapper();
         String message = null;
         try {
-            message = mapper.writeValueAsString(context);
+            message = this.objectMapper.writeValueAsString(context);
         } catch (JsonProcessingException e) {
             log.warn("序列化错误", e);
             throw new InternalErrorExeption(null, e);
         }
         log.debug("序列化后的订单请求：{}", message);
-        this.doCreate(context); // TODO 更改为消息队列
+        this.orderMessageProducer.sendMessage(requestId, message);
         return result;
     }
 
