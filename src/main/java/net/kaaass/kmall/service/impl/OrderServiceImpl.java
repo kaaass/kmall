@@ -3,6 +3,7 @@ package net.kaaass.kmall.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import net.kaaass.kmall.KmallApplication;
 import net.kaaass.kmall.controller.request.CommentRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
@@ -13,6 +14,9 @@ import net.kaaass.kmall.dao.repository.CommentRepository;
 import net.kaaass.kmall.dao.repository.OrderRepository;
 import net.kaaass.kmall.dao.repository.ProductRepository;
 import net.kaaass.kmall.dto.OrderDto;
+import net.kaaass.kmall.event.AfterOrderPromoteEvent;
+import net.kaaass.kmall.event.GotOrderContextEvent;
+import net.kaaass.kmall.event.PostOrderContextEvent;
 import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.ForbiddenException;
 import net.kaaass.kmall.exception.InternalErrorExeption;
@@ -29,6 +33,7 @@ import net.kaaass.kmall.util.Constants;
 import net.kaaass.kmall.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -120,6 +125,8 @@ public class OrderServiceImpl implements OrderService {
         context.setRequestId(requestId);
         var result = new OrderRequestResponse();
         result.setRequestId(requestId);
+        // 触发事件
+        KmallApplication.EVENT_BUS.post(new PostOrderContextEvent(uid, context));
         // 准备上下文
         String message = null;
         try {
@@ -146,6 +153,11 @@ public class OrderServiceImpl implements OrderService {
          打折逻辑
          */
         try {
+            // 触发事件
+            var cancel = KmallApplication.EVENT_BUS.post(new GotOrderContextEvent(context));
+            if (cancel) {
+                throw new BadRequestException("订单处理被取消！");
+            }
             // 拼接上下文
             var promoteContext = orderPromoteContextFactory.buildFromRequestContext(context);
             log.debug("请求上下文：{}", promoteContext);
@@ -162,6 +174,11 @@ public class OrderServiceImpl implements OrderService {
             // 打折处理
             var promoteResult = promoteManager.doOnOrder(promoteContext);
             log.debug("打折结果：{}", promoteResult);
+            // 触发事件
+            cancel = KmallApplication.EVENT_BUS.post(new AfterOrderPromoteEvent(promoteResult));
+            if (cancel) {
+                throw new BadRequestException("订单处理被取消！");
+            }
             // 处理返回
             entity.setPrice(promoteResult.getPrice());
             entity.setMailPrice(promoteResult.getMailPrice());
