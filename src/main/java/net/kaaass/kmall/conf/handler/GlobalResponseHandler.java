@@ -72,6 +72,10 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler({Exception.class})
     public <T> GlobalResponse<T> handleException(Exception e) {
         log.error("发生未知异常", e);
+        var cause = e.getCause();
+        if (cause != null && BaseException.class.isAssignableFrom(cause.getClass())) {
+            return (GlobalResponse<T>) handleBaseException((BaseException) cause).getBody();
+        }
         // 不应该暴露栈信息给Rest接口
         return GlobalResponse.fail(StatusEnum.INTERNAL_ERROR, e.getMessage());
     }
