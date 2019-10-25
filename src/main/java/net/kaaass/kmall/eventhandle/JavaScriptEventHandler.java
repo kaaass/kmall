@@ -26,7 +26,6 @@ public class JavaScriptEventHandler implements IEventListener {
         evaluator.setLanguage(Constants.SCRIPT_TYPE_JAVASCRIPT);
         var arguments = new HashMap<String, Object>();
         arguments.put("event", event);
-        log.debug("事件脚本前 {}", event);
         // 执行脚本
         Object result = null;
         try {
@@ -37,7 +36,6 @@ public class JavaScriptEventHandler implements IEventListener {
         if (result == null) {
             return;
         }
-        log.debug("事件脚本执行成功 {}", result);
         // 结果赋值
         try {
             Field[] fields = event.getClass().getFields();
