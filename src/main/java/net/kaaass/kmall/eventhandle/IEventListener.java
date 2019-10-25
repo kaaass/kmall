@@ -6,5 +6,5 @@ package net.kaaass.kmall.eventhandle;
  * @author cpw
  */
 public interface IEventListener {
-    public void invoke(Event event);
+    void invoke(Event event);
 }

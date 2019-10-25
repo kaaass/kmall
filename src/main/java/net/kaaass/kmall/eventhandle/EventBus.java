@@ -18,6 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EventBus implements IEventExceptionHandler {
     private static int maxID = 0;
 
+    /**
+     * 维护处理类与若干子事件的映射
+     */
     private ConcurrentHashMap<Object, ArrayList<IEventListener>> listeners = new ConcurrentHashMap<>();
     private final int busID = maxID++;
     private IEventExceptionHandler exceptionHandler;
@@ -68,6 +71,13 @@ public class EventBus implements IEventExceptionHandler {
         }
     }
 
+    /**
+     * Java语言事件注册
+     *
+     * @param eventType 事件类
+     * @param target    事件处理器目标类
+     * @param method    目标方法
+     */
     private void register(Class<?> eventType, Object target, Method method) {
         try {
             Constructor<?> ctr = eventType.getConstructor();
@@ -83,6 +93,18 @@ public class EventBus implements IEventExceptionHandler {
         }
     }
 
+    public void register(String eventClass, EventPriority priority, String codeStr) {
+        try {
+            Constructor<?> ctr = Class.forName(eventClass).getConstructor();
+            ctr.setAccessible(true);
+            Event event = (Event) ctr.newInstance();
+            JavaScriptEventHandler listener = new JavaScriptEventHandler(codeStr);
+            event.getListenerList().register(busID, priority, listener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void unregister(Object object) {
         ArrayList<IEventListener> list = listeners.remove(object);
         if (list == null)
@@ -93,6 +115,7 @@ public class EventBus implements IEventExceptionHandler {
     }
 
     public boolean post(Event event) {
+        log.debug("触发事件：{}", event.getClass().getName());
         IEventListener[] listeners = event.getListenerList().getListeners(busID);
         int index = 0;
         try {

@@ -20,7 +20,6 @@ public class ASMEventHandler implements IEventListener {
     private static final String HANDLER_FUNC_DESC = Type.getMethodDescriptor(IEventListener.class.getDeclaredMethods()[0]);
     private static final ASMClassLoader LOADER = new ASMClassLoader();
     private static final HashMap<Method, Class<?>> cache = new HashMap<>();
-    private static final boolean GETCONTEXT = Boolean.parseBoolean(System.getProperty("fml.LogContext", "false"));
 
     private final IEventListener handler;
     private final SubscribeEvent subInfo;

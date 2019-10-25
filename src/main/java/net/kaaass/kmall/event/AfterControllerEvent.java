@@ -3,6 +3,7 @@ package net.kaaass.kmall.event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import net.kaaass.kmall.eventhandle.Event;
 import org.aspectj.lang.JoinPoint;
 
@@ -12,6 +13,7 @@ import org.aspectj.lang.JoinPoint;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class AfterControllerEvent extends Event {
 
     private Object[] args;
