@@ -22,6 +22,11 @@ public class EventBus implements IEventExceptionHandler {
      * 维护处理类与若干子事件的映射
      */
     private ConcurrentHashMap<Object, ArrayList<IEventListener>> listeners = new ConcurrentHashMap<>();
+
+    /**
+     * 维护插件事件监听映射
+     */
+    private ConcurrentHashMap<Object, ArrayList<IEventListener>> pluginListeners = new ConcurrentHashMap<>();
     private final int busID = maxID++;
     private IEventExceptionHandler exceptionHandler;
 
@@ -93,15 +98,27 @@ public class EventBus implements IEventExceptionHandler {
         }
     }
 
-    public void register(String eventClass, EventPriority priority, String codeStr) {
+    public void register(String pluginId, String eventClass, EventPriority priority, String codeStr) {
         try {
             Constructor<?> ctr = Class.forName(eventClass).getConstructor();
             ctr.setAccessible(true);
             Event event = (Event) ctr.newInstance();
             JavaScriptEventHandler listener = new JavaScriptEventHandler(codeStr);
             event.getListenerList().register(busID, priority, listener);
+
+            var others = pluginListeners.computeIfAbsent(pluginId, k -> new ArrayList<>());
+            others.add(listener);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void unregister(String pluginId) {
+        var list = pluginListeners.remove(pluginId);
+        if (list == null)
+            return;
+        for (var listener : list) {
+            ListenerList.unregisterAll(busID, listener);
         }
     }
 

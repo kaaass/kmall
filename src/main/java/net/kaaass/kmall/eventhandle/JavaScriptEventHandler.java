@@ -36,6 +36,7 @@ public class JavaScriptEventHandler implements IEventListener {
         if (result == null) {
             return;
         }
+        log.debug("代码执行成功 {}", result);
         // 结果赋值
         try {
             Field[] fields = event.getClass().getFields();

@@ -20,4 +20,6 @@ public class Constants {
     public static final String KEY_DETAIL = "detail";
 
     public static final String SCRIPT_TYPE_JAVASCRIPT = "javascript";
+
+    public static final String PLUGIN_PATH_CONFIG = "config.json";
 }
