@@ -40,6 +40,10 @@ public class ProductEntity {
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
+    @Column(name = "index_order",
+            columnDefinition = "INT DEFAULT -1")
+    private int indexOrder = -1;
+
     // TODO 添加belongTo字段，以实现商品选择不同颜色种类
 
     @OneToOne(targetEntity = ProductStorageEntity.class,

@@ -139,6 +139,14 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductDto> getIndexItems() {
+        return productRepository.findAllByIndexOrderGreaterThanEqualOrderByIndexOrderDescCreateTimeDesc(0)
+                .stream()
+                .map(ProductMapper.INSTANCE::productEntityToDto)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 通过分类获得商品
      * @param categoryId

@@ -22,6 +22,8 @@ public class ProductDto {
 
     private CategoryDto category;
 
+    private int indexOrder;
+
     private ProductStorageDto storage;
 
     @JsonSerialize(using = DateToLongSerializer.class)
