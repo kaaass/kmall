@@ -45,7 +45,9 @@ public class AccessLoggerAspect {
         // 调用
         Object data = proceedingJoinPoint.proceed();
         // 请求处理后
-        KmallApplication.EVENT_BUS.post(new AfterControllerEvent(args, staticPart, data));
+        var event = new AfterControllerEvent(args, staticPart, data);
+        KmallApplication.EVENT_BUS.post(event);
+        data = event.getControllerResult();
         return data;
     }
 }

@@ -126,7 +126,9 @@ public class OrderServiceImpl implements OrderService {
         var result = new OrderRequestResponse();
         result.setRequestId(requestId);
         // 触发事件
-        KmallApplication.EVENT_BUS.post(new PostOrderContextEvent(uid, context));
+        var event = new PostOrderContextEvent(uid, context);
+        KmallApplication.EVENT_BUS.post(event);
+        context = event.getContext();
         // 准备上下文
         String message = null;
         try {
@@ -154,7 +156,9 @@ public class OrderServiceImpl implements OrderService {
          */
         try {
             // 触发事件
-            var cancel = KmallApplication.EVENT_BUS.post(new GotOrderContextEvent(context));
+            var event = new GotOrderContextEvent(context);
+            var cancel = KmallApplication.EVENT_BUS.post(event);
+            context = event.getContext();
             if (cancel) {
                 throw new BadRequestException("订单处理被取消！");
             }
@@ -175,17 +179,20 @@ public class OrderServiceImpl implements OrderService {
             var promoteResult = promoteManager.doOnOrder(promoteContext);
             log.debug("打折结果：{}", promoteResult);
             // 触发事件
-            cancel = KmallApplication.EVENT_BUS.post(new AfterOrderPromoteEvent(promoteResult));
+            var promoteEvent = new AfterOrderPromoteEvent(promoteResult);
+            cancel = KmallApplication.EVENT_BUS.post(event);
+            promoteResult = promoteEvent.getPromoteResult();
             if (cancel) {
                 throw new BadRequestException("订单处理被取消！");
             }
             // 处理返回
             entity.setPrice(promoteResult.getPrice());
             entity.setMailPrice(promoteResult.getMailPrice());
+            OrderRequestContext finalContext = context;
             entity.setProducts(promoteResult.getProducts()
                     .stream()
                     .map(OrderMapper.INSTANCE::orderItemDtoToEntity)
-                    .peek(orderItemEntity -> orderItemEntity.setUid(context.getUid()))
+                    .peek(orderItemEntity -> orderItemEntity.setUid(finalContext.getUid()))
                     .peek(orderItemEntity -> orderItemEntity.setOrder(entity))
                     .collect(Collectors.toList()));
             // 检查库存数量

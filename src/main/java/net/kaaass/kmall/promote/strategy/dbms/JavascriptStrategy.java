@@ -58,10 +58,12 @@ public class JavascriptStrategy extends BaseDbmsPromoteStrategy<OrderPromoteCont
         StandardScriptEvaluator evaluator = new StandardScriptEvaluator();
         evaluator.setLanguage(Constants.SCRIPT_TYPE_JAVASCRIPT);
         var arguments = new HashMap<String, Object>();
-        arguments.put("context", context);
         // 触发事件获得附加参数
         var event = new BeforeScriptStrategyExecuteEvent(context, getPromoteInfo(), this.param, null);
         KmallApplication.EVENT_BUS.post(event);
+        context = event.getContext();
+        this.param = event.getParam();
+        arguments.put("context", context);
         arguments.put("extraInfo", event.getExtraInfo());
         // 执行脚本
         Object result = null;
