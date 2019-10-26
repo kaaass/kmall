@@ -28,4 +28,6 @@ public interface ProductService {
     List<ProductDto> getAllByCategory(String categoryId, Pageable pageable) throws NotFoundException;
 
     List<CommentVo> getComments(String id, Pageable pageable);
+
+    List<ProductDto> search(String keyword, Pageable pageable);
 }

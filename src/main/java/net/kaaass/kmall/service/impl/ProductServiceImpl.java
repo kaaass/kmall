@@ -1,7 +1,6 @@
 package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.ProductStorageEntity;
@@ -169,6 +168,18 @@ public class ProductServiceImpl implements ProductService {
         return commentRepository.findAllByProductIdOrderByRateDescCommentTimeDesc(id, pageable)
                 .stream()
                 .map(UserMapper.INSTANCE::commentEntityToVo)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDto> search(String keyword, Pageable pageable) {
+        var searchStr = Arrays.stream(keyword.split(" "))
+                            .map(s -> "%" + s + "%")
+                            .collect(Collectors.joining(" "));
+        log.debug("字符串查找关键词 {}", searchStr);
+        return productRepository.findAllByNameIsLikeOrderByIndexOrderDescCreateTimeDesc(searchStr, pageable)
+                .stream()
+                .map(ProductMapper.INSTANCE::productEntityToDto)
                 .collect(Collectors.toList());
     }
 

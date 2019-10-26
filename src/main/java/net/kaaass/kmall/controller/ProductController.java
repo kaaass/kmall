@@ -8,6 +8,7 @@ import net.kaaass.kmall.service.ProductService;
 import net.kaaass.kmall.vo.CommentVo;
 import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,11 @@ public class ProductController extends BaseController {
     @GetMapping("/index/")
     public List<ProductDto> getIndexItems() {
         return productService.getIndexItems();
+    }
+
+    @GetMapping("/search/")
+    public List<ProductDto> search(@RequestParam String keyword, Pageable pageable) {
+        return productService.search(keyword, pageable);
     }
 
     @GetMapping("/category/{categoryId}/")
