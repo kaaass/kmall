@@ -1,0 +1,116 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>个人中心 - KMall</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://v4.bootcss.com/docs/4.3/dist/css/bootstrap.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="https://v4.bootcss.com/docs/4.3/examples/album/album.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/">KMall</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/my/">个人中心 <span class="sr-only">(当前)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/cart.html">购物车</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/order.html">所有订单</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/settings.html">设置</a>
+                </li>
+            </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <ul class="navbar-nav mr-auto" id="my-dropdown">
+                    <li class="dropdown">
+                        <a id="name" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">KAAAsS</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMy">
+                            <a class="dropdown-item" href="/my/index.html">个人中心</a>
+                            <a class="dropdown-item" href="/my/cart.html">购物车</a>
+                            <a class="dropdown-item" href="/auth/exit.html">退出登录</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main role="main">
+
+    <div class="container py-5 mt-4">
+
+        <div class="d-flex align-items-center p-3 my-3 border rounded shadow-sm">
+            <img class="mr-3" src="https://static.kaaass.net/wp-content/uploads/2016/02/admin-300x300.jpg" alt="用户头像" width="48" height="48">
+            <div class="lh-100">
+                <h6 class="mb-0 lh-100">123123</h6>
+                <small>别来无恙！</small>
+            </div>
+        </div>
+
+        <div class="row no-gutters flex-md-row mb-3 h-md-250 position-relative">
+            <div class="col bg-white p-3 mr-2 d-flex flex-column border rounded overflow-hidden shadow-sm">
+                <h3 class="mb-0 text-center">1</h3>
+                <small class="d-inline-block text-secondary text-center">待付款</small>
+                <a class="stretched-link" href="/my/order.html?type=0"></a>
+            </div>
+            <div class="col bg-white p-3 ml-2 mr-2 d-flex flex-column border rounded overflow-hidden shadow-sm">
+                <h3 class="mb-0 text-center">0</h3>
+                <small class="d-inline-block text-secondary text-center">待发货</small>
+                <a class="stretched-link" href="/my/order.html?type=1"></a>
+            </div>
+            <div class="col bg-white p-3 ml-2 d-flex flex-column border rounded overflow-hidden shadow-sm">
+                <h3 class="mb-0 text-center">1</h3>
+                <small class="d-inline-block text-secondary text-center">待评价</small>
+                <a class="stretched-link" href="/my/order.html?type=2"></a>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">返回顶部</a>
+        </p>
+        <p>KMall 商城</p>
+        <p>Powered By SpringBoot + Bootstrap v4</p>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://v4.bootcss.com/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="https://v4.bootcss.com/docs/4.3/dist/js/bootstrap.bundle.js"></script></body>
+</html>

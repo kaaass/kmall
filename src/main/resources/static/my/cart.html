@@ -1,0 +1,195 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>购物车 - KMall</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://v4.bootcss.com/docs/4.3/dist/css/bootstrap.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="https://v4.bootcss.com/docs/4.3/examples/album/album.css" rel="stylesheet">
+    <link href="../css/spinner.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/">KMall</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/">个人中心</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/my/cart.html">购物车 <span class="sr-only">(当前)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/order.html">所有订单</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/settings.html">设置</a>
+                </li>
+            </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <ul class="navbar-nav mr-auto" id="my-dropdown">
+                    <li class="dropdown">
+                        <a id="name" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">KAAAsS</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMy">
+                            <a class="dropdown-item" href="/my/index.html">个人中心</a>
+                            <a class="dropdown-item" href="/my/cart.html">购物车</a>
+                            <a class="dropdown-item" href="/auth/exit.html">退出登录</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main role="main" class="py-5 mt-3">
+
+    <div class="container pt-4 py-3">
+        <div class="row m-1">
+            <h2>购物车</h2>
+        </div>
+        <div class="row text-secondary ml-1">
+            <small>请确认选择正确的商品！</small>
+        </div>
+    </div>
+
+    <div class="container py-2">
+
+        <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row py-2 mb-3 shadow-sm h-md-250 position-relative">
+            <div class="col-2 d-flex flex-column position-static">
+                <div class="container my-auto pl-4">
+                    <input class="form-check-input" type="checkbox" value="" id="select-all">
+                    <label for="select-all" class="my-auto"><small>全选</small></label>
+                </div>
+            </div>
+
+            <div class="col-6 d-flex flex-column position-static">
+                <small class="my-auto">商品名称</small>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <small class="my-auto">单价</small>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <small class="my-auto">数量</small>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <small class="my-auto">总价</small>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <small class="my-auto">操作</small>
+            </div>
+        </div>
+
+        <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+            <div class="col-2 d-flex flex-column position-static">
+                <div class="container my-auto pl-4 py-4">
+                    <input class="form-check-input" type="checkbox" value="" id="select01">
+                    <label for="select01" class="my-auto">
+                        <img class="border rounded overflow-hidden" width="80" height="80" src="https://img.alicdn.com/imgextra/i1/1683498550/O1CN01bAixrJ2D1wuSUL5kh_!!0-item_pic.jpg_430x430q90.jpg" alt="商品描述">
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-4 d-flex flex-column position-static">
+                <small class="my-auto">华为原装M-Pen lite手写笔M5青春版M6平板电脑matebooke触控电容</small>
+            </div>
+
+            <div class="col-2 d-flex flex-column position-static">
+                <div class="container p-2 my-auto overflow-hidden">
+                    <span class="badge badge-pill badge-success">家电3C全场满999减39</span>
+                    <span class="badge badge-pill badge-danger">测试打折</span>
+                    <span class="badge badge-pill badge-warning">商品折扣</span>
+                    <span class="badge badge-pill badge-info">商品包邮</span>
+                </div>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <small class="my-auto"><b>¥ 999.99</b></small>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <div class="input-group spinner my-auto" style="width: 60%">
+                    <input type="text" class="form-control" value="3">
+                    <div class="input-group-btn-vertical">
+                        <button class="btn btn-outline-secondary" type="button"><i class="fa fa-caret-up"></i></button>
+                        <button class="btn btn-outline-secondary" type="button"><i class="fa fa-caret-down"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <small class="my-auto text-danger"><b>¥ 999.99</b></small>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <button class="my-auto btn btn-link"><small>删除</small></button>
+            </div>
+        </div>
+
+        <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+            <div class="col-6 d-flex flex-column position-static">
+                <!--Place holder-->
+            </div>
+
+            <div class="col-2 d-flex flex-column position-static">
+                <small class="my-auto">已选择商品 <b>3</b> 件</small>
+            </div>
+
+            <div class="col-3 d-flex flex-column position-static">
+                <small class="my-auto text-danger">合计（不含运费）：<b>¥ 999.99</b></small>
+            </div>
+
+            <div class="col d-flex flex-column position-static">
+                <button class="my-auto btn btn-danger text-white"><small>结算</small></button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">返回顶部</a>
+        </p>
+        <p>KMall 商城</p>
+        <p>Powered By SpringBoot + Bootstrap v4</p>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://v4.bootcss.com/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="https://v4.bootcss.com/docs/4.3/dist/js/bootstrap.bundle.js"></script></body>
+<script src="../js/spinner.js"></script>
+</html>
