@@ -1,0 +1,128 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>付款 - KMall</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://v4.bootcss.com/docs/4.3/dist/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://v4.bootcss.com/docs/4.3/examples/album/album.css" rel="stylesheet">
+    <link href="../css/spinner.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/">KMall</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/">个人中心</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/my/cart.html">购物车 <span class="sr-only">(当前)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/order.html">所有订单</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my/settings.html">设置</a>
+                </li>
+            </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <ul class="navbar-nav mr-auto" id="my-dropdown">
+                    <li class="dropdown">
+                        <a id="name" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">KAAAsS</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMy">
+                            <a class="dropdown-item" href="/my/index.html">个人中心</a>
+                            <a class="dropdown-item" href="/my/cart.html">购物车</a>
+                            <a class="dropdown-item" href="/auth/exit.html">退出登录</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main role="main" class="py-5 mt-3">
+
+    <div class="container pt-4 py-3">
+        <div class="row m-1">
+            <h2>付款</h2>
+        </div>
+        <div class="row text-secondary ml-1">
+            <small>请选择支付方式并继续</small>
+        </div>
+    </div>
+
+    <div class="container py-2">
+        <div class="row m-1">
+            <h5>选择支付方式</h5>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row ml-2">
+            <div class="border-success col-3 bg-white p-3 mx-2 d-flex flex-column border rounded overflow-hidden shadow-sm">
+                <img src="../img/alipay.jpeg" width="200" height="112" style="width: 100%" alt="支付宝">
+                <a href="#" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container pt-4">
+        <div class="row ml-2">
+            <h5>确认付款信息</h5>
+        </div>
+    </div>
+
+    <div class="container py-2">
+
+        <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 p-3 shadow-sm h-md-250 position-relative">
+            <div class="container">
+                <p>订单号：111121321321</p>
+                <p class="my-auto text-danger">实付款：<b>¥ 999.99</b></p>
+            </div>
+        </div>
+
+        <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+            <div class="col-8 d-flex flex-column position-static">
+                <!--Place holder-->
+            </div>
+
+            <div class="col-2 d-flex flex-column position-static">
+                <small class="my-auto text-secondary">请仔细检查商品价格</small>
+            </div>
+
+            <div class="col-2 d-flex flex-column position-static">
+                <button class="my-auto btn btn-danger text-white">付 款</button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">返回顶部</a>
+        </p>
+        <p>KMall 商城</p>
+        <p>Powered By SpringBoot + Bootstrap v4</p>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://v4.bootcss.com/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="https://v4.bootcss.com/docs/4.3/dist/js/bootstrap.bundle.js"></script></body>
+<script src="../js/spinner.js"></script>
+</html>
