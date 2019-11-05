@@ -46,7 +46,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
     @ExceptionHandler({BaseException.class})
     public <T> ResponseEntity<GlobalResponse<T>> handleBaseException(BaseException e) {
         log.info("发生异常", e); // 部分问题用exception丢出，较为常见
-        return new ResponseEntity<>(GlobalResponse.fail(e.getStatus(), e.getMessage()), e.getStatus().toHttpStatus());
+        return new ResponseEntity<>(GlobalResponse.fail(e.getStatus(), e.getMessage()), HttpStatus.OK);
     }
 
     @ResponseBody
