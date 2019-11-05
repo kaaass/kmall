@@ -22,7 +22,7 @@ jQuery(($) => {
             storage.removeItem(KEY_AUTH);
             jumpTo("/auth/login.html", 3000);
         }
-        return data;
+        return json;
     };
 
     // 导航栏变更

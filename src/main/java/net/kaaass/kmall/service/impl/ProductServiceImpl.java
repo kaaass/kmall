@@ -192,6 +192,7 @@ public class ProductServiceImpl implements ProductService {
         Timestamp start = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.MIDNIGHT));
         Timestamp end = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
         log.debug("查询与日期 {} 与 {} 之间", start, end);
-        return orderItemRepository.sumCountByIdBetween(productEntity, start, end);
+        return orderItemRepository.sumCountByIdBetween(productEntity, start, end)
+                .orElse(0);
     }
 }
