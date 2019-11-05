@@ -44,14 +44,14 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 
     @ResponseBody
     @ExceptionHandler({BaseException.class})
-    public <T> ResponseEntity<GlobalResponse<T>> handleBaseException(BaseException e) {
+    public <T> GlobalResponse<T> handleBaseException(BaseException e) {
         log.info("发生异常", e); // 部分问题用exception丢出，较为常见
-        return new ResponseEntity<>(GlobalResponse.fail(e.getStatus(), e.getMessage()), HttpStatus.OK);
+        return GlobalResponse.fail(e.getStatus(), e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestParameterException.class})
-    public <T> ResponseEntity<GlobalResponse<T>> handleBadRequestException(Exception e) {
+    public <T> GlobalResponse<T> handleBadRequestException(Exception e) {
         log.info("请求格式错误", e);
         String message = e.getMessage();
         if (e instanceof HttpMessageNotReadableException) {
@@ -62,7 +62,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 
     @ResponseBody
     @ExceptionHandler({AccessDeniedException.class})
-    public <T> ResponseEntity<GlobalResponse<T>> handleAccessDeniedException(AccessDeniedException e) {
+    public <T> GlobalResponse<T> handleAccessDeniedException(AccessDeniedException e) {
         log.info("访问未登录", e);
         return handleBaseException(new ForbiddenException(null)); // e.getMessage()不够友好
     }
@@ -74,7 +74,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
         log.error("发生未知异常", e);
         var cause = e.getCause();
         if (cause != null && BaseException.class.isAssignableFrom(cause.getClass())) {
-            return (GlobalResponse<T>) handleBaseException((BaseException) cause).getBody();
+            return handleBaseException((BaseException) cause);
         }
         // 不应该暴露栈信息给Rest接口
         return GlobalResponse.fail(StatusEnum.INTERNAL_ERROR, e.getMessage());
