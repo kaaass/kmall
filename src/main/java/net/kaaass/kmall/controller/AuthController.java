@@ -1,5 +1,6 @@
 package net.kaaass.kmall.controller;
 
+import net.kaaass.kmall.controller.response.LoginResponse;
 import net.kaaass.kmall.vo.UserAuthVo;
 import net.kaaass.kmall.dto.AuthTokenDto;
 import net.kaaass.kmall.dto.UserAuthDto;
@@ -23,7 +24,7 @@ public class AuthController extends BaseController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public AuthTokenDto createAuthenticationToken(
+    public LoginResponse createAuthenticationToken(
             @RequestParam String phone, @RequestParam String password) throws BadRequestException {
         // TODO 检查输入
         return authService.login(phone, password)

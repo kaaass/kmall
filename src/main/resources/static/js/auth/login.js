@@ -1,5 +1,6 @@
 jQuery(($) => {
     const KEY_AUTH = 'AUTH';
+    const KEY_NAME = 'NAME';
     let storage = window.localStorage;
     let $btn = $('[type=submit]'),
         $phone = $('[name=phone]'),
@@ -66,7 +67,8 @@ jQuery(($) => {
                     return;
                 }
                 // 保存登录凭据
-                storage.setItem(KEY_AUTH, data.data.token);
+                storage.setItem(KEY_AUTH, data.data.authToken.token);
+                storage.setItem(KEY_NAME, data.data.phone);
                 success("登录成功！正在跳转至首页");
                 jumpTo("/index.html");
             })

@@ -1,5 +1,6 @@
 package net.kaaass.kmall.service;
 
+import net.kaaass.kmall.controller.response.LoginResponse;
 import net.kaaass.kmall.dto.AuthTokenDto;
 import net.kaaass.kmall.dto.UserAuthDto;
 
@@ -19,7 +20,7 @@ public interface AuthService {
      * @param password
      * @return
      */
-    Optional<AuthTokenDto> login(String phone, String password);
+    Optional<LoginResponse> login(String phone, String password);
 
     /**
      * 令牌刷新

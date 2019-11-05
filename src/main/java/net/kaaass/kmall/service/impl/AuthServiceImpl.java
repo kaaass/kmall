@@ -2,6 +2,7 @@ package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.KmallApplication;
+import net.kaaass.kmall.controller.response.LoginResponse;
 import net.kaaass.kmall.dao.entity.UserAuthEntity;
 import net.kaaass.kmall.dao.entity.UserInfoEntity;
 import net.kaaass.kmall.dao.repository.UserAuthRepository;
@@ -74,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Optional<AuthTokenDto> login(String phone, String password) {
+    public Optional<LoginResponse> login(String phone, String password) {
         try {
             var uid = authRepository.findByPhone(phone)
                     .map(UserAuthEntity::getId)
@@ -94,7 +95,8 @@ public class AuthServiceImpl implements AuthService {
 
             // 拼接凭据
             return Optional.of(userDetails)
-                    .map(jwtUser -> jwtTokenUtil.generateToken(jwtUser));
+                    .map(jwtUser -> jwtTokenUtil.generateToken(jwtUser))
+                    .map(authTokenDto -> new LoginResponse(authTokenDto, phone));
         } catch (AuthenticationException e) {
             log.info("登录失败", e);
             return Optional.empty();
