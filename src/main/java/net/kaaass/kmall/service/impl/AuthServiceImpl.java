@@ -1,12 +1,14 @@
 package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import net.kaaass.kmall.KmallApplication;
 import net.kaaass.kmall.dao.entity.UserAuthEntity;
 import net.kaaass.kmall.dao.entity.UserInfoEntity;
 import net.kaaass.kmall.dao.repository.UserAuthRepository;
 import net.kaaass.kmall.dao.repository.UserInfoRepository;
 import net.kaaass.kmall.dto.AuthTokenDto;
 import net.kaaass.kmall.dto.UserAuthDto;
+import net.kaaass.kmall.event.UserRegisterEvent;
 import net.kaaass.kmall.security.JwtTokenUtil;
 import net.kaaass.kmall.service.AuthService;
 import net.kaaass.kmall.util.Constants;
@@ -62,11 +64,12 @@ public class AuthServiceImpl implements AuthService {
         UserInfoEntity infoEntity = new UserInfoEntity();
         infoEntity.setAuth(authEntity);
         infoRepository.save(infoEntity);
-        // TODO 增加其他用户相关信息
         // 拼接结果
         UserAuthDto result = new UserAuthDto();
         result.setId(authEntity.getId());
         result.setPhone(authEntity.getPhone());
+        // 触发事件
+        KmallApplication.EVENT_BUS.post(new UserRegisterEvent(result));
         return Optional.of(result);
     }
 
