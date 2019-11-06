@@ -1,45 +1,103 @@
 /**
  * 常用函数
  */
-define(['jquery', 'handlebars', 'bootstrap'], function ($, Handlebars, _) {
+define([
+        'jquery',
+        'handlebars',
+        'axios',
+        'module/constants',
+        'bootstrap'],
+    function ($, Handlebars, axios, constants, _) {
 
-    /**
-     * 弹出模态框
-     * @param title
-     * @param body
-     */
-    let modal = (title, body) => {
-        $('#msgModalTitle').html(title);
-        $('#msgModalBody').html(body);
-        $('#msgModal').modal('show');
-    };
+        /**
+         * 弹出模态框
+         * @param title
+         * @param body
+         */
+        let modal = (title, body) => {
+            $('#msgModalTitle').html(title);
+            $('#msgModalBody').html(body);
+            $('#msgModal').modal('show');
+        };
 
-    /**
-     * 渲染模板
-     * @param $el
-     * @param renderStr
-     * @param data
-     */
-    let render = ($el, renderStr, data) => {
-        var template = Handlebars.compile(renderStr);
-        var result = template(data);
-        $el.html(result);
-    };
+        /**
+         * 渲染模板
+         * @param $el
+         * @param renderStr
+         * @param data
+         */
+        let render = ($el, renderStr, data) => {
+            let template = Handlebars.compile(renderStr);
+            let result = template(data);
+            $el.html(result);
+            return result;
+        };
 
-    /**
-     * 页面跳转
-     * @param dest
-     * @param time
-     */
-    let jumpTo = (dest, time = 2000) => {
-        setTimeout(() => {
-            location.href = dest;
-        }, time);
-    };
+        /**
+         * 加载模板
+         * @param path
+         * @returns {Promise<*>}
+         */
+        let loadTemplate = async (path) => {
+            let url = constants.TEMPLATE_PATH + path + constants.TEMPLATE_SUFFIX;
+            let response = await axios.get(url).catch(reason => {
+                console.error("模板加载错误：", reason);
+                return null;
+            });
+            return response.data;
+        };
 
-    return {
-        modal: modal,
-        render: render,
-        jumpTo: jumpTo
-    };
-});
+        /**
+         * 渲染HBS模板
+         * @param $el
+         * @param hbsPath
+         * @param data
+         */
+        let renderHbs = async ($el, hbsPath, data) => {
+            let renderStr = await loadTemplate(hbsPath);
+            return render($el, renderStr, data);
+        };
+
+        /**
+         * 页面跳转
+         * @param dest
+         * @param time
+         */
+        let jumpTo = (dest, time = 2000) => {
+            setTimeout(() => {
+                location.href = dest;
+            }, time);
+        };
+
+        // 添加模态框
+        let modalSrc = `
+    <!-- 模态框 -->
+<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="msgModalTitle">title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="msgModalBody">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+    `;
+        $(modalSrc).appendTo('body');
+
+        return {
+            modal: modal,
+            render: render,
+            renderHbs: renderHbs,
+            jumpTo: jumpTo,
+            loadTemplate: loadTemplate
+        };
+    });

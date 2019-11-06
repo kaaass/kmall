@@ -7,6 +7,9 @@ define([], function () {
         KEY_AUTH: 'AUTH',
         KEY_NAME: 'NAME',
 
-        PARAM_ID: 'id'
+        PARAM_ID: 'id',
+
+        TEMPLATE_PATH: '/templates/',
+        TEMPLATE_SUFFIX: '.hbs'
     };
 });

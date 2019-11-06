@@ -9,10 +9,12 @@ require([
         'module/product',
         'bootstrap'],
     function ($, functions, constants, auth, product, _) {
+
+        const TEMPLATE_LIST = "product_lists";
+        const TEMPLATE_CATEGORY = "categories";
+
         let $list = $('#product-list'),
             $categories = $('#categories');
-        let listTemplate = $list.html(),
-            categoriesTemplate = $categories.html();
         let request = auth.getAxiosInstance();
         let curCatId;
 
@@ -28,10 +30,10 @@ require([
 
         // 获得分类并渲染
         product.getCategories().then(data => {
-            functions.render($categories, categoriesTemplate, {
+            return functions.renderHbs($categories, TEMPLATE_CATEGORY, {
                 categories: data
             });
-        }).then(value => {
+        }).then(() => {
             // 当前高亮
             if (curCatId == null) {
                 $('#all').addClass('active');
@@ -50,15 +52,15 @@ require([
                 }
                 $('#nav-' + father).addClass('active');
             }
-        }).then(value => {
+        }).then(() => {
             // 获取所有内容
             if (curCatId == null) {
-                product.renderProductsByUrl("/product/", $list, listTemplate);
+                product.renderProductsByUrl("/product/", $list, TEMPLATE_LIST);
             }
-        }).then(value => {
+        }).then(() => {
             // 获取单分类
             if (curCatId != null) {
-                product.renderProductsByUrl(`/product/category/${curCatId}/`, $list, listTemplate);
+                product.renderProductsByUrl(`/product/category/${curCatId}/`, $list, TEMPLATE_LIST);
             }
         });
     });

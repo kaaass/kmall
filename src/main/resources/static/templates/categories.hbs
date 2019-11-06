@@ -1,0 +1,15 @@
+<li class="nav-item" id="all">
+    <a class="nav-link" href="?">全部</a>
+</li>
+{{#each categories}}
+    <li class="nav-item dropdown" id="nav-{{id}}">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown{{id}}" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">{{name}}</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown{{id}}">
+            <a class="dropdown-item" href="?id={{id}}">所有</a>
+            {{#each subs}}
+                <a class="dropdown-item" href="?id={{id}}">{{name}}</a>
+            {{/each}}
+        </div>
+    </li>
+{{/each}}

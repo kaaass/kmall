@@ -65,7 +65,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
      * 由url渲染商品
      * @param url 获得url
      * @param $el 渲染dom
-     * @param template 模板
+     * @param template 模板路径
      */
     let renderProductsByUrl = (url, $el, template) => {
         request.get(url)
@@ -73,7 +73,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
                 var data = response.data;
                 var products = processData(data.data);
                 products.then(value => {
-                    functions.render($el, template, {
+                    functions.renderHbs($el, template, {
                         products: value
                     });
                 });

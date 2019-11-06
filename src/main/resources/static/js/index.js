@@ -10,8 +10,9 @@ require([
         'bootstrap'],
     function ($, functions, constants, auth, product, _) {
 
+        const TEMPLATE_LIST = "product_lists";
+
         let $list = $('#product-list');
-        let listTemplate = $list.html();
         let request = auth.getAxiosInstance();
 
         // 获取首页内容
@@ -20,7 +21,7 @@ require([
                 let data = response.data;
                 let products = product.processData(data.data);
                 products.then(value => {
-                    functions.render($list, listTemplate, {
+                    functions.renderHbs($list, TEMPLATE_LIST, {
                         products: value
                     });
                 });
