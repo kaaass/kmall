@@ -10,6 +10,8 @@ define([], function () {
         PARAM_ID: 'id',
 
         TEMPLATE_PATH: '/templates/',
-        TEMPLATE_SUFFIX: '.hbs'
+        TEMPLATE_SUFFIX: '.hbs',
+
+        TITLE_SUFFIX: " - KMall"
     };
 });

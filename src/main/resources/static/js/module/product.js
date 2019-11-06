@@ -115,8 +115,8 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
     let renderProductsByUrl = (url, $el, template) => {
         request.get(url)
             .then((response) => {
-                var data = response.data;
-                var products = processData(data.data);
+                let data = response.data;
+                let products = processData(data.data);
                 products.then(value => {
                     functions.renderHbs($el, template, {
                         products: value
@@ -124,7 +124,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
                 });
             })
             .catch((e) => {
-                console.error("获取所有数据失败：", product.id, e);
+                console.error("获取所有数据失败：", url, e);
                 functions.modal("错误", "无法获取数据，请检查网络连接！");
             });
     };

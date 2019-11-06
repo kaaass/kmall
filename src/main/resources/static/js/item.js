@@ -26,6 +26,8 @@ require([
         // 获取物品详细信息
         product.getProduct(curProductId)
             .then(async (productData) => {
+                // 修改标题
+                $('title').text(productData.name + constants.TITLE_SUFFIX);
                 // 获得extra数据
                 productData.extra = await product.getExtra(curProductId);
                 return productData;
