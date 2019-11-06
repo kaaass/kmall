@@ -21,7 +21,6 @@ require([
         let requestParams = new URL(document.location.href).searchParams;
 
         // 分析url参数
-        console.log(requestParams);
         if (requestParams.has(constants.PARAM_ID)) {
             curCatId = requestParams.get(constants.PARAM_ID);
         } else {

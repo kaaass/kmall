@@ -1,0 +1,74 @@
+<div class="container pt-4 py-3">
+    <div class="row m-1">
+        <h3>{{name}}</h3>
+    </div>
+    <div class="row text-secondary ml-1">
+        {{#if category.parent}}
+            <small>{{category.name}} / {{category.parent.name}}</small>
+        {{else}}
+            <small>{{category.name}}</small>
+        {{/if}}
+    </div>
+</div>
+
+<div class="container py-2">
+    <div class="row">
+        <div class="col-md m-1">
+            <img class="border rounded overflow-hidden shadow-sm mb-3" width="100%" src="{{thumbnail.url}}" alt="商品描述">
+            <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <h5 class="border-bottom border-gray pb-2 mb-3">详细介绍</h5>
+                    <div class="container p-2">
+                        {{extra.detail}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 m-1">
+            <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <h3 class="mb-0 text-center mt-2 text-danger" id="price">¥ {{extra.promotes.price}}</h3>
+                    <div class="mb-1 text-muted text-center mb-2"><del id="origin-price">¥ {{price}}</del></div>
+                    <small class="d-inline-block text-secondary text-center">邮费：¥ {{extra.promotes.mailPrice}} 库存：{{storage.rest}}</small>
+                    <div class="container p-2">
+                        {{#each extra.promotes.promotes}}
+                            <span class="badge badge-pill {{style}}" title="{{hint}}">{{name}}</span>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters flex-md-row mb-3 h-md-250 position-relative">
+                <div class="col bg-white p-3 mr-2 d-flex flex-column border rounded overflow-hidden shadow-sm">
+                    <h3 class="mb-0 text-center">{{extra.monthPurchase}}</h3>
+                    <small class="d-inline-block text-secondary text-center">月销量</small>
+                </div>
+                <div class="col bg-white p-3 ml-2 d-flex flex-column border rounded overflow-hidden shadow-sm">
+                    <h3 class="mb-0 text-center">{{comments.averageRate}}</h3>
+                    <small class="d-inline-block text-secondary text-center">平均评分</small>
+                </div>
+            </div>
+            <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <a href="/order/confirm.html?id={{id}}" class="btn btn-outline-danger btn-lg btn-block">购买</a>
+            </div>
+            <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <a href="/my/cart.html?id={{id}}" class="btn btn-outline-primary btn-lg btn-block">加入购物车</a>
+            </div>
+            <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <h5 class="border-bottom border-gray pb-2">评价</h5>
+                    {{#each comments.comments}}
+                        <div class="media text-muted pt-3">
+                            <img class="bd-placeholder-img mr-2 rounded" width="32" height="32" focusable="false"
+                                 alt=""
+                                 src="https://static.kaaass.net/wp-content/uploads/2016/02/admin-300x300.jpg"/>
+                            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                                <strong class="d-block">评分：{{rate}}</strong>
+                                {{content}}
+                            </p>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

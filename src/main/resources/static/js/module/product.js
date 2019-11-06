@@ -39,24 +39,69 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
     };
 
     /**
+     * 获得商品信息
+     * @param productId
+     * @returns {Promise<null|*>}
+     */
+    let getProduct = async (productId) => {
+        let response = await request.get(`/product/${productId}/`)
+            .catch((e) => {
+                console.error("获取商品数据失败：", productId, e);
+                functions.modal("错误", "获取商品数据失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("获取商品数据错误：", productId, data);
+            functions.modal("错误", "商品id不存在！");
+            return null;
+        }
+        return data.data;
+    };
+
+    /**
+     * 获得extra数据
+     * @param productId
+     * @returns {Promise<void>}
+     */
+    let getExtra = async (productId) => {
+        let response = await request.get(`/product/${productId}/extra/?count=1`)
+            .catch((e) => {
+                console.error("获取详细数据失败：", productId, e);
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("获取详细数据错误：", productId, data);
+            return null;
+        }
+        return data.data;
+    };
+
+    /**
+     * 获得评论数据
+     * @param productId
+     * @returns {Promise<void>}
+     */
+    let getComments = async (productId) => {
+        let response = await request.get(`/product/${productId}/comments/`)
+            .catch((e) => {
+                console.error("获取评论数据失败：", productId, e);
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("获取评论数据错误：", productId, data);
+            return null;
+        }
+        return data.data;
+    };
+
+    /**
      * 处理请求得到的商品数据
      * @param products
      */
     let processData = async (products) => {
         for (const product of products) {
             // 获取extra数据
-            await request.get(`/product/${product.id}/extra/?count=1`)
-                .then((response) => {
-                    let data = response.data;
-                    if (data.status !== 200) {
-                        console.error("获取详细数据错误：", product.id, data);
-                        return;
-                    }
-                    product.extra = data.data;
-                })
-                .catch((e) => {
-                    console.error("获取详细数据失败：", product.id, e);
-                });
+            product.extra = await getExtra(product.id);
         }
         return products;
     };
@@ -89,6 +134,9 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
 
         getCategories: getCategories,
         processData: processData,
-        renderProductsByUrl: renderProductsByUrl
+        renderProductsByUrl: renderProductsByUrl,
+        getProduct: getProduct,
+        getExtra: getExtra,
+        getComments: getComments
     };
 });
