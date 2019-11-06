@@ -1,6 +1,7 @@
 package net.kaaass.kmall.dao.repository;
 
 import net.kaaass.kmall.dao.entity.OrderEntity;
+import net.kaaass.kmall.service.OrderType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -17,4 +18,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
     List<OrderEntity> findAllByUidOrderByCreateTimeDesc(String uid, Pageable pageable);
 
     Optional<OrderEntity> findFirstByCreateTimeBetweenOrderByCreateTimeDesc(Timestamp start, Timestamp end);
+
+    Optional<Integer> countAllByUidAndType(String uid, OrderType type);
 }

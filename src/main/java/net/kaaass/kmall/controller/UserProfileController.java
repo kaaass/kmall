@@ -1,9 +1,7 @@
 package net.kaaass.kmall.controller;
 
 import net.kaaass.kmall.controller.request.UserInfoModifyRequest;
-import net.kaaass.kmall.dao.entity.MediaEntity;
-import net.kaaass.kmall.dao.entity.UserAuthEntity;
-import net.kaaass.kmall.dao.entity.UserInfoEntity;
+import net.kaaass.kmall.controller.response.UserProfileResponse;
 import net.kaaass.kmall.dao.repository.UserAddressRepository;
 import net.kaaass.kmall.dao.repository.UserInfoRepository;
 import net.kaaass.kmall.dto.UserAddressDto;
@@ -11,6 +9,7 @@ import net.kaaass.kmall.dto.UserInfoDto;
 import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.UserMapper;
+import net.kaaass.kmall.service.OrderService;
 import net.kaaass.kmall.service.metadata.ResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,9 +34,16 @@ public class UserProfileController extends BaseController {
     @Autowired
     private ResourceManager resourceManager;
 
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("/")
-    public UserInfoDto getUserProfile() {
-        return UserMapper.INSTANCE.userInfoEntityToDto(userInfoRepository.findByAuth(getAuthEntity()));
+    public UserProfileResponse getUserProfile() {
+        var result = new UserProfileResponse();
+        var info = UserMapper.INSTANCE.userInfoEntityToDto(userInfoRepository.findByAuth(getAuthEntity()));
+        result.setInfo(info);
+        result.setOrderCount(orderService.getUserOrderCount(getUid()));
+        return result;
     }
 
     @PostMapping("/")

@@ -31,6 +31,7 @@ import net.kaaass.kmall.service.UserService;
 import net.kaaass.kmall.service.mq.OrderMessageProducer;
 import net.kaaass.kmall.util.Constants;
 import net.kaaass.kmall.util.StringUtils;
+import net.kaaass.kmall.vo.UserOrderCountVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
@@ -114,6 +115,18 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(OrderMapper.INSTANCE::orderEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserOrderCountVo getUserOrderCount(String uid) {
+        var result = new UserOrderCountVo();
+        var toPay = orderRepository.countAllByUidAndType(uid, OrderType.CREATED).orElse(0);
+        result.setToPay(toPay);
+        var toDeliver = orderRepository.countAllByUidAndType(uid, OrderType.PAID).orElse(0);
+        result.setToDeliver(toDeliver);
+        var toComment = orderRepository.countAllByUidAndType(uid, OrderType.DELIVERED).orElse(0);
+        result.setToComment(toComment);
+        return result;
     }
 
     @Override

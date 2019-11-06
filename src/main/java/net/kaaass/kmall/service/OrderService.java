@@ -9,6 +9,7 @@ import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.ForbiddenException;
 import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
+import net.kaaass.kmall.vo.UserOrderCountVo;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface OrderService {
     OrderDto getById(String id, String uid) throws NotFoundException, ForbiddenException;
 
     List<OrderDto> getAllByUid(String uid, Pageable pageable);
+
+    UserOrderCountVo getUserOrderCount(String uid);
 
     OrderRequestResponse createToQueue(String uid, OrderCreateRequest request) throws InternalErrorExeption, NotFoundException;
 
