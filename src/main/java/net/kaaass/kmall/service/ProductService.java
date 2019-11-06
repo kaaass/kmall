@@ -1,10 +1,10 @@
 package net.kaaass.kmall.service;
 
 import net.kaaass.kmall.controller.request.ProductAddRequest;
+import net.kaaass.kmall.controller.response.ProductCommentResponse;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.NotFoundException;
-import net.kaaass.kmall.vo.CommentVo;
 import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.data.domain.Pageable;
 
@@ -27,7 +27,7 @@ public interface ProductService {
 
     List<ProductDto> getAllByCategory(String categoryId, Pageable pageable) throws NotFoundException;
 
-    List<CommentVo> getComments(String id, Pageable pageable);
+    ProductCommentResponse getComments(String id, Pageable pageable);
 
     List<ProductDto> search(String keyword, Pageable pageable);
 }

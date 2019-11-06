@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.kaaass.kmall.promote.IPromoteStrategy;
 import net.kaaass.kmall.promote.OrderPromoteContext;
 import net.kaaass.kmall.vo.PromoteStrategyInfoVo;
+import net.kaaass.kmall.vo.PromoteStyle;
 
 /**
  * 商品正常包邮策略
@@ -31,6 +32,7 @@ public class CommonMailFreeStrategy implements IPromoteStrategy<OrderPromoteCont
     public PromoteStrategyInfoVo getPromoteInfo() {
         return new PromoteStrategyInfoVo(null,
                 "商品包邮",
-                "该商品享受包邮特权");
+                "该商品享受包邮特权",
+                PromoteStyle.NORMAL);
     }
 }

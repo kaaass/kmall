@@ -4,7 +4,7 @@
     </div>
     <div class="row text-secondary ml-1">
         {{#if category.parent}}
-            <small>{{category.name}} / {{category.parent.name}}</small>
+            <small>{{category.parent.name}} / {{category.name}}</small>
         {{else}}
             <small>{{category.name}}</small>
         {{/if}}
@@ -19,7 +19,7 @@
                 <div class="col p-4 d-flex flex-column position-static">
                     <h5 class="border-bottom border-gray pb-2 mb-3">详细介绍</h5>
                     <div class="container p-2">
-                        {{extra.detail}}
+                        {{{extra.detail}}}
                     </div>
                 </div>
             </div>

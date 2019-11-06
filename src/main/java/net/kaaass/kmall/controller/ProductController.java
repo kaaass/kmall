@@ -1,6 +1,7 @@
 package net.kaaass.kmall.controller;
 
 import net.kaaass.kmall.controller.request.ProductAddRequest;
+import net.kaaass.kmall.controller.response.ProductCommentResponse;
 import net.kaaass.kmall.dto.CommentDto;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.NotFoundException;
@@ -66,7 +67,7 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/{id}/comments/")
-    public List<CommentVo> getComments(@PathVariable String id, Pageable pageable) {
+    public ProductCommentResponse getComments(@PathVariable String id, Pageable pageable) {
         return productService.getComments(id, pageable);
     }
 }

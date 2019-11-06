@@ -7,6 +7,7 @@ import net.kaaass.kmall.service.metadata.MetadataManager;
 import net.kaaass.kmall.util.Constants;
 import net.kaaass.kmall.util.NumericUtils;
 import net.kaaass.kmall.vo.PromoteStrategyInfoVo;
+import net.kaaass.kmall.vo.PromoteStyle;
 
 /**
  * 商品正常打折策略
@@ -44,6 +45,7 @@ public class CommonDiscountStrategy implements IPromoteStrategy<OrderPromoteCont
     public PromoteStrategyInfoVo getPromoteInfo() {
         return new PromoteStrategyInfoVo(null,
                 "商品折扣",
-                "该商品正在打折促销");
+                "该商品正在打折促销",
+                PromoteStyle.GREAT);
     }
 }

@@ -2,6 +2,7 @@ package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.controller.request.ProductAddRequest;
+import net.kaaass.kmall.controller.response.ProductCommentResponse;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.ProductStorageEntity;
 import net.kaaass.kmall.dao.repository.CategoryRepository;
@@ -19,7 +20,7 @@ import net.kaaass.kmall.service.UserService;
 import net.kaaass.kmall.service.metadata.MetadataManager;
 import net.kaaass.kmall.service.metadata.ResourceManager;
 import net.kaaass.kmall.util.Constants;
-import net.kaaass.kmall.vo.CommentVo;
+import net.kaaass.kmall.util.NumericUtils;
 import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -164,11 +165,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<CommentVo> getComments(String id, Pageable pageable) {
-        return commentRepository.findAllByProductIdOrderByRateDescCommentTimeDesc(id, pageable)
+    public ProductCommentResponse getComments(String id, Pageable pageable) {
+        var result = new ProductCommentResponse();
+        var comments = commentRepository.findAllByProductIdOrderByRateDescCommentTimeDesc(id, pageable)
                 .stream()
                 .map(UserMapper.INSTANCE::commentEntityToVo)
                 .collect(Collectors.toList());
+        var rate = commentRepository.averageRateByProductId(id)
+                .map(NumericUtils::rateRound)
+                .orElse(null);
+        result.setComments(comments);
+        result.setAverageRate(rate);
+        return result;
     }
 
     @Override

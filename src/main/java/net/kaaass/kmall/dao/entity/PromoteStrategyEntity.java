@@ -2,6 +2,7 @@ package net.kaaass.kmall.dao.entity;
 
 import lombok.Data;
 import net.kaaass.kmall.util.Constants;
+import net.kaaass.kmall.vo.PromoteStyle;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
@@ -32,6 +33,10 @@ public class PromoteStrategyEntity {
 
     @Column(name = "strategy_order")
     private int order;
+
+    @Column(name = "style")
+    @Enumerated(EnumType.STRING)
+    private PromoteStyle style = PromoteStyle.INFO;
 
     @Column(name = "is_enabled")
     private boolean enabled = true;
