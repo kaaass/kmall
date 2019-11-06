@@ -10,6 +10,12 @@ define([
     function ($, Handlebars, axios, constants, _) {
 
         /**
+         * 模板缓存
+         * @type {{}}
+         */
+        let templateCache = {};
+
+        /**
          * 弹出模态框
          * @param title
          * @param body
@@ -39,11 +45,18 @@ define([
          * @returns {Promise<*>}
          */
         let loadTemplate = async (path) => {
+            // 检查缓存
+            if (path in templateCache) {
+                return templateCache[path];
+            }
+            // 获取模板
             let url = constants.TEMPLATE_PATH + path + constants.TEMPLATE_SUFFIX;
             let response = await axios.get(url).catch(reason => {
                 console.error("模板加载错误：", reason);
                 return null;
             });
+            // 写入缓存
+            templateCache[path] = response.data;
             return response.data;
         };
 
