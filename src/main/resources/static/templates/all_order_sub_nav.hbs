@@ -1,0 +1,16 @@
+<nav class="nav nav-underline">
+    <a class="nav-link" href="?type=all" id="nav-all">所有订单</a>
+    <a class="nav-link" href="?type=0" id="nav-0">
+        待付款
+        <span class="badge badge-pill bg-light align-text-bottom">{{orderCount.toPay}}</span>
+    </a>
+    <a class="nav-link" href="?type=1" id="nav-1">
+        待发货
+        <span class="badge badge-pill bg-light align-text-bottom">{{orderCount.toDeliver}}</span>
+    </a>
+    <a class="nav-link" href="?type=2" id="nav-2">
+        待评价
+        <span class="badge badge-pill bg-light align-text-bottom">{{orderCount.toComment}}</span>
+    </a>
+    <a class="nav-link" href="?type=3" id="nav-3">已完成</a>
+</nav>

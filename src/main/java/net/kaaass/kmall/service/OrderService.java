@@ -28,6 +28,8 @@ public interface OrderService {
 
     UserOrderCountVo getUserOrderCount(String uid);
 
+    List<OrderDto> getAllByUidAndType(String uid, OrderType type, Pageable pageable);
+
     OrderRequestResponse createToQueue(String uid, OrderCreateRequest request) throws InternalErrorExeption, NotFoundException;
 
     void doCreate(OrderRequestContext context) throws NotFoundException;

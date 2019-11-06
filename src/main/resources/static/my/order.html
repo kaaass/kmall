@@ -11,22 +11,6 @@
     <!-- Bootstrap core CSS -->
     <link href="https://v4.bootcss.com/docs/4.3/dist/css/bootstrap.css" rel="stylesheet">
 
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
     <!-- Custom styles for this template -->
     <link href="https://v4.bootcss.com/docs/4.3/examples/album/album.css" rel="stylesheet">
     <link href="https://v4.bootcss.com/docs/4.3/examples/offcanvas/offcanvas.css" rel="stylesheet">
@@ -72,23 +56,7 @@
     </nav>
 </header>
 
-<div class="nav-scroller bg-white shadow-sm">
-    <nav class="nav nav-underline">
-            <a class="nav-link active" href="?type=all">所有订单</a>
-        <a class="nav-link" href="?type=0">
-            待付款
-            <span class="badge badge-pill bg-light align-text-bottom">1</span>
-        </a>
-        <a class="nav-link" href="?type=1">
-            待发货
-            <span class="badge badge-pill bg-light align-text-bottom">1</span>
-        </a>
-        <a class="nav-link" href="?type=2">
-            待评价
-            <span class="badge badge-pill bg-light align-text-bottom">1</span>
-        </a>
-        <a class="nav-link" href="?type=3">已完成</a>
-    </nav>
+<div class="nav-scroller bg-white shadow-sm" id="sub-nav">
 </div>
 
 <main role="main">
@@ -102,93 +70,7 @@
         </div>
     </div>
 
-    <div class="container py-2">
-
-        <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row py-2 px-3 mb-3 shadow-sm h-md-250 position-relative">
-
-            <div class="col-6 d-flex flex-column position-static">
-                <small class="my-auto">商品</small>
-            </div>
-
-            <div class="col d-flex flex-column position-static">
-                <small class="my-auto">单价</small>
-            </div>
-
-            <div class="col d-flex flex-column position-static">
-                <small class="my-auto">数量</small>
-            </div>
-
-            <div class="col d-flex flex-column position-static">
-                <small class="my-auto">实付款</small>
-            </div>
-
-            <div class="col d-flex flex-column position-static">
-                <small class="my-auto">交易状态</small>
-            </div>
-
-            <div class="col d-flex flex-column position-static">
-                <small class="my-auto">操作</small>
-            </div>
-        </div>
-
-        <div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
-            <div class="row px-3 py-2">
-                <div class="col-2 px-0">
-                    <small class="my-auto"><b>2019-10-21</b></small>
-                </div>
-                <div class="col-2 px-0">
-                    <small class="my-auto">订单号：201910250003</small>
-                </div>
-            </div>
-            <div class="row px-3">
-                <table class="col-8 table table-striped table-hover">
-                    <tbody>
-                    <tr>
-                        <td style="width: 25%">
-                            <img class="border rounded overflow-hidden" width="80" height="80" src="https://img.alicdn.com/imgextra/i1/1683498550/O1CN01bAixrJ2D1wuSUL5kh_!!0-item_pic.jpg_430x430q90.jpg" alt="商品描述">
-                        </td>
-                        <td style="width: 50%">
-                            <small class="my-auto">华为原装M-Pen lite手写笔M5青春版M6平板电脑matebooke触控电容</small>
-                        </td>
-                        <td style="width: 12.5%">
-                            <small class="my-auto">¥ 999.99</small>
-                        </td>
-                        <td style="width: 12.5%">
-                            <small class="my-auto">1</small>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 25%">
-                            <img class="border rounded overflow-hidden" width="80" height="80" src="https://img.alicdn.com/imgextra/i1/1683498550/O1CN01bAixrJ2D1wuSUL5kh_!!0-item_pic.jpg_430x430q90.jpg" alt="商品描述">
-                        </td>
-                        <td style="width: 50%">
-                            <small class="my-auto">华为原装M-Pen lite手写笔M5青春版M6平板电脑matebooke触控电容</small>
-                        </td>
-                        <td style="width: 12.5%">
-                            <small class="my-auto">¥ 999.99</small>
-                        </td>
-                        <td style="width: 12.5%">
-                            <small class="my-auto">1</small>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div class="col p-2 d-flex flex-column position-static">
-                    <p class="text-center"><b>¥ 999.99</b></p>
-                    <p class="text-center"><small>含运费：¥ 12.00</small></p>
-                </div>
-
-                <div class="col p-2 d-flex flex-column position-static">
-                    <small class="text-center">待评价</small>
-                </div>
-
-                <div class="col d-flex flex-column position-static">
-                    <button class="btn btn-primary">评价</button>
-                    <a class="btn btn-link" href="../order/detail.html?id=201910250003"><small>查看详情</small></a>
-                </div>
-            </div>
-        </div>
+    <div class="container py-2" id="order-list">
     </div>
 
 </main>
@@ -203,27 +85,8 @@
     </div>
 </footer>
 
-<!-- 模态框 -->
-<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="msgModalTitle">title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="msgModalBody">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="https://v4.bootcss.com/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="https://v4.bootcss.com/docs/4.3/dist/js/bootstrap.bundle.js"></script></body>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="/module/auth.js"></script>
+<script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
+<script src="/js/config.js"></script>
+<script src="/js/my/order.js"></script>
+</body>
 </html>

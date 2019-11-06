@@ -15,9 +15,11 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
 
     Optional<OrderEntity> findByRequestId(String requestId);
 
-    List<OrderEntity> findAllByUidOrderByCreateTimeDesc(String uid, Pageable pageable);
+    List<OrderEntity> findAllByUidAndTypeIsNotOrderByCreateTimeDesc(String uid, OrderType type, Pageable pageable);
 
     Optional<OrderEntity> findFirstByCreateTimeBetweenOrderByCreateTimeDesc(Timestamp start, Timestamp end);
 
     Optional<Integer> countAllByUidAndType(String uid, OrderType type);
+
+    List<OrderEntity> findAllByUidAndTypeOrderByCreateTimeDesc(String uid, OrderType type, Pageable pageable);
 }

@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAllByUid(String uid, Pageable pageable) {
-        return orderRepository.findAllByUidOrderByCreateTimeDesc(uid, pageable)
+        return orderRepository.findAllByUidAndTypeIsNotOrderByCreateTimeDesc(uid, OrderType.ERROR, pageable)
                 .stream()
                 .map(OrderMapper.INSTANCE::orderEntityToDto)
                 .collect(Collectors.toList());
@@ -127,6 +127,14 @@ public class OrderServiceImpl implements OrderService {
         var toComment = orderRepository.countAllByUidAndType(uid, OrderType.DELIVERED).orElse(0);
         result.setToComment(toComment);
         return result;
+    }
+
+    @Override
+    public List<OrderDto> getAllByUidAndType(String uid, OrderType type, Pageable pageable) {
+        return orderRepository.findAllByUidAndTypeOrderByCreateTimeDesc(uid, type, pageable)
+                .stream()
+                .map(OrderMapper.INSTANCE::orderEntityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -1,5 +1,8 @@
 package net.kaaass.kmall.service;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 /**
  * 订单类型
  */
@@ -43,6 +46,12 @@ public enum OrderType {
 
     OrderType(int order) {
         this.order = order;
+    }
+
+    public static Optional<OrderType> getTypeById(int id) {
+        return Stream.of(OrderType.values())
+                .filter(type -> type.order == id)
+                .findAny();
     }
 
     public boolean less(OrderType type) {

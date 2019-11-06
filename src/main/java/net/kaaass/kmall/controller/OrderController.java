@@ -10,6 +10,7 @@ import net.kaaass.kmall.exception.ForbiddenException;
 import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.service.OrderService;
+import net.kaaass.kmall.service.OrderType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +46,18 @@ public class OrderController extends BaseController {
     OrderRequestResponse createToQueue(@RequestBody OrderCreateRequest request) throws NotFoundException, InternalErrorExeption {
         // TODO 参数检查
         return orderService.createToQueue(getUid(), request);
+    }
+
+    @GetMapping("/type/{typeId}/")
+    List<OrderDto> getAllByUidAndType(@PathVariable String typeId, Pageable pageable) throws NotFoundException {
+        OrderType type;
+        try {
+            type = OrderType.getTypeById(Integer.parseInt(typeId))
+                    .orElseThrow(() -> new NotFoundException("订单类型不存在！"));
+        } catch (NumberFormatException e) {
+            throw new NotFoundException("订单类型错误！");
+        }
+        return orderService.getAllByUidAndType(getUid(), type, pageable);
     }
 
     /**
