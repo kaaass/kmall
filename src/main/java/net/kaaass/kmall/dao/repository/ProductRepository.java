@@ -12,7 +12,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 
     List<ProductEntity> findAllByCategoryIn(Collection<CategoryEntity> category, Pageable pageable);
 
-    List<ProductEntity> findAllByIndexOrderGreaterThanEqualOrderByIndexOrderDescCreateTimeDesc(int indexOrder);
+    List<ProductEntity> findAllByIndexOrderGreaterThanEqualOrderByIndexOrderAscCreateTimeDesc(int indexOrder);
 
-    List<ProductEntity> findAllByNameIsLikeOrderByIndexOrderDescCreateTimeDesc(String name, Pageable pageable);
+    List<ProductEntity> findAllByNameIsLikeOrderByIndexOrderAscCreateTimeDesc(String name, Pageable pageable);
 }

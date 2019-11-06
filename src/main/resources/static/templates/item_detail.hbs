@@ -43,7 +43,11 @@
                     <small class="d-inline-block text-secondary text-center">月销量</small>
                 </div>
                 <div class="col bg-white p-3 ml-2 d-flex flex-column border rounded overflow-hidden shadow-sm">
-                    <h3 class="mb-0 text-center">{{comments.averageRate}}</h3>
+                    {{#if comments.averageRate}}
+                        <h3 class="mb-0 text-center">{{comments.averageRate}}</h3>
+                    {{else}}
+                        <h3 class="mb-0 text-center">未知</h3>
+                    {{/if}}
                     <small class="d-inline-block text-secondary text-center">平均评分</small>
                 </div>
             </div>

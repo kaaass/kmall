@@ -141,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getIndexItems() {
-        return productRepository.findAllByIndexOrderGreaterThanEqualOrderByIndexOrderDescCreateTimeDesc(0)
+        return productRepository.findAllByIndexOrderGreaterThanEqualOrderByIndexOrderAscCreateTimeDesc(0)
                 .stream()
                 .map(ProductMapper.INSTANCE::productEntityToDto)
                 .collect(Collectors.toList());
@@ -185,7 +185,7 @@ public class ProductServiceImpl implements ProductService {
                             .map(s -> "%" + s + "%")
                             .collect(Collectors.joining(" "));
         log.debug("字符串查找关键词 {}", searchStr);
-        return productRepository.findAllByNameIsLikeOrderByIndexOrderDescCreateTimeDesc(searchStr, pageable)
+        return productRepository.findAllByNameIsLikeOrderByIndexOrderAscCreateTimeDesc(searchStr, pageable)
                 .stream()
                 .map(ProductMapper.INSTANCE::productEntityToDto)
                 .collect(Collectors.toList());
