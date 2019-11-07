@@ -9,6 +9,7 @@ define([], function () {
 
         PARAM_ID: 'id',
         PARAM_TYPE: 'type',
+        PARAM_CART_IDS: 'cartIds',
 
         TEMPLATE_PATH: '/templates/',
         TEMPLATE_SUFFIX: '.hbs',

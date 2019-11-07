@@ -8,6 +8,8 @@ define([
     'module/product'], function ($, functions, auth, product) {
 
     let request = auth.getAxiosInstance();
+    let globalCartInfo = {};
+    let cartItemMap = {};
 
     /**
      * 处理请求得到的购物车数据
@@ -20,6 +22,8 @@ define([
             cartItem.product.extra = await product.getExtra(cartItem.product.id, count);
             // 计算总价
             cartItem.totalPrice = cartItem.product.extra.promotes.price;
+            // 加入映射表
+            cartItemMap[cartItem.id] = cartItem;
         }
         return cartItems;
     };
@@ -54,7 +58,7 @@ define([
         // 增加详细数据
         let cartItems = await processData(data.data);
         // 构造返回信息
-        return {
+        return globalCartInfo = {
             items: cartItems,
             summary: getSummary(cartItems)
         };
@@ -68,15 +72,42 @@ define([
     let deleteItem = async (cartItemId) => {
         let response = await request.delete(`/user/cart/${cartItemId}/`)
             .catch((e) => {
-                console.error("删除购物车项目失败：", url, e);
+                console.error("删除购物车项目失败：", cartItemId, e);
                 functions.modal("错误", "无法删除购物车项目，请检查网络连接！");
             });
         return response.data.status === 200;
     };
 
+    /**
+     * 编辑购物车项目数量
+     * @param cartItemId
+     * @param count
+     * @returns {Promise<null|*>}
+     */
+    let modifyCount = async (cartItemId, count) => {
+        let params = new URLSearchParams();
+        params.append('count', count);
+        let response = await request.post(`/user/cart/${cartItemId}/count/`, params)
+            .catch((e) => {
+                console.error("更改购物车数目失败：", cartItemId, e);
+                functions.modal("错误", "无法更改购物车数目，请检查网络连接！");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("更改购物车数目错误：", cartItemId, response);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return data;
+    };
+
     return {
+        globalCartInfo: globalCartInfo,
+        cartItemMap: cartItemMap,
+
         getCartInfo: getCartInfo,
         processData: processData,
-        deleteItem: deleteItem
+        deleteItem: deleteItem,
+        modifyCount: modifyCount
     };
 });

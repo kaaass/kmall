@@ -77,6 +77,10 @@ define([
          * @param time
          */
         let jumpTo = (dest, time = 2000) => {
+            if (time <= 0) {
+                location.href = dest;
+                return;
+            }
             setTimeout(() => {
                 location.href = dest;
             }, time);
