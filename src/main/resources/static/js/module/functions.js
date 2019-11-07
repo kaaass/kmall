@@ -157,6 +157,8 @@ define([
         $(modalSrc).appendTo('body');
 
         return {
+            requestParams: new URL(document.location.href).searchParams,
+            
             modal: modal,
             render: render,
             renderHbs: renderHbs,

@@ -101,7 +101,18 @@ require([
             await updateSummary();
         };
 
-        render();
+        // URL解析判断是否添加购物车
+        if (functions.requestParams.has(constants.PARAM_ID)) {
+            let productId = functions.requestParams.get(constants.PARAM_ID);
+            cart.addToCart(productId).then((data) => {
+                if (data !== null) {
+                    functions.modal("信息", "添加购物车成功！");
+                }
+                functions.jumpTo('?'); // 去除参数
+            });
+            return;
+        }
 
-        // TODO 加入购物车
+        // 开始渲染流程
+        render();
     });

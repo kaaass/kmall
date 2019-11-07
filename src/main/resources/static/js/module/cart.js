@@ -101,6 +101,28 @@ define([
         return data;
     };
 
+    /**
+     * 增加到购物车
+     * @param productId
+     * @returns {Promise<null|*>}
+     */
+    let addToCart = async (productId) => {
+        let response = await request.post("/user/cart/", {
+            productId: productId,
+            count: 1
+        }).catch((e) => {
+            console.error("添加购物车项目失败：", productId, e);
+            functions.modal("错误", "无法添加购物车项目，请检查网络连接！");
+        });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("更改购物车项目错误：", productId, response);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return data;
+    };
+
     return {
         globalCartInfo: globalCartInfo,
         cartItemMap: cartItemMap,
@@ -108,6 +130,7 @@ define([
         getCartInfo: getCartInfo,
         processData: processData,
         deleteItem: deleteItem,
-        modifyCount: modifyCount
+        modifyCount: modifyCount,
+        addToCart: addToCart
     };
 });
