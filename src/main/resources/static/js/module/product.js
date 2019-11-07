@@ -60,11 +60,12 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
 
     /**
      * 获得extra数据
-     * @param productId
+     * @param productId 商品id
+     * @param count 商品数量
      * @returns {Promise<void>}
      */
-    let getExtra = async (productId) => {
-        let response = await request.get(`/product/${productId}/extra/?count=1`)
+    let getExtra = async (productId, count = 1) => {
+        let response = await request.get(`/product/${productId}/extra/?count=${count}`)
             .catch((e) => {
                 console.error("获取详细数据失败：", productId, e);
             });

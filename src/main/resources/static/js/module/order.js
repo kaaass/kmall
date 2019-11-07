@@ -1,5 +1,5 @@
 /**
- * 商品类函数
+ * 订单类函数
  */
 define(['jquery', 'module/functions', 'module/auth'], function ($, functions, auth) {
 

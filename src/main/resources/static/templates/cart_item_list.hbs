@@ -1,0 +1,46 @@
+{{#each items}}
+<div cart-id="{{id}}" class="cart-item row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+    <div class="col-2 d-flex flex-column position-static">
+        <div class="container my-auto pl-4 py-4">
+            <input class="form-check-input item-select" type="checkbox" value="" id="sel-{{id}}">
+            <label for="sel-{{id}}" class="my-auto">
+                <img class="border rounded overflow-hidden" width="80" height="80" src="{{product.thumbnail.url}}" alt="商品描述">
+            </label>
+        </div>
+    </div>
+
+    <div class="col-4 d-flex flex-column position-static">
+        <small class="my-auto">{{product.name}}</small>
+    </div>
+
+    <div class="col-2 d-flex flex-column position-static">
+        <div class="container p-2 my-auto overflow-hidden">
+            {{#each product.extra.promotes.promotes}}
+                <span class="badge badge-pill {{style}}" title="{{hint}}">{{name}}</span>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto"><b>¥ {{product.price}}</b></small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <div class="input-group spinner my-auto" style="width: 60%">
+            <input type="text" class="form-control" value="{{count}}">
+            <div class="input-group-btn-vertical">
+                <button class="btn btn-outline-secondary" type="button"><i class="fa fa-caret-up"></i></button>
+                <button class="btn btn-outline-secondary" type="button"><i class="fa fa-caret-down"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto text-danger"><b>¥ {{totalPrice}}</b></small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <button class="my-auto btn btn-link btn-remove"><small>删除</small></button>
+    </div>
+</div>
+{{/each}}
