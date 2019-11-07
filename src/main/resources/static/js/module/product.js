@@ -52,7 +52,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         let data = response.data;
         if (data.status !== 200) {
             console.error("获取商品数据错误：", productId, data);
-            functions.modal("错误", "商品id不存在！");
+            functions.modal("错误", data.message);
             return null;
         }
         return data.data;

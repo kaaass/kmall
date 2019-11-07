@@ -93,6 +93,10 @@ define([
          * @returns {string}
          */
         let dateFormatTs = function (timestamp, formats) {
+            if (timestamp === null) {
+                return "暂无";
+            }
+
             formats = formats || 'Y-m-d';
 
             var zero = function (value) {
