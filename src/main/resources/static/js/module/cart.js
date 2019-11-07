@@ -60,8 +60,23 @@ define([
         };
     };
 
+    /**
+     * 删除购物车项目
+     * @param cartItemId
+     * @returns {Promise<boolean>} 是否成功
+     */
+    let deleteItem = async (cartItemId) => {
+        let response = await request.delete(`/user/cart/${cartItemId}/`)
+            .catch((e) => {
+                console.error("删除购物车项目失败：", url, e);
+                functions.modal("错误", "无法删除购物车项目，请检查网络连接！");
+            });
+        return response.data.status === 200;
+    };
+
     return {
         getCartInfo: getCartInfo,
-        processData: processData
+        processData: processData,
+        deleteItem: deleteItem
     };
 });

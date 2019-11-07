@@ -15,14 +15,27 @@ require([
         let $list = $('#cart-item-list'),
             $summary = $('#cart-summary');
 
-        // 获取购物车内容
-        let cartInfoPromise = cart.getCartInfo();
-        cartInfoPromise.then(cartInfo => {
-            functions.renderHbs($list, TEMPLATE_LIST, cartInfo);
-            functions.renderHbs($summary, TEMPLATE_SUMMARY, cartInfo);
+        /**
+         * 渲染
+         */
+        let render = async () => {
+            // 获取购物车内容
+            let cartInfo = await cart.getCartInfo();
+            await functions.renderHbs($list, TEMPLATE_LIST, cartInfo);
+        };
+
+        render().then(() => {
+            // 删除操作
+            $('.btn-remove').click(function () {
+                let cartId = $(this).parents(".cart-item").attr("cart-id");
+                if (confirm("是否确认删除该项目？")) {
+                    cart.deleteItem(cartId).then(() => {
+                        render();
+                    });
+                }
+            });
         });
 
         // TODO 购买
         // TODO 数量更改
-        // TODO 删除
     });
