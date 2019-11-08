@@ -13,12 +13,11 @@ require([
         const TEMPLATE_DETAIL = "order_detail";
 
         let $detail = $('main');
-        let requestParams = new URL(document.location.href).searchParams;
         let curOrderId;
 
         // 解析Url
-        if (requestParams.has(constants.PARAM_ID)) {
-            curOrderId = requestParams.get(constants.PARAM_ID);
+        if (functions.requestParams.has(constants.PARAM_ID)) {
+            curOrderId = functions.requestParams.get(constants.PARAM_ID);
         } else {
             functions.modal("错误", "缺少订单id！");
             return;

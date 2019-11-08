@@ -138,12 +138,44 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
             });
     };
 
+    /**
+     * 通过购物车项目下单
+     * @param cartIds
+     * @param addressId
+     * @returns {Promise<string|null>}
+     */
+    let addOrderFromCart = async (cartIds, addressId) => {
+        let cartItems = [];
+        // 拼接合法cartItems格式
+        for (const cartId of cartIds) {
+            cartItems.push({
+                id: cartId
+            });
+        }
+        // 发送请求
+        let response = await request.post('/order/', {
+            cartItems: cartItems,
+            addressId: addressId
+        }).catch((e) => {
+            console.error("下单失败：", cartIds, addressId, e);
+            functions.modal("错误", "下单失败！请检查网络连接。");
+        });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("下单错误：", url, response);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return data.data.requestId;
+    };
+
     return {
         getTypeReadable: getTypeReadable,
         getTypeStatusReadable: getTypeStatusReadable,
         getTypeAction: getTypeAction,
         processData: processData,
         getOrder: getOrder,
-        renderOrdersByUrl: renderOrdersByUrl
+        renderOrdersByUrl: renderOrdersByUrl,
+        addOrderFromCart: addOrderFromCart
     };
 });

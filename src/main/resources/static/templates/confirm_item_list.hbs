@@ -1,0 +1,69 @@
+<div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row py-2 mb-3 shadow-sm h-md-250 position-relative">
+    <div class="col-2 d-flex flex-column position-static">
+        <small class="my-auto px-3">商品图片</small>
+    </div>
+
+    <div class="col-7 d-flex flex-column position-static">
+        <small class="my-auto">商品名称</small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto">单价</small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto">数量</small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto">总价</small>
+    </div>
+</div>
+
+{{#each items}}
+    <div cart-id="{{id}}" class="cart-item row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+        <div class="col-2 d-flex flex-column position-static">
+            <div class="container my-auto pl-4 py-4">
+                <img class="border rounded overflow-hidden" width="80" height="80" src="{{product.thumbnail.url}}" alt="商品描述">
+            </div>
+        </div>
+
+        <div class="col-5 d-flex flex-column position-static">
+            <small class="my-auto">{{product.name}}</small>
+        </div>
+
+        <div class="col-2 d-flex flex-column position-static">
+            <div class="container p-2 my-auto overflow-hidden">
+                {{#each product.extra.promotes.promotes}}
+                    <span class="badge badge-pill {{style}}" title="{{hint}}">{{name}}</span>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="col d-flex flex-column position-static">
+            <small class="my-auto"><b>¥ {{product.price}}</b></small>
+        </div>
+
+        <div class="col d-flex flex-column position-static">
+            <small class="my-auto">{{count}}</small>
+        </div>
+
+        <div class="col d-flex flex-column position-static">
+            <small class="my-auto text-danger"><b>¥ {{totalPrice}}</b></small>
+        </div>
+    </div>
+{{/each}}
+
+<div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+    <div class="col-6 d-flex flex-column position-static">
+        <!--Place holder-->
+    </div>
+
+    <div class="col-4 d-flex flex-column position-static">
+        <p class="my-auto text-danger">实付款：<b>¥ {{summary.totalPrice}}</b> <small>（包含运费：¥ <b>{{summary.totalMailPrice}}</b>）</small></p>
+    </div>
+
+    <div class="col-2 d-flex flex-column position-static">
+        <button class="my-auto btn btn-danger text-white btn-submit">提交订单</button>
+    </div>
+</div>
