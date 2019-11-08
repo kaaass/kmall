@@ -56,6 +56,11 @@ public class ProductController extends BaseController {
         return productService.getIndexItems();
     }
 
+    @GetMapping("/quick/")
+    public List<ProductDto> getQuickBuyItems() {
+        return productService.getQuickBuyItems();
+    }
+
     @GetMapping("/search/")
     public List<ProductDto> search(@RequestParam String keyword, Pageable pageable) {
         return productService.search(keyword, pageable);

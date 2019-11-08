@@ -25,6 +25,8 @@ public interface ProductService {
 
     List<ProductDto> getIndexItems();
 
+    List<ProductDto> getQuickBuyItems();
+
     List<ProductDto> getAllByCategory(String categoryId, Pageable pageable) throws NotFoundException;
 
     ProductCommentResponse getComments(String id, Pageable pageable);

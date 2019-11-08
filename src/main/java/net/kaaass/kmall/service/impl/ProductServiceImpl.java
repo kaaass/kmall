@@ -148,7 +148,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
+     * 获得秒杀物品
+     * @return
+     */
+    @Override
+    public List<ProductDto> getQuickBuyItems() {
+        return productRepository.findAllByStartSellTimeGreaterThanOrderByIndexOrderAscCreateTimeDesc(Timestamp.valueOf(LocalDateTime.now()))
+                .stream()
+                .map(ProductMapper.INSTANCE::productEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 通过分类获得商品
+     *
      * @param categoryId
      * @param pageable
      * @return
@@ -159,9 +172,9 @@ public class ProductServiceImpl implements ProductService {
         var categories = categoryService.getAllSubs(root);
         log.debug("子分类：{}", categories);
         return productRepository.findAllByCategoryIn(categories, pageable)
-                    .stream()
-                    .map(ProductMapper.INSTANCE::productEntityToDto)
-                    .collect(Collectors.toList());
+                .stream()
+                .map(ProductMapper.INSTANCE::productEntityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -182,8 +195,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> search(String keyword, Pageable pageable) {
         var searchStr = Arrays.stream(keyword.split(" "))
-                            .map(s -> "%" + s + "%")
-                            .collect(Collectors.joining(" "));
+                .map(s -> "%" + s + "%")
+                .collect(Collectors.joining(" "));
         log.debug("字符串查找关键词 {}", searchStr);
         return productRepository.findAllByNameIsLikeOrderByIndexOrderAscCreateTimeDesc(searchStr, pageable)
                 .stream()
@@ -193,6 +206,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 获取商品单月销售
+     *
      * @param productEntity
      * @return
      */
