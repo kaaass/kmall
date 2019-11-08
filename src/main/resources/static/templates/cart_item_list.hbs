@@ -1,9 +1,9 @@
 {{#each items}}
 <div cart-id="{{id}}" class="cart-item row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
     <div class="col-2 d-flex flex-column position-static">
-        <div class="container my-auto pl-4 py-4">
-            <input class="form-check-input item-select" type="checkbox" value="" id="sel-{{id}}">
-            <label for="sel-{{id}}" class="my-auto">
+        <div class="container py-4 custom-control custom-checkbox">
+            <input class="form-check-input item-select custom-control-input" type="checkbox" value="" id="sel-{{id}}">
+            <label for="sel-{{id}}" class="custom-control-label ml-2">
                 <img class="border rounded overflow-hidden" width="80" height="80" src="{{product.thumbnail.url}}" alt="商品描述">
             </label>
         </div>
