@@ -29,9 +29,11 @@ require([
             order.check(requestId)
                 .then(orderId => {
                     if (orderId !== null) {
-                        // 请求到订单
-                        functions.modal("信息", "下单成功！正在跳转支付页面...");
-                        functions.jumpTo(`pay.html?id=${orderId}`);
+                        if (orderId !== 'error') {
+                            // 请求到订单
+                            functions.modal("信息", "下单成功！正在跳转支付页面...");
+                            functions.jumpTo(`pay.html?id=${orderId}`);
+                        }
                         created = true;
                     }
                 });

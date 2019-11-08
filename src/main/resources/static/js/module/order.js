@@ -191,7 +191,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
             console.error("下单错误：", requestId, response);
             functions.modal("下单错误", data.message);
             functions.jumpTo('/my/cart.html', 5000); // 返回购物车
-            return null;
+            return "error";
         }
         return data.data.orderId;
     };

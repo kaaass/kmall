@@ -100,9 +100,17 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
      * @param products
      */
     let processData = async (products) => {
+        let now = new Date().getTime() / 1000;
         for (const product of products) {
             // 获取extra数据
             product.extra = await getExtra(product.id);
+            // 销售提示
+            if (product.startSellTime > now) {
+                let time = functions.dateFormatTs(product.startSellTime, 'm月d日 H:i:s');
+                product.buyTips = `${time} 开售`;
+            } else {
+                product.buyTips = `¥ ${product.extra.promotes.price} 购买`;
+            }
         }
         return products;
     };

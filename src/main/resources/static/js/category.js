@@ -37,7 +37,7 @@ require([
                 // 判断存在
                 if (product.categories[curCatId] === undefined) {
                     functions.modal("错误", "该分类不存在！");
-                    functions.refresh();
+                    functions.jumpTo('?');
                     return;
                 }
                 // 设置高亮与页头
