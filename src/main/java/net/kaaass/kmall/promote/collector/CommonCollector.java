@@ -14,7 +14,7 @@ public class CommonCollector implements IPromoteCollector<OrderPromoteContext> {
     @Override
     public OrderPromoteResult collect(OrderPromoteContext context) {
         var result = new OrderPromoteResult();
-        result.setPrice(context.getPrice());
+        result.setPrice(context.getPrice() + context.getMailPrice()); // 总价应该包含邮费
         result.setMailPrice(context.getMailPrice());
         result.setPromotes(context.getPromotes());
         // 商品映射
