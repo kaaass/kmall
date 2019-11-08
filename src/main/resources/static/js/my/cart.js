@@ -108,7 +108,7 @@ require([
                 if (data !== null) {
                     functions.modal("信息", "添加购物车成功！");
                 }
-                functions.jumpTo('?'); // 去除参数
+                functions.refresh(); // 去除参数
             });
             return;
         }

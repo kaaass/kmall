@@ -6,6 +6,12 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
     let request = auth.getAxiosInstance();
 
     /**
+     * 缓存的订单
+     * @type {{}}
+     */
+    let ordersMap = {};
+
+    /**
      * 获取可读的类型
      * @param type
      */
@@ -85,7 +91,10 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
             // 获取typeReadable
             order.typeReadable = getTypeReadable(order.type);
             // 获取actionReadable
+            order.action = order.type;
             order.actionReadable = getTypeAction(order.type);
+            // 缓存Map
+            ordersMap[order.id] = order;
         }
         return orders;
     };
@@ -116,26 +125,23 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
      * @param $el 渲染dom
      * @param template 模板路径
      */
-    let renderOrdersByUrl = (url, $el, template) => {
-        request.get(url)
-            .then((response) => {
-                let data = response.data;
-                if (data.status !== 200) {
-                    console.error("获取订单数据错误：", url, response);
-                    functions.modal("错误", data.message);
-                    return;
-                }
-                let products = processData(data.data);
-                products.then(value => {
-                    functions.renderHbs($el, template, {
-                        orders: value
-                    });
-                });
-            })
+    let renderOrdersByUrl = async (url, $el, template) => {
+        let response = await request.get(url)
             .catch((e) => {
                 console.error("获取订单数据失败：", url, e);
                 functions.modal("错误", "无法获取数据，请检查网络连接！");
             });
+        // 处理返回
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("获取订单数据错误：", url, response);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        let orders = await processData(data.data);
+        return await functions.renderHbs($el, template, {
+            orders: orders
+        });
     };
 
     /**
@@ -211,7 +217,26 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         return data.data.id;
     };
 
+    let commentOrder = async (orderId, comments) => {
+        // 发送请求
+        let response = await request.post(`/order/${orderId}/comment/`, {
+            comments: comments
+        }).catch((e) => {
+            console.error("评论失败：", orderId, e);
+            functions.modal("错误", "评论失败！请检查网络连接。");
+        });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("评论错误：", orderId, response);
+            functions.modal("评论错误", data.message);
+            return false;
+        }
+        return data.data.id;
+    };
+
     return {
+        ordersMap: ordersMap,
+
         getTypeReadable: getTypeReadable,
         getTypeStatusReadable: getTypeStatusReadable,
         getTypeAction: getTypeAction,
@@ -220,6 +245,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         renderOrdersByUrl: renderOrdersByUrl,
         addOrderFromCart: addOrderFromCart,
         check: check,
-        payOrder: payOrder
+        payOrder: payOrder,
+        commentOrder: commentOrder
     };
 });

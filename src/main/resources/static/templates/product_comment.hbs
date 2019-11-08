@@ -1,0 +1,21 @@
+{{#each products}}
+    <div class="comment-form" product-id="{{product.id}}">
+        <div class="row">
+            <small class="text-truncate p-3">评价商品：{{product.name}}</small>
+        </div>
+        <div class="form-group">
+            <label for="rate-{{product.id}}">评分</label>
+            <select class="form-control product-rate" id="rate-{{product.id}}">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="comment-{{product.id}}">评论</label>
+            <textarea class="form-control product-comment" id="comment-{{product.id}}" rows="3"></textarea>
+        </div>
+    </div>
+{{/each}}

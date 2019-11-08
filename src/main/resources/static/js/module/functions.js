@@ -21,6 +21,7 @@ define([
          * @param body
          */
         let modal = (title, body) => {
+            $('.modal').modal('hide');
             $('#msgModalTitle').html(title);
             $('#msgModalBody').html(body);
             $('#msgModal').modal('show');
@@ -83,6 +84,19 @@ define([
             }
             setTimeout(() => {
                 location.href = dest;
+            }, time);
+        };
+
+        /**
+         * 刷新页面
+         */
+        let refresh = (time = 2000) => {
+            if (time <= 0) {
+                location.reload();
+                return;
+            }
+            setTimeout(() => {
+                location.reload();
             }, time);
         };
 
@@ -163,6 +177,7 @@ define([
             render: render,
             renderHbs: renderHbs,
             jumpTo: jumpTo,
+            refresh: refresh,
             loadTemplate: loadTemplate,
             dateFormatTs: dateFormatTs
         };
