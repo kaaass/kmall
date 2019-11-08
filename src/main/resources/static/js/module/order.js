@@ -169,6 +169,27 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         return data.data.requestId;
     };
 
+    /**
+     * 检查下单结果
+     * @param requestId
+     * @returns {Promise<string|*>}
+     */
+    let check = async (requestId) => {
+        // 发送请求
+        let response = await request.get(`/order/request/${requestId}/`,)
+            .catch((e) => {
+                console.error("检查错误：", requestId, e);
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("下单错误：", requestId, response);
+            functions.modal("下单错误", data.message);
+            functions.jumpTo('/my/cart.html', 5000); // 返回购物车
+            return null;
+        }
+        return data.data.orderId;
+    };
+
     return {
         getTypeReadable: getTypeReadable,
         getTypeStatusReadable: getTypeStatusReadable,
@@ -176,6 +197,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         processData: processData,
         getOrder: getOrder,
         renderOrdersByUrl: renderOrdersByUrl,
-        addOrderFromCart: addOrderFromCart
+        addOrderFromCart: addOrderFromCart,
+        check: check
     };
 });
