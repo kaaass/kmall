@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserAddressEntity getDefaultAddressEntityById(String id) throws NotFoundException {
-        return userAddressRepository.findByUidAndDefaultAddressTrue(id)
+        return userAddressRepository.findFirstByUidAndDefaultAddressTrue(id)
                 .orElseThrow(() -> new NotFoundException("未找到该地址！"));
     }
 }

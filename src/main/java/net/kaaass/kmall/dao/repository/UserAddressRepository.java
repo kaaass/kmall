@@ -10,5 +10,5 @@ public interface UserAddressRepository extends JpaRepository<UserAddressEntity, 
 
     List<UserAddressEntity> findAllByUid(String uid);
 
-    Optional<UserAddressEntity> findByUidAndDefaultAddressTrue(String uid);
+    Optional<UserAddressEntity> findFirstByUidAndDefaultAddressTrue(String uid);
 }
