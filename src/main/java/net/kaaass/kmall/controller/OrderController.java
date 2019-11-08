@@ -3,6 +3,7 @@ package net.kaaass.kmall.controller;
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.controller.request.CommentRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
+import net.kaaass.kmall.controller.response.OrderCheckResponse;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
 import net.kaaass.kmall.dto.OrderDto;
 import net.kaaass.kmall.exception.BadRequestException;
@@ -28,7 +29,7 @@ public class OrderController extends BaseController {
     private OrderService orderService;
 
     @GetMapping("/request/{requestId}/")
-    boolean checkRequest(@PathVariable String requestId) throws BadRequestException {
+    OrderCheckResponse checkRequest(@PathVariable String requestId) throws BadRequestException {
         return orderService.checkRequest(requestId);
     }
 

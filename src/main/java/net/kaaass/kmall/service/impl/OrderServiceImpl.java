@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.KmallApplication;
 import net.kaaass.kmall.controller.request.CommentRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
+import net.kaaass.kmall.controller.response.OrderCheckResponse;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
 import net.kaaass.kmall.dao.entity.CommentEntity;
 import net.kaaass.kmall.dao.entity.OrderEntity;
@@ -34,7 +35,6 @@ import net.kaaass.kmall.util.StringUtils;
 import net.kaaass.kmall.vo.UserOrderCountVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -92,16 +92,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean checkRequest(String requestId) throws BadRequestException {
-        var exist = orderRepository.existsByRequestId(requestId);
-        if (exist) {
-            var entity = orderRepository.findByRequestId(requestId)
-                            .orElseThrow(() -> new BadRequestException("请求处理错误！"));
+    public OrderCheckResponse checkRequest(String requestId) throws BadRequestException {
+        var result = new OrderCheckResponse();
+        var order = orderRepository.findByRequestId(requestId);
+        if (order.isPresent()) {
+            var entity = order.get();
             if (entity.getType() == OrderType.ERROR) {
                 throw new BadRequestException(entity.getReason());
             }
+            result.setOrderId(entity.getId());
         }
-        return exist;
+        return result;
     }
 
     @Override

@@ -2,6 +2,7 @@ package net.kaaass.kmall.service;
 
 import net.kaaass.kmall.controller.request.CommentRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
+import net.kaaass.kmall.controller.response.OrderCheckResponse;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
 import net.kaaass.kmall.dao.entity.OrderEntity;
 import net.kaaass.kmall.dto.OrderDto;
@@ -20,7 +21,7 @@ public interface OrderService {
 
     OrderEntity getEntityByIdAndCheck(String id, String uid) throws NotFoundException, ForbiddenException;
 
-    boolean checkRequest(String requestId) throws BadRequestException;
+    OrderCheckResponse checkRequest(String requestId) throws BadRequestException;
 
     OrderDto getById(String id, String uid) throws NotFoundException, ForbiddenException;
 
