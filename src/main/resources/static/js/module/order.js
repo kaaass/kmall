@@ -190,6 +190,27 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         return data.data.orderId;
     };
 
+    /**
+     * 支付
+     * @param orderId
+     * @returns {Promise<null|*>}
+     */
+    let payOrder = async (orderId) => {
+        // 发送请求
+        let response = await request.get(`/order/${orderId}/payCheck/?callback=`,)
+            .catch((e) => {
+                console.error("支付失败：", orderId, e);
+                functions.modal("错误", "支付失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("支付错误：", orderId, response);
+            functions.modal("支付错误", data.message);
+            return null;
+        }
+        return data.data.id;
+    };
+
     return {
         getTypeReadable: getTypeReadable,
         getTypeStatusReadable: getTypeStatusReadable,
@@ -198,6 +219,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         getOrder: getOrder,
         renderOrdersByUrl: renderOrdersByUrl,
         addOrderFromCart: addOrderFromCart,
-        check: check
+        check: check,
+        payOrder: payOrder
     };
 });
