@@ -52,7 +52,11 @@
                 </div>
             </div>
             <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
-                <a href="/order/confirm.html?id={{id}}" class="btn btn-outline-danger btn-lg btn-block">购买</a>
+                {{#if quickBuy}}
+                    <a href="#" class="btn btn-outline-danger btn-lg btn-block not-yet-sale">{{buyTips}}</a>
+                {{else}}
+                    <a href="/order/confirm.html?id={{id}}" class="btn btn-outline-danger btn-lg btn-block">购买</a>
+                {{/if}}
             </div>
             <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
                 <a href="/my/cart.html?id={{id}}" class="btn btn-outline-primary btn-lg btn-block">加入购物车</a>

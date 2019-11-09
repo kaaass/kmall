@@ -55,7 +55,8 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
             functions.modal("错误", data.message);
             return null;
         }
-        return data.data;
+        data = (await processData([data.data]))[0]; // silly
+        return data;
     };
 
     /**
@@ -108,8 +109,10 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
             if (product.startSellTime > now) {
                 let time = functions.dateFormatTs(product.startSellTime, 'm月d日 H:i:s');
                 product.buyTips = `${time} 开售`;
+                product.quickBuy = true;
             } else {
                 product.buyTips = `¥ ${product.extra.promotes.price} 购买`;
+                product.quickBuy = false;
             }
         }
         return products;
