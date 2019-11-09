@@ -45,6 +45,6 @@ public class UserAuthEntity {
     private Timestamp registerTime;
 
     @Column(name = "last_login_time",
-            columnDefinition = "TIMESTAMP DEFAULT NULL")
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp lastLoginTime;
 }
