@@ -1,6 +1,6 @@
 # KMall
 
-[![Build Status](https://www.travis-ci.org/kaaass/kmall.svg?branch=master)](https://www.travis-ci.org/kaaass/kmall)
+[![Build Status](https://www.travis-ci.com/kaaass/kmall.svg?branch=master)](https://www.travis-ci.com/kaaass/kmall)
 
 一个由 SpringBoot + Hibernate 构建的简易商城。
 
