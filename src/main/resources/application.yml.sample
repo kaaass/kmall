@@ -37,7 +37,7 @@ spring:
         deny: 192.168.1.73
         reset-enable: false
         login-username: admin   # Druid管理页面账户
-        login-password: ***     # Druid管理页面密码
+        login-password: 123456  # Druid管理页面密码
   jpa:
     properties:
       hibernate:
@@ -61,7 +61,7 @@ logging:
 
 jwt:
   header: Authorization
-  secret: ***           # 登录令牌密钥
+  secret: 123456        # 登录令牌密钥
   expiration: 604800 # One week
 
 file:
