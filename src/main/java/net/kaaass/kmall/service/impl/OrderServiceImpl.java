@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.KmallApplication;
 import net.kaaass.kmall.controller.request.CommentRequest;
+import net.kaaass.kmall.controller.request.OrderCreateMultiRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
 import net.kaaass.kmall.controller.response.OrderCheckResponse;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
@@ -237,8 +238,10 @@ public class OrderServiceImpl implements OrderService {
         /*
           删除购物车中已有的商品
         */
-        for (var cartItem : context.getRequest().getCartItems()) {
-            cartRepository.deleteById(cartItem.getId());
+        if (request instanceof OrderCreateMultiRequest) {
+            for (var cartItem : ((OrderCreateMultiRequest) request).getCartItems()) {
+                cartRepository.deleteById(cartItem.getId());
+            }
         }
     }
 

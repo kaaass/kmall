@@ -2,12 +2,15 @@ package net.kaaass.kmall.promote;
 
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.controller.request.CartAddRequest;
+import net.kaaass.kmall.controller.request.OrderCreateMultiRequest;
+import net.kaaass.kmall.controller.request.OrderCreateSingleRequest;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.ProductMapper;
 import net.kaaass.kmall.mapper.PromoteMapper;
 import net.kaaass.kmall.service.CartService;
 import net.kaaass.kmall.service.OrderRequestContext;
+import net.kaaass.kmall.service.ProductService;
 import net.kaaass.kmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,9 @@ public class OrderPromoteContextFactory {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private ProductService productService;
+
     /**
      * 从请求中建立订单打折上下文
      * @param requestContext
@@ -35,11 +41,22 @@ public class OrderPromoteContextFactory {
         var request = requestContext.getRequest();
         var products = new ArrayList<PromoteItem>();
         // 商品
-        for (var cartItem : request.getCartItems()) {
-            var entity = cartService.getEntityById(cartItem.getId());
-            var item = PromoteMapper.INSTANCE.cartEntityToPromoteItem(entity);
+        if (request instanceof OrderCreateMultiRequest) {
+            for (var cartItem : ((OrderCreateMultiRequest) request).getCartItems()) {
+                var entity = cartService.getEntityById(cartItem.getId());
+                var item = PromoteMapper.INSTANCE.cartEntityToPromoteItem(entity);
+                item.setPrice(item.getProduct().getPrice());
+                products.add(item);
+            }
+        } else if (request instanceof OrderCreateSingleRequest) {
+            var entity = productService.getEntityById(((OrderCreateSingleRequest) request).getProductId());
+            var item = new PromoteItem();
+            item.setProduct(ProductMapper.INSTANCE.productEntityToDto(entity));
+            item.setCount(1);
             item.setPrice(item.getProduct().getPrice());
             products.add(item);
+        } else {
+            throw new NotFoundException("未知订单请求");
         }
         result.setProducts(products);
         // 价格

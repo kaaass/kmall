@@ -21,7 +21,22 @@ require([
 
         // 解析Url并进行渲染
         if (functions.requestParams.has(constants.PARAM_ID)) {
-            // TODO 单商品购买
+            // 单商品购买
+            let productId = functions.requestParams.get(constants.PARAM_ID);
+            product.getProduct(productId)
+                .then(product => {
+                    let cartInfo = cart.generateCartInfo(product);
+                    return functions.renderHbs($list, TEMPLATE_ITEM_LIST, cartInfo);
+                })
+                .then(() => {
+                    // 绑定下单事件
+                    $('.btn-submit').click(() => {
+                        order.addOrderFromProduct(productId, curAddressId)
+                            .then(requestId => {
+                                functions.jumpTo(`status.html?id=${requestId}`, 0);
+                            });
+                    });
+                });
         } else if (functions.requestParams.has(constants.PARAM_CART_IDS)) {
             // 购物车购买
             let cartIds = functions.requestParams.get(constants.PARAM_CART_IDS).split(",");

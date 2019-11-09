@@ -1,7 +1,11 @@
 /**
  * 订单类函数
  */
-define(['jquery', 'module/functions', 'module/auth'], function ($, functions, auth) {
+define([
+    'jquery',
+    'module/functions',
+    'module/constants',
+    'module/auth'], function ($, functions, constants, auth) {
 
     let request = auth.getAxiosInstance();
 
@@ -145,6 +149,32 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
     };
 
     /**
+     * 通过商品下单
+     * @param productId
+     * @param addressId
+     * @returns {Promise<string|null>}
+     */
+    let addOrderFromProduct = async (productId, addressId) => {
+        // 发送请求
+        console.log(productId, addressId);
+        let response = await request.post('/order/', {
+            type: constants.orderRequestType.SINGLE,
+            productId: productId,
+            addressId: addressId
+        }).catch((e) => {
+            console.error("下单失败：", productId, addressId, e);
+            functions.modal("错误", "下单失败！请检查网络连接。");
+        });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("下单错误：", url, response);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return data.data.requestId;
+    };
+
+    /**
      * 通过购物车项目下单
      * @param cartIds
      * @param addressId
@@ -160,6 +190,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         }
         // 发送请求
         let response = await request.post('/order/', {
+            type: constants.orderRequestType.MULTI,
             cartItems: cartItems,
             addressId: addressId
         }).catch((e) => {
@@ -243,6 +274,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
         processData: processData,
         getOrder: getOrder,
         renderOrdersByUrl: renderOrdersByUrl,
+        addOrderFromProduct: addOrderFromProduct,
         addOrderFromCart: addOrderFromCart,
         check: check,
         payOrder: payOrder,

@@ -14,6 +14,11 @@ define([], function () {
         TEMPLATE_PATH: '/templates/',
         TEMPLATE_SUFFIX: '.hbs',
 
-        TITLE_SUFFIX: " - KMall"
+        TITLE_SUFFIX: " - KMall",
+
+        orderRequestType: {
+            SINGLE: 'SINGLE',
+            MULTI: 'MULTI'
+        }
     };
 });

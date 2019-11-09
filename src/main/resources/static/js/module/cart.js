@@ -46,6 +46,24 @@ define([
     };
 
     /**
+     * 从商品产生购物车数据
+     *
+     * @param product
+     * @returns {{summary: *, items: [*]}}
+     */
+    let generateCartInfo = (product) => {
+        let cartItem = {};
+        cartItem.count = 1;
+        cartItem.product = product;
+        cartItem.totalPrice = cartItem.product.extra.promotes.price;
+        // 构造返回信息
+        return globalCartInfo = {
+            items: [cartItem],
+            summary: getSummary([cartItem])
+        };
+    };
+
+    /**
      * 获得购物车数据
      *
      * @param inIds 筛选其中的id
@@ -143,6 +161,7 @@ define([
         cartItemMap: cartItemMap,
 
         getCartInfo: getCartInfo,
+        generateCartInfo: generateCartInfo,
         processData: processData,
         deleteItem: deleteItem,
         modifyCount: modifyCount,
