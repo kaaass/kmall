@@ -12,7 +12,8 @@
 
 ### 准备工作
 
-将`src/resources/application.yml.sample`文件名修改为`application.yml`，并根据注释配置数据库连接、Druid、Redis、RabbitMQ等。
+1. 安装MariaDB、RabbitMQ、Redis
+2. 将`src/resources/application.yml.sample`文件名修改为`application.yml`，并根据注释配置数据库连接、Druid、Redis、RabbitMQ等。
 
 ### 编译
 
