@@ -1,5 +1,8 @@
 language: java
 jdk: oraclejdk11
+sudo: required
+dist: trusty
+group: edge
 
 services:
   - rabbitmq
@@ -8,7 +11,7 @@ addons:
   mariadb: '10.0'
 
 before_install:
-  - mysql -e 'create database kmall;'
+  - sudo mysql -e 'create database kmall;'
   - cp src/main/resources/application.yml.sample src/main/resources/application.yml
 script:
   - ./mvnw clean install -B
