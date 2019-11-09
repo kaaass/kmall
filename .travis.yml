@@ -1,5 +1,14 @@
 language: java
 jdk: oraclejdk11
 
+services:
+  - rabbitmq
+  - redis-server
+addons:
+  mariadb: '10.0'
+
+before_install:
+  - mysql -e 'create database kmall;'
+  - cp src/main/resources/application.yml.sample src/main/resources/application.yml
 script:
   - ./mvnw clean install -B
