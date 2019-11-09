@@ -1,12 +1,17 @@
 package net.kaaass.kmall;
 
+import net.kaaass.kmall.dao.entity.UserAuthEntity;
 import net.kaaass.kmall.dao.repository.MetadataRepository;
 import net.kaaass.kmall.dao.repository.UserAuthRepository;
 import net.kaaass.kmall.dao.repository.UserMetadataRepository;
 import net.kaaass.kmall.dto.UserAuthDto;
+import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.UserMapper;
+import net.kaaass.kmall.service.AuthService;
+import net.kaaass.kmall.service.UserService;
 import net.kaaass.kmall.service.metadata.MetadataManager;
 import net.kaaass.kmall.service.metadata.UserMetadataManager;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +25,13 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class MetadataTests {
 
-    UserAuthDto authDto;
+    private UserAuthDto authDto;
 
     @Autowired
     UserAuthRepository authRepository;
+
+    @Autowired
+    AuthService authService;
 
     @Autowired
     UserMetadataRepository userMetadataRepository;
@@ -36,9 +44,19 @@ public class MetadataTests {
 
     @Before
     public void prepareUser() {
-        authDto = authRepository.findByPhone("admin")
+        var phone = "test_user";
+        var toAdd = new UserAuthDto();
+        toAdd.setPhone(phone);
+        toAdd.setPassword(phone);
+        authService.register(toAdd);
+        authDto = authRepository.findByPhone(phone)
                 .map(UserMapper.INSTANCE::userAuthEntityToDto)
                 .orElseThrow();
+    }
+
+    @After
+    public void removeUser() throws NotFoundException {
+        authService.remove(authDto.getId());
     }
 
     @Test

@@ -3,6 +3,7 @@ package net.kaaass.kmall.service;
 import net.kaaass.kmall.controller.response.LoginResponse;
 import net.kaaass.kmall.dto.AuthTokenDto;
 import net.kaaass.kmall.dto.UserAuthDto;
+import net.kaaass.kmall.exception.NotFoundException;
 
 import java.util.Optional;
 
@@ -35,4 +36,10 @@ public interface AuthService {
      * @return
      */
     boolean validate(UserAuthDto user);
+
+    /**
+     * 删除用户
+     * @param id
+     */
+    void remove(String id) throws NotFoundException;
 }

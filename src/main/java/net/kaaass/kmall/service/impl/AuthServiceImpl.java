@@ -7,9 +7,11 @@ import net.kaaass.kmall.dao.entity.UserAuthEntity;
 import net.kaaass.kmall.dao.entity.UserInfoEntity;
 import net.kaaass.kmall.dao.repository.UserAuthRepository;
 import net.kaaass.kmall.dao.repository.UserInfoRepository;
+import net.kaaass.kmall.dao.repository.UserMetadataRepository;
 import net.kaaass.kmall.dto.AuthTokenDto;
 import net.kaaass.kmall.dto.UserAuthDto;
 import net.kaaass.kmall.event.UserRegisterEvent;
+import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.security.JwtTokenUtil;
 import net.kaaass.kmall.service.AuthService;
 import net.kaaass.kmall.util.Constants;
@@ -48,6 +50,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private UserInfoRepository infoRepository;
+
+    @Autowired
+    private UserMetadataRepository userMetadataRepository;
 
     @Override
     public Optional<UserAuthDto> register(UserAuthDto userToAdd) {
@@ -117,6 +122,16 @@ public class AuthServiceImpl implements AuthService {
     public boolean validate(UserAuthDto user) {
         // TODO 短信验证
         return false;
+    }
+
+    @Override
+    public void remove(String id) throws NotFoundException {
+        var entity = authRepository.findById(id)
+                    .orElseThrow(() -> new NotFoundException("未找到该用户！"));
+        infoRepository.deleteAllByAuth(entity);
+        authRepository.delete(entity);
+        // Metadata 不是外键约束
+        userMetadataRepository.deleteAllByUid(id);
     }
 
     private boolean validateTokenViaDatabase(String oldToken) {
