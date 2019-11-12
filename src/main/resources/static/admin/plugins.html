@@ -109,7 +109,7 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">插件管理</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <button type="button" class="btn btn-sm btn-outline-success">
+                    <button type="button" class="btn btn-sm btn-outline-success btn-add">
                         添加插件
                     </button>
                 </div>
@@ -122,9 +122,35 @@
     </div>
 </div>
 
+<!-- 添加插件模态框 -->
+<div class="modal fade" id="pluginModal" tabindex="-1" role="dialog" aria-labelledby="pluginModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pluginModalTitle">添加插件</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="pluginModalBody">
+                <div class="plugin-form">
+                    <div class="form-group">
+                        <label for="pluginPath">插件地址</label>
+                        <input type="text" class="form-control" id="pluginPath"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-add" type="button" class="btn btn-primary" data-dismiss="modal">添加</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 <script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
 <script src="/js/config.js"></script>
-<script src="/js/admin/products.js"></script>
+<script src="/js/admin/plugins.js"></script>
 </body>
 </html>
