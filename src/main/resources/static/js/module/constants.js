@@ -6,6 +6,7 @@ define([], function () {
     return {
         KEY_AUTH: 'AUTH',
         KEY_NAME: 'NAME',
+        KEY_ADMIN_AUTH: 'ADMIN_AUTH',
 
         PARAM_ID: 'id',
         PARAM_TYPE: 'type',
