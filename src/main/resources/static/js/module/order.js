@@ -7,7 +7,8 @@ define([
     'module/constants',
     'module/auth'], function ($, functions, constants, auth) {
 
-    let request = auth.getAxiosInstance();
+    let request = auth.getAxiosInstance(),
+        adminRequest = auth.getAxiosInstance(true);
 
     /**
      * 缓存的订单
@@ -77,10 +78,26 @@ define([
     };
 
     /**
+     * 获取管理员操作
+     * @param type
+     * @returns {string|null}
+     */
+    let getAdminAction = (type) => {
+        if (type === 'CREATED') {
+            return '确认付款';
+        } else if (type === 'PAID') {
+            return '发货';
+        } else {
+            return null;
+        }
+    };
+
+    /**
      * 处理请求得到的订单数据
      * @param orders
+     * @param isAdmin
      */
-    let processData = async (orders) => {
+    let processData = async (orders, isAdmin = false) => {
         for (const order of orders) {
             // 添加格式化时间
             order.createTimeReadable = functions.dateFormatTs(order.createTime);
@@ -97,6 +114,10 @@ define([
             // 获取actionReadable
             order.action = order.type;
             order.actionReadable = getTypeAction(order.type);
+            // 管理相关信息
+            if (isAdmin) {
+                order.adminActionReadable = getAdminAction(order.type);
+            }
             // 缓存Map
             ordersMap[order.id] = order;
         }
@@ -106,10 +127,17 @@ define([
     /**
      * 获得订单信息
      * @param orderId
+     * @param isAdmin
      * @returns {Promise<null|*>}
      */
-    let getOrder = async (orderId) => {
-        let response = await request.get(`/order/${orderId}/`)
+    let getOrder = async (orderId, isAdmin = false) => {
+        let promise;
+        if (isAdmin) {
+            promise = adminRequest.get(`/order/admin/${orderId}/`);
+        } else {
+            promise = request.get(`/order/${orderId}/`);
+        }
+        let response = await promise
             .catch((e) => {
                 console.error("获取订单数据失败：", orderId, e);
                 functions.modal("错误", "获取订单数据失败！请检查网络连接。");
@@ -143,6 +171,31 @@ define([
             return null;
         }
         let orders = await processData(data.data);
+        return await functions.renderHbs($el, template, {
+            orders: orders
+        });
+    };
+
+    /**
+     * 由url渲染管理员订单
+     * @param url 获得url
+     * @param $el 渲染dom
+     * @param template 模板路径
+     */
+    let renderAdminOrdersByUrl = async (url, $el, template) => {
+        let response = await adminRequest.get(url)
+            .catch((e) => {
+                console.error("获取订单数据失败：", url, e);
+                functions.modal("错误", "无法获取数据，请检查网络连接！");
+            });
+        // 处理返回
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("获取订单数据错误：", url, response);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        let orders = await processData(data.data, true);
         return await functions.renderHbs($el, template, {
             orders: orders
         });
@@ -274,6 +327,7 @@ define([
         processData: processData,
         getOrder: getOrder,
         renderOrdersByUrl: renderOrdersByUrl,
+        renderAdminOrdersByUrl: renderAdminOrdersByUrl,
         addOrderFromProduct: addOrderFromProduct,
         addOrderFromCart: addOrderFromCart,
         check: check,

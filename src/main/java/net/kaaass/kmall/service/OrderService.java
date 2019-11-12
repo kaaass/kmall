@@ -23,13 +23,19 @@ public interface OrderService {
 
     OrderCheckResponse checkRequest(String requestId) throws BadRequestException;
 
-    OrderDto getById(String id, String uid) throws NotFoundException, ForbiddenException;
+    OrderDto getById(String id) throws NotFoundException;
+
+    OrderDto getByIdAndCheck(String id, String uid) throws NotFoundException, ForbiddenException;
+
+    List<OrderDto> getAll(Pageable pageable);
 
     List<OrderDto> getAllByUid(String uid, Pageable pageable);
 
     UserOrderCountVo getUserOrderCount(String uid);
 
     List<OrderDto> getAllByUidAndType(String uid, OrderType type, Pageable pageable);
+
+    List<OrderDto> getAllByType(OrderType type, Pageable pageable);
 
     OrderRequestResponse createToQueue(String uid, OrderCreateRequest request) throws InternalErrorExeption, NotFoundException;
 

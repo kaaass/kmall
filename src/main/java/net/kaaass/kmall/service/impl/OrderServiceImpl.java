@@ -107,8 +107,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto getById(String id, String uid) throws NotFoundException, ForbiddenException {
+    public OrderDto getById(String id) throws NotFoundException {
+        return OrderMapper.INSTANCE.orderEntityToDto(this.getEntityById(id));
+    }
+
+    @Override
+    public OrderDto getByIdAndCheck(String id, String uid) throws NotFoundException, ForbiddenException {
         return OrderMapper.INSTANCE.orderEntityToDto(this.getEntityByIdAndCheck(id, uid));
+    }
+
+    @Override
+    public List<OrderDto> getAll(Pageable pageable) {
+        return orderRepository.findAllByTypeIsNotOrderByCreateTimeDesc(OrderType.ERROR, pageable)
+                .stream()
+                .map(OrderMapper.INSTANCE::orderEntityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -134,6 +147,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> getAllByUidAndType(String uid, OrderType type, Pageable pageable) {
         return orderRepository.findAllByUidAndTypeOrderByCreateTimeDesc(uid, type, pageable)
+                .stream()
+                .map(OrderMapper.INSTANCE::orderEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDto> getAllByType(OrderType type, Pageable pageable) {
+        return orderRepository.findAllByTypeOrderByCreateTimeDesc(type, pageable)
                 .stream()
                 .map(OrderMapper.INSTANCE::orderEntityToDto)
                 .collect(Collectors.toList());

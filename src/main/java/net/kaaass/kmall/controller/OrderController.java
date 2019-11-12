@@ -2,9 +2,7 @@ package net.kaaass.kmall.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.controller.request.CommentRequest;
-import net.kaaass.kmall.controller.request.OrderCreateMultiRequest;
 import net.kaaass.kmall.controller.request.OrderCreateRequest;
-import net.kaaass.kmall.controller.request.OrderCreateSingleRequest;
 import net.kaaass.kmall.controller.response.OrderCheckResponse;
 import net.kaaass.kmall.controller.response.OrderRequestResponse;
 import net.kaaass.kmall.dto.OrderDto;
@@ -37,12 +35,24 @@ public class OrderController extends BaseController {
 
     @GetMapping("/{id}/")
     OrderDto getById(@PathVariable String id) throws NotFoundException, ForbiddenException {
-        return orderService.getById(id, getUid());
+        return orderService.getByIdAndCheck(id, getUid());
+    }
+
+    @GetMapping("/admin/{id}/")
+    @PreAuthorize("hasRole('ADMIN')")
+    OrderDto getByIdAdmin(@PathVariable String id) throws NotFoundException, ForbiddenException {
+        return orderService.getById(id);
     }
 
     @GetMapping("/")
     List<OrderDto> getAllByUid(Pageable pageable) {
         return orderService.getAllByUid(getUid(), pageable);
+    }
+
+    @GetMapping("/admin/")
+    @PreAuthorize("hasRole('ADMIN')")
+    List<OrderDto> getAll(Pageable pageable) {
+        return orderService.getAll(pageable);
     }
 
     @PostMapping("/")
@@ -61,6 +71,19 @@ public class OrderController extends BaseController {
             throw new NotFoundException("订单类型错误！");
         }
         return orderService.getAllByUidAndType(getUid(), type, pageable);
+    }
+
+    @GetMapping("/admin/type/{typeId}/")
+    @PreAuthorize("hasRole('ADMIN')")
+    List<OrderDto> getAllByType(@PathVariable String typeId, Pageable pageable) throws NotFoundException {
+        OrderType type;
+        try {
+            type = OrderType.getTypeById(Integer.parseInt(typeId))
+                    .orElseThrow(() -> new NotFoundException("订单类型不存在！"));
+        } catch (NumberFormatException e) {
+            throw new NotFoundException("订单类型错误！");
+        }
+        return orderService.getAllByType(type, pageable);
     }
 
     /**

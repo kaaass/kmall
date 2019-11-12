@@ -15,15 +15,25 @@ define(['jquery', 'module/functions', 'module/constants', 'axios'], function ($,
         return json;
     };
 
+    let forbiddenAdminHandler = (data) => {
+        let json = JSON.parse(data);
+        if (json.status === 403) {
+            functions.modal("错误", "您的登录已过期！正在跳转至登录页面");
+            storage.removeItem(constants.KEY_ADMIN_AUTH);
+            functions.jumpTo("/admin/login.html", 3000);
+        }
+        return json;
+    };
+
     /**
      * 获得请求用Axios实例
      * @returns {Axios|*}
      */
-    let getAxiosInstance = () => {
-        let auth = storage.getItem(constants.KEY_AUTH);
+    let getAxiosInstance = (isAdmin = false) => {
+        let auth = storage.getItem(isAdmin ? constants.KEY_ADMIN_AUTH : constants.KEY_AUTH);
         return axios.create({
             headers: {'Authorization': auth},
-            transformResponse: [forbiddenHandler]
+            transformResponse: [isAdmin ? forbiddenAdminHandler : forbiddenHandler]
         });
     };
 

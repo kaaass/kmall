@@ -23,8 +23,12 @@ require([
             return;
         }
 
+        // 判断Admin登录
+        let storage = window.localStorage;
+        let admin = storage.getItem(constants.KEY_ADMIN_AUTH) != null;
+
         // 获取物品详细信息
-        order.getOrder(curOrderId)
+        order.getOrder(curOrderId, admin)
             .then(async (orderData) => {
                 // 处理返回
                 return (await order.processData([orderData]))[0];
