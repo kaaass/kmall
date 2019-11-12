@@ -87,6 +87,8 @@ define([
             return '确认付款';
         } else if (type === 'PAID') {
             return '发货';
+        } else if (type === 'COMMENTED') {
+            return '退款';
         } else {
             return null;
         }
@@ -285,9 +287,15 @@ define([
      * @param orderId
      * @returns {Promise<null|*>}
      */
-    let payOrder = async (orderId) => {
+    let payOrder = async (orderId, isAdmin = false) => {
         // 发送请求
-        let response = await request.get(`/order/${orderId}/payCheck/?callback=`,)
+        let promise;
+        if (isAdmin) {
+            promise = adminRequest.post(`/order/${orderId}/pay/`);
+        } else {
+            promise = request.get(`/order/${orderId}/payCheck/?callback=`);
+        }
+        let response = await promise
             .catch((e) => {
                 console.error("支付失败：", orderId, e);
                 functions.modal("错误", "支付失败！请检查网络连接。");
@@ -301,6 +309,12 @@ define([
         return data.data.id;
     };
 
+    /**
+     * 评价订单
+     * @param orderId
+     * @param comments
+     * @returns {Promise<boolean|*>}
+     */
     let commentOrder = async (orderId, comments) => {
         // 发送请求
         let response = await request.post(`/order/${orderId}/comment/`, {
@@ -313,6 +327,49 @@ define([
         if (data.status !== 200) {
             console.error("评论错误：", orderId, response);
             functions.modal("评论错误", data.message);
+            return false;
+        }
+        return data.data.id;
+    };
+
+    /**
+     * 订单发货
+     * @param orderId
+     * @param deliverCode
+     * @returns {Promise<boolean|*>}
+     */
+    let deliverOrder = async (orderId, deliverCode) => {
+        // 发送请求
+        let response = await adminRequest.post(`/order/${orderId}/deliver/?deliverCode=${deliverCode}`)
+            .catch((e) => {
+                console.error("发货失败：", orderId, e);
+                functions.modal("错误", "发货失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("发货错误：", orderId, response);
+            functions.modal("发货错误", data.message);
+            return false;
+        }
+        return data.data.id;
+    };
+
+    /**
+     * 订单退款
+     * @param orderId
+     * @returns {Promise<boolean|*>}
+     */
+    let refundOrder = async (orderId) => {
+        // 发送请求
+        let response = await adminRequest.post(`/order/${orderId}/refund/`)
+            .catch((e) => {
+                console.error("退款失败：", orderId, e);
+                functions.modal("错误", "退款失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("退款错误：", orderId, response);
+            functions.modal("退款错误", data.message);
             return false;
         }
         return data.data.id;
@@ -332,6 +389,8 @@ define([
         addOrderFromCart: addOrderFromCart,
         check: check,
         payOrder: payOrder,
-        commentOrder: commentOrder
+        commentOrder: commentOrder,
+        deliverOrder: deliverOrder,
+        refundOrder: refundOrder
     };
 });

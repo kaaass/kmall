@@ -80,7 +80,8 @@ define(['jquery', 'module/functions', 'module/constants', 'axios'], function ($,
      */
     let exit = (isAdmin = false) => {
         storage.removeItem(isAdmin ? constants.KEY_ADMIN_AUTH : constants.KEY_AUTH);
-        functions.jumpTo('/');
+        functions.modal("信息", "您已退出登录！");
+        functions.jumpTo(isAdmin ? '/admin/login.html' : '/');
     };
 
     // 导航栏变更
