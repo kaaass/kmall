@@ -21,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -100,8 +101,12 @@ public class AuthServiceImpl implements AuthService {
 
             // 拼接凭据
             return Optional.of(userDetails)
-                    .map(jwtUser -> jwtTokenUtil.generateToken(jwtUser))
-                    .map(authTokenDto -> new LoginResponse(authTokenDto, phone));
+                    .map(jwtUser -> {
+                        var adminRole = new SimpleGrantedAuthority("ROLE_ADMIN");
+                        var authTokenDto = jwtTokenUtil.generateToken(jwtUser);
+
+                        return new LoginResponse(authTokenDto, phone, jwtUser.getAuthorities().contains(adminRole));
+                    });
         } catch (AuthenticationException e) {
             log.info("登录失败", e);
             return Optional.empty();

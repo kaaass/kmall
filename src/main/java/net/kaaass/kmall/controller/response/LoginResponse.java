@@ -11,4 +11,6 @@ public class LoginResponse {
     private AuthTokenDto authToken;
 
     private String phone;
+
+    private boolean admin;
 }

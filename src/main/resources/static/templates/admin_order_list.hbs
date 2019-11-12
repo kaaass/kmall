@@ -1,0 +1,80 @@
+<!-- 管理员订单模板 -->
+<div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row py-2 px-3 mb-3 shadow-sm h-md-250 position-relative">
+
+    <div class="col-6 d-flex flex-column position-static">
+        <small class="my-auto">商品</small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto">单价</small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto">数量</small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto">实付款</small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto">交易状态</small>
+    </div>
+
+    <div class="col d-flex flex-column position-static">
+        <small class="my-auto">操作</small>
+    </div>
+</div>
+{{#each orders}}
+<div class="container bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
+    <div class="row px-3 py-2">
+        <div class="col-2 px-0">
+            <small class="my-auto"><b>{{createTimeReadable}}</b></small>
+        </div>
+        <div class="col-2 px-0">
+            <small class="my-auto">订单号：{{id}}</small>
+        </div>
+        <div class="col-2 px-0">
+            <small class="my-auto">用户手机号：{{user.phone}}</small>
+        </div>
+    </div>
+    <div class="row px-3">
+        <table class="col-8 table table-striped table-hover">
+            <tbody>
+            {{#each products}}
+            <tr>
+                <td style="width: 25%">
+                    <img class="border rounded overflow-hidden" width="80" height="80" src="{{product.thumbnail.url}}" alt="商品描述">
+                </td>
+                <td style="width: 50%">
+                    <small class="my-auto">{{product.name}}</small>
+                </td>
+                <td style="width: 12.5%">
+                    <small class="my-auto">¥ {{price}}</small>
+                </td>
+                <td style="width: 12.5%">
+                    <small class="my-auto">{{count}}</small>
+                </td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+
+        <div class="col p-2 d-flex flex-column position-static">
+            <p class="text-center"><b>¥ {{price}}</b></p>
+            <p class="text-center"><small>含运费：¥ {{mailPrice}}</small></p>
+        </div>
+
+        <div class="col p-2 d-flex flex-column position-static">
+            <small class="text-center">{{typeReadable}}</small>
+        </div>
+
+        <div class="col d-flex flex-column position-static">
+            {{#if actionReadable}}
+                <button id={{id}} class="btn btn-primary btn-action-{{action}}">{{actionReadable}}</button>
+            {{/if}}
+            <a class="btn btn-link btn-detail" href="#"><small>查看详情</small></a>
+        </div>
+    </div>
+</div>
+{{/each}}
