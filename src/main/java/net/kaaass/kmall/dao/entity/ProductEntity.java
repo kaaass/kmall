@@ -21,7 +21,7 @@ public class ProductEntity {
     @Column(name = "product_name")
     private String name;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "thumbnail",
             unique = true)
     private MediaEntity thumbnail;
@@ -53,7 +53,6 @@ public class ProductEntity {
 
     @Column(name = "start_sell_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @Generated(GenerationTime.INSERT)
     private Timestamp startSellTime;
 
     @Column(name = "create_time",

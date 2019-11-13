@@ -4,6 +4,7 @@ import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.controller.response.ProductCommentResponse;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dto.ProductDto;
+import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,10 @@ import java.util.Optional;
 public interface ProductService {
 
     Optional<ProductDto> addProduct(ProductAddRequest userToAdd);
+
+    ProductDto editProduct(String id, ProductAddRequest userToAdd) throws NotFoundException, InternalErrorExeption;
+
+    void removeProduct(String id);
 
     ProductDto getById(String id) throws NotFoundException;
 

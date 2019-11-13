@@ -4,6 +4,7 @@ import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.controller.response.ProductCommentResponse;
 import net.kaaass.kmall.dto.CommentDto;
 import net.kaaass.kmall.dto.ProductDto;
+import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.service.ProductService;
 import net.kaaass.kmall.vo.CommentVo;
@@ -29,6 +30,19 @@ public class ProductController extends BaseController {
     public ProductDto addProduct(@RequestBody ProductAddRequest productDto) {
         // TODO 输入校验
         return productService.addProduct(productDto).orElseThrow();
+    }
+
+    @PostMapping("/{id}/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ProductDto editProduct(@PathVariable String id, @RequestBody ProductAddRequest productDto) throws NotFoundException, InternalErrorExeption {
+        // TODO 输入校验
+        return productService.editProduct(id, productDto);
+    }
+
+    @DeleteMapping("/{id}/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void removeProduct(@PathVariable String id) {
+        productService.removeProduct(id);
     }
 
     @GetMapping("/{id}/")

@@ -10,6 +10,7 @@ import net.kaaass.kmall.dao.repository.CommentRepository;
 import net.kaaass.kmall.dao.repository.OrderItemRepository;
 import net.kaaass.kmall.dao.repository.ProductRepository;
 import net.kaaass.kmall.dto.ProductDto;
+import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.ProductMapper;
 import net.kaaass.kmall.mapper.UserMapper;
@@ -77,6 +78,7 @@ public class ProductServiceImpl implements ProductService {
         entity.setPrice(productToAdd.getPrice());
         entity.setMailPrice(productToAdd.getMailPrice());
         entity.setBuyLimit(productToAdd.getBuyLimit());
+        entity.setStartSellTime(Timestamp.valueOf(productToAdd.getStartSellTime()));
         var storage = new ProductStorageEntity();
         storage.setRest(productToAdd.getRest());
         entity.setStorage(storage);
@@ -91,6 +93,37 @@ public class ProductServiceImpl implements ProductService {
             log.info("插入时发生错误", e);
             return Optional.empty();
         }
+    }
+
+    @Override
+    public ProductDto editProduct(String id, ProductAddRequest productToAdd) throws NotFoundException, InternalErrorExeption {
+        var entity = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("未找到此商品！"));
+        entity.setName(productToAdd.getName());
+        entity.setPrice(productToAdd.getPrice());
+        entity.setMailPrice(productToAdd.getMailPrice());
+        entity.setBuyLimit(productToAdd.getBuyLimit());
+        entity.setStartSellTime(Timestamp.valueOf(productToAdd.getStartSellTime()));
+        entity.getStorage().setRest(productToAdd.getRest());
+        try {
+            if (!productToAdd.getThumbnailId().equals(entity.getThumbnail().getId())) {
+                var thumbnail = resourceManager.getEntity(productToAdd.getThumbnailId()).orElseThrow();
+                entity.setThumbnail(thumbnail);
+            }
+            if (!productToAdd.getCategoryId().equals(entity.getCategory().getId())) {
+                var category = categoryRepository.findById(productToAdd.getCategoryId()).orElseThrow();
+                entity.setCategory(category);
+            }
+            return ProductMapper.INSTANCE.productEntityToDto(productRepository.save(entity));
+        } catch (Exception e) {
+            log.info("插入时发生错误", e);
+            throw new InternalErrorExeption("发生未知错误！", e);
+        }
+    }
+
+    @Override
+    public void removeProduct(String id) {
+        productRepository.deleteById(id);
     }
 
     /**

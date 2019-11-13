@@ -146,6 +146,17 @@ define([
             });
         };
 
+        /**
+         * 日期转时间戳
+         * @param date
+         * @returns {number}
+         */
+        let dateToTs = (date) => {
+            date = date.substring(0, 19);
+            date = date.replace(/-/g,'/');
+            return new Date(date).getTime() / 1000;
+        };
+
         // 添加模态框
         let modalSrc = `
     <!-- 模态框 -->
@@ -179,6 +190,7 @@ define([
             jumpTo: jumpTo,
             refresh: refresh,
             loadTemplate: loadTemplate,
-            dateFormatTs: dateFormatTs
+            dateFormatTs: dateFormatTs,
+            dateToTs: dateToTs
         };
     });

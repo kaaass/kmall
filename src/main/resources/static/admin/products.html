@@ -109,7 +109,7 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">商品管理</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <button type="button" class="btn btn-sm btn-outline-success">
+                    <button type="button" id="btn-create" class="btn btn-sm btn-outline-success">
                         新增商品
                     </button>
                 </div>
@@ -122,9 +122,63 @@
     </div>
 </div>
 
+<!-- 添加商品模态框 -->
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalTitle">添加商品</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="productModalBody">
+                <div class="plugin-form">
+                    <div class="form-group">
+                        <label for="name">商品名称</label>
+                        <input type="text" class="form-control" id="name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="thumbnailId">缩略图</label>
+                        <input type="text" class="form-control" id="thumbnailId"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">原价</label>
+                        <input type="text" class="form-control" id="price"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="mailPrice">邮费</label>
+                        <input type="text" class="form-control" id="mailPrice"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="buyLimit">购买上限（-1为无限）</label>
+                        <input type="text" class="form-control" id="buyLimit" value="-1"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryId">分类</label>
+                        <input type="text" class="form-control" id="categoryId"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="startSellTime">开售时间（格式：2019-11-20 00:00:00）</label>
+                        <input type="text" class="form-control" id="startSellTime"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="rest">库存</label>
+                        <input type="text" class="form-control" id="rest"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-add" type="button" class="btn btn-primary" data-dismiss="modal">完成</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 <script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
 <script src="/js/config.js"></script>
-<script src="/static/js/admin/promotes.js"></script>
+<script src="/js/admin/products.js"></script>
 </body>
 </html>
