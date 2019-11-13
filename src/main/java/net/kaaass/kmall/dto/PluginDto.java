@@ -13,6 +13,8 @@ public class PluginDto {
 
     private String filename;
 
+    private boolean enable = true;
+
     @JsonSerialize(using = DateToLongSerializer.class)
     private Date enableTime;
 }

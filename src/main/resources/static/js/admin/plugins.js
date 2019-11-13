@@ -26,11 +26,30 @@ require([
                 });
             })
             .then(() => {
+                // 删除
                 $('.btn-remove').click(function () {
+                    let id = $(this).attr('plugin-id');
+                    admin.removePlugin(id)
+                        .then(() => {
+                            functions.modal("信息", "移除成功");
+                            render();
+                        });
+                });
+                // 启用
+                $('.btn-enable').click(function () {
+                    let path = $(this).attr('plugin-path');
+                    admin.enablePlugin(path)
+                        .then(() => {
+                            functions.modal("信息", "启用成功");
+                            render();
+                        });
+                });
+                // 禁用
+                $('.btn-disable').click(function () {
                     let id = $(this).attr('plugin-id');
                     admin.disablePlugin(id)
                         .then(() => {
-                            functions.modal("信息", "卸载成功");
+                            functions.modal("信息", "禁用成功");
                             render();
                         });
                 });
@@ -50,7 +69,7 @@ require([
             return;
         }
         $pluginPath.val("");
-        admin.addPlugin(path)
+        admin.enablePlugin(path)
             .then(() => {
                 functions.modal("信息", "添加插件成功！");
                 render();

@@ -54,7 +54,7 @@ define([
      * @param path
      * @returns {Promise<void>}
      */
-    let addPlugin = async (path) => {
+    let enablePlugin = async (path) => {
         let response = await request.post(`/plugin/?path=${path}`)
             .catch((e) => {
                 console.error("添加插件失败：", e);
@@ -63,6 +63,26 @@ define([
         let data = response.data;
         if (data.status !== 200) {
             console.error("添加插件错误：", data);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return data.data;
+    };
+
+    /**
+     * 删除插件
+     * @param pluginId
+     * @returns {Promise<void>}
+     */
+    let removePlugin = async (pluginId) => {
+        let response = await request.remove(`/plugin/${pluginId}/`)
+            .catch((e) => {
+                console.error("删除插件失败：", e);
+                functions.modal("错误", "删除插件失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("删除插件错误：", data);
             functions.modal("错误", data.message);
             return null;
         }
@@ -166,7 +186,8 @@ define([
     return {
         getPlugins: getPlugins,
         disablePlugin: disablePlugin,
-        addPlugin: addPlugin,
+        enablePlugin: enablePlugin,
+        removePlugin: removePlugin,
 
         getPromotes: getPromotes,
         getPromoteById: getPromoteById,

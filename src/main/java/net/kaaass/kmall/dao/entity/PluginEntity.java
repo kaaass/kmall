@@ -23,6 +23,9 @@ public class PluginEntity {
             unique = true)
     private String filename;
 
+    @Column(name = "enable")
+    private boolean enable;
+
     @Column(name = "enable_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Generated(GenerationTime.INSERT)

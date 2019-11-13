@@ -1,6 +1,7 @@
 package net.kaaass.kmall.controller;
 
 import net.kaaass.kmall.dto.PluginDto;
+import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.service.PluginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,17 @@ public class PluginController {
     }
 
     @PostMapping("/")
-    PluginDto enable(@RequestParam String path) {
+    PluginDto enable(@RequestParam String path) throws BadRequestException {
         return pluginService.enable(path);
     }
 
     @PostMapping("/{id}/disable/")
-    void disable(@PathVariable String id) throws NotFoundException {
+    void disable(@PathVariable String id) throws NotFoundException, BadRequestException {
         pluginService.disable(id);
+    }
+
+    @DeleteMapping("/{id}/")
+    void remove(@PathVariable String id) throws NotFoundException {
+        pluginService.remove(id);
     }
 }

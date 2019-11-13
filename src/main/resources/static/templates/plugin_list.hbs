@@ -13,7 +13,14 @@
             <td>{{id}}</td>
             <td>{{filename}}</td>
             <td>{{enableTimeReadable}}</td>
-            <td><button class="btn btn-secondary btn-remove btn-sm" plugin-id="{{id}}">移除</button></td>
+            <td>
+                {{#if enable}}
+                    <button class="btn btn-secondary btn-disable btn-sm" plugin-id="{{id}}">禁用</button>
+                {{else}}
+                    <button class="btn btn-success btn-enable btn-sm" plugin-path="{{filename}}">启用</button>
+                {{/if}}
+                <button class="btn btn-danger btn-remove btn-sm" plugin-id="{{id}}">移除</button>
+            </td>
         </tr>
     {{/each}}
     </tbody>
