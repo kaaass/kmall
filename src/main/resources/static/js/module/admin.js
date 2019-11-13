@@ -69,9 +69,109 @@ define([
         return data.data;
     };
 
+    /**
+     * 获得所有销售策略
+     */
+    let getPromotes = async () => {
+        let response = await request.get('/promote/')
+            .catch((e) => {
+                console.error("获取销售策略数据失败：", e);
+                functions.modal("错误", "获取销售策略数据失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("获取销售策略数据错误：", data);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return data.data;
+    };
+
+    /**
+     * 获得一销售策略
+     */
+    let getPromoteById = async (promoteId) => {
+        let response = await request.get(`/promote/${promoteId}/`)
+            .catch((e) => {
+                console.error("获取销售策略数据失败：", e);
+                functions.modal("错误", "获取销售策略数据失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("获取销售策略数据错误：", data);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return data.data;
+    };
+
+    /**
+     * 编辑销售策略
+     */
+    let modifyPromote = async (promoteData) => {
+        let response = await request.post('/promote/', promoteData)
+            .catch((e) => {
+                console.error("更改销售策略数据失败：", e);
+                functions.modal("错误", "更改销售策略数据失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("更改销售策略数据错误：", data);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return data.data;
+    };
+
+    /**
+     * 检查配置
+     * @param promoteId
+     * @returns {Promise<null|*>}
+     */
+    let checkPromote = async (promoteId) => {
+        let response = await request.get(`/promote/${promoteId}/check/`)
+            .catch((e) => {
+                console.error("检查销售策略数据失败：", e);
+                functions.modal("错误", "检查销售策略数据失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("检查销售策略数据错误：", data);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return true;
+    };
+
+    /**
+     * 删除促销配置
+     * @param promoteId
+     * @returns {Promise<null|*>}
+     */
+    let removePromote = async (promoteId) => {
+        let response = await request.delete(`/promote/${promoteId}/`)
+            .catch((e) => {
+                console.error("删除销售策略数据失败：", e);
+                functions.modal("错误", "删除销售策略数据失败！请检查网络连接。");
+            });
+        let data = response.data;
+        if (data.status !== 200) {
+            console.error("删除销售策略数据错误：", data);
+            functions.modal("错误", data.message);
+            return null;
+        }
+        return true;
+    };
+
     return {
         getPlugins: getPlugins,
         disablePlugin: disablePlugin,
-        addPlugin: addPlugin
+        addPlugin: addPlugin,
+
+        getPromotes: getPromotes,
+        getPromoteById: getPromoteById,
+        modifyPromote: modifyPromote,
+        checkPromote: checkPromote,
+        removePromote: removePromote
     };
 });

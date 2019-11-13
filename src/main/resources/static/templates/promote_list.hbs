@@ -1,0 +1,30 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>名称</th>
+        <th>说明</th>
+        <th>顺位</th>
+        <th>类型</th>
+        <th>启用</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each promotes}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{name}}</td>
+            <td>{{hint}}</td>
+            <td>{{order}}</td>
+            <td>{{style}}</td>
+            <td>{{enabled}}</td>
+            <td>
+                <button class="btn btn-success btn-sm btn-edit" promote-id="{{id}}">编辑</button>
+                <button class="btn btn-primary btn-sm btn-check" promote-id="{{id}}">检查</button>
+                <button class="btn btn-secondary btn-sm btn-remove" promote-id="{{id}}">移除</button>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

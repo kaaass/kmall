@@ -22,4 +22,6 @@ public interface PromoteService {
     void checkConfigure(String promoteId) throws NotFoundException, BadRequestException;
 
     OrderPromoteResult getForSingleProduct(ProductEntity productEntity, int count, String uid, String addressId) throws NotFoundException;
+
+    void deleteById(String promoteId);
 }

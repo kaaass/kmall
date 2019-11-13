@@ -38,4 +38,9 @@ public class PromoteController extends BaseController {
     public void checkConfigure(@PathVariable String promoteId) throws NotFoundException, BadRequestException {
         promoteService.checkConfigure(promoteId);
     }
+
+    @DeleteMapping("/{promoteId}/")
+    public void deleteById(@PathVariable String promoteId) throws NotFoundException {
+        this.promoteService.deleteById(promoteId);
+    }
 }

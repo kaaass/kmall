@@ -16,6 +16,8 @@ import net.kaaass.kmall.service.PromoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +65,7 @@ public class PromoteServiceImpl implements PromoteService {
     @Override
     public PromoteStrategyDto modify(PromoteStrategyDto promoteStrategyDto) {
         var entity = OrderMapper.INSTANCE.promoteStrategyDtoToEntitiy(promoteStrategyDto);
+        entity.setLastUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         var result = promoteStrategyRepository.save(entity);
         return OrderMapper.INSTANCE.promoteStrategyEntitiyToDto(result);
     }
@@ -78,5 +81,10 @@ public class PromoteServiceImpl implements PromoteService {
         var productDto = ProductMapper.INSTANCE.productEntityToDto(productEntity);
         var context = contextFactory.buildFromSingleProduct(productDto, count, uid, addressId);
         return promoteManager.doOnOrder(context);
+    }
+
+    @Override
+    public void deleteById(String promoteId) {
+        promoteStrategyRepository.deleteById(promoteId);
     }
 }
