@@ -69,7 +69,8 @@ define(['jquery', 'module/functions', 'module/constants', 'axios'], function ($,
         // 保存登录凭据
         storage.setItem(isAdmin ? constants.KEY_ADMIN_AUTH : constants.KEY_AUTH,
             data.data.authToken.token);
-        storage.setItem(constants.KEY_NAME, data.data.phone);
+        if (!isAdmin)
+            storage.setItem(constants.KEY_NAME, data.data.phone);
         functions.modal("成功", "登录成功！正在跳转至首页");
         functions.jumpTo(isAdmin ? "/admin/index.html" : "/index.html");
     };
