@@ -1,0 +1,20 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>头像</th>
+        <th>#</th>
+        <th>用户手机</th>
+        <th>微信</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each users}}
+        <tr>
+            <td><img class="border rounded overflow-hidden" width="80" height="80" src="{{avatar.url}}" alt="用户头像"></td>
+            <td>{{auth.id}}</td>
+            <td>{{auth.phone}}</td>
+            <td>{{wechat}}</td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

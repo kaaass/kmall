@@ -5,11 +5,25 @@ require([
     'jquery',
     'module/functions',
     'module/constants',
-    'module/auth',
-    'bootstrap'], function ($, functions, constants, auth, _) {
+    'module/user',
+    'bootstrap'], function ($, functions, constants, user, _) {
 
-    let request = auth.getAxiosInstance(true);
+    const TEMPLATE_LIST = 'user_list';
+
+    let $list = $('.table-responsive');
 
     // 加载图标
     feather.replace();
+
+    // 渲染插件列表
+    let render = () => {
+        user.getAllUser()
+            .then(data => {
+                return functions.renderHbs($list, TEMPLATE_LIST, {
+                    users: data
+                });
+            });
+    };
+    render();
+
 });
