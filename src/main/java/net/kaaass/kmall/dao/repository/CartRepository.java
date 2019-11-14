@@ -12,5 +12,5 @@ public interface CartRepository extends JpaRepository<CartEntity, String> {
 
     List<CartEntity> findAllByUidOrderByCreateTimeDesc(String uid, Pageable pageable);
 
-    Optional<CartEntity> findByProduct(ProductEntity product);
+    Optional<CartEntity> findByProductAndUid(ProductEntity product, String uid);
 }

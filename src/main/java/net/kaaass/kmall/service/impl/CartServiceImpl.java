@@ -45,7 +45,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartDto addToCart(String uid, CartAddRequest request) throws NotFoundException, BadRequestException {
         var product = productService.getEntityById(request.getProductId());
-        var entity = cartRepository.findByProduct(product)
+        var entity = cartRepository.findByProductAndUid(product, uid)
                         .orElseGet(() -> {
                             var newEntity = new CartEntity();
                             newEntity.setUid(uid);
