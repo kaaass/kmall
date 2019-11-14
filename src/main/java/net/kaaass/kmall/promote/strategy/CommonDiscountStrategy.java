@@ -24,20 +24,22 @@ public class CommonDiscountStrategy implements IPromoteStrategy<OrderPromoteCont
         float allPrice = 0;
         var products = context.getProducts();
         float price = 0;
+        boolean discounted = false;
         for (var item : products) {
             var discount = metadataManager.getForProduct(item.getProduct().getId(), Constants.KEY_DISCOUNT, "");
             price = item.getPrice();
             if (discount.length() > 0) {
                 price = NumericUtils.moneyRound(price * Float.parseFloat(discount));
                 item.setPrice(price);
+                discounted = true;
             }
             allPrice += price;
         }
-        if (allPrice == context.getPrice()) {
-            return new Result<>(false); // 没打折
+        if (!discounted) {
+            return new Result<>(ResultType.NOT_MATCH); // 没打折
         } else {
             context.setPrice(allPrice);
-            return new Result<>(true, context); // 打折了
+            return new Result<>(ResultType.OK, context); // 打折了
         }
     }
 

@@ -10,7 +10,7 @@ import net.kaaass.kmall.vo.PromoteStrategyInfoVo;
 public class IdStrategy implements IPromoteStrategy<OrderPromoteContext, OrderPromoteContext> {
     @Override
     public Result<OrderPromoteContext> doPromote(OrderPromoteContext context) {
-        return new Result<>(false, context);
+        return new Result<>(ResultType.PLACEHOLDER, context);
     }
 
     /**

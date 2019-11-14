@@ -72,6 +72,11 @@ public class OrderPromoteContextFactory {
     public OrderPromoteContext buildFromSingleProduct(ProductDto product, int count, String uid, String addressId) throws NotFoundException {
         var result = new OrderPromoteContext();
         var products = new ArrayList<PromoteItem>();
+        // 请求所有打折
+        if (count <= 0) {
+            result.setForView(true);
+            count = 1;
+        }
         // 商品
         var item = new PromoteItem();
         item.setProduct(product);

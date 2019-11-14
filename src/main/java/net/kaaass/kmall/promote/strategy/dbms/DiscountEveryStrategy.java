@@ -79,15 +79,17 @@ public class DiscountEveryStrategy extends BaseDbmsPromoteStrategy<OrderPromoteC
                                 || this.categories.contains(promoteItem.getProduct().getCategory().getId()))
                         .reduce(0F, (acc, el) -> acc + el.getPrice(), Float::sum);
         log.debug("筛选可打折价格 {}，品类 {}", filteredPrice, this.categories);
+        if (filteredPrice <= 0)
+            return new Result<>(ResultType.NOT_MATCH);
         // 打折次数
         int discountTimes = (int) (filteredPrice / param.every);
         if (param.maxCount >= 0)
             discountTimes = Math.min(param.maxCount, discountTimes);
         if (discountTimes <= 0)
-            return new Result<>(false);
+            return new Result<>(ResultType.NOT_COND, context);
         // 计算折扣
         float discount = NumericUtils.moneyRound(discountTimes * param.discount);
         context.setPrice(allPrice - discount);
-        return new Result<>(true, context);
+        return new Result<>(ResultType.OK, context);
     }
 }

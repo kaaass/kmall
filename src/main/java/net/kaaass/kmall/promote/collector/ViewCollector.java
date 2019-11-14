@@ -8,19 +8,22 @@ import net.kaaass.kmall.promote.OrderPromoteResult;
 
 import java.util.stream.Collectors;
 
-public class CommonCollector implements IPromoteCollector<OrderPromoteContext> {
+/**
+ * 显示打折用收集器
+ */
+public class ViewCollector implements IPromoteCollector<OrderPromoteContext> {
 
-    public static CommonCollector INSTANCE = new CommonCollector();
+    public static ViewCollector INSTANCE = new ViewCollector();
 
     @Override
     public IPromoteStrategy.ResultType getInfoType() {
-        return IPromoteStrategy.ResultType.OK;
+        return IPromoteStrategy.ResultType.NOT_COND;
     }
 
     @Override
     public OrderPromoteResult collect(OrderPromoteContext context) {
         var result = new OrderPromoteResult();
-        result.setPrice(context.getPrice() + context.getMailPrice()); // 总价应该包含邮费
+        result.setPrice(context.getPrice()); // 仅仅是商品价格
         result.setMailPrice(context.getMailPrice());
         result.setPromotes(context.getPromotes());
         // 商品映射

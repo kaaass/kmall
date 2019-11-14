@@ -26,4 +26,6 @@ public class OrderPromoteContext {
     private String uid;
 
     private UserAddressDto address;
+
+    private boolean forView = false;
 }

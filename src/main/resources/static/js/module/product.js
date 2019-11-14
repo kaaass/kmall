@@ -67,7 +67,7 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
      * @param count 商品数量
      * @returns {Promise<void>}
      */
-    let getExtra = async (productId, count = 1) => {
+    let getExtra = async (productId, count = -1) => {
         let response = await request.get(`/product/${productId}/extra/?count=${count}`)
             .catch((e) => {
                 console.error("获取详细数据失败：", productId, e);

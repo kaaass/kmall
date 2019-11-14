@@ -26,7 +26,7 @@ public class CommonPriceStrategy implements IPromoteStrategy<OrderPromoteContext
         }
         context.setPrice(totalPrice);
         context.setMailPrice(totalMailPrice);
-        return new Result<>(false, context); // 不算做折扣
+        return new Result<>(ResultType.PLACEHOLDER, context); // 不算做折扣
     }
 
     /**

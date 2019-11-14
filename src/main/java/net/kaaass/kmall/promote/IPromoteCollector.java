@@ -6,5 +6,7 @@ package net.kaaass.kmall.promote;
  */
 public interface IPromoteCollector<S extends OrderPromoteContext> {
 
+    IPromoteStrategy.ResultType getInfoType();
+
     OrderPromoteResult collect(S context);
 }

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.promote.collector.CommonCollector;
+import net.kaaass.kmall.promote.collector.ViewCollector;
 import net.kaaass.kmall.promote.strategy.CommonDiscountStrategy;
 import net.kaaass.kmall.promote.strategy.CommonMailFreeStrategy;
 import net.kaaass.kmall.promote.strategy.CommonPriceStrategy;
@@ -37,8 +38,9 @@ public class PromoteManager {
     /**
      * 从数据库构建打折流执行器
      * @return 打折流执行器
+     * @param forView
      */
-    private PromoteExecutor buildExecutorFromDbms() {
+    private PromoteExecutor buildExecutorFromDbms(boolean forView) {
         var flow = PromoteFlow.start()
                 .on(CommonPriceStrategy.INSTANCE); // 必须最前
         // 从数据库读取策略
@@ -51,7 +53,7 @@ public class PromoteManager {
         return flow
                 .on(new CommonDiscountStrategy(metadataManager))
                 .on(CommonMailFreeStrategy.INSTANCE)
-                .collect(CommonCollector.INSTANCE);
+                .collect(forView ? ViewCollector.INSTANCE : CommonCollector.INSTANCE);
     }
 
     /**
@@ -60,7 +62,7 @@ public class PromoteManager {
      * @return 折扣结果
      */
     public OrderPromoteResult doOnOrder(OrderPromoteContext context) {
-        var executor = buildExecutorFromDbms();
+        var executor = buildExecutorFromDbms(context.isForView());
         return executor.execute(context);
     }
 }

@@ -73,9 +73,10 @@ public class JavascriptStrategy extends BaseDbmsPromoteStrategy<OrderPromoteCont
             log.warn("执行脚本错误：", e);
         }
         if (result == null) {
-            return new Result<>(false);
+            return new Result<>(ResultType.NOT_MATCH);
         }
         log.debug("脚本执行成功 {}", result);
-        return new Result<>(true, (OrderPromoteContext) result);
+        // TODO 修改为直接返回Result
+        return new Result<>(ResultType.OK, (OrderPromoteContext) result);
     }
 }
