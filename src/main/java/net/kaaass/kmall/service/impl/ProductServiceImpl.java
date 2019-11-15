@@ -244,8 +244,8 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     private int getMonthPurchaseById(ProductEntity productEntity) {
-        Timestamp start = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.MIDNIGHT));
-        Timestamp end = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
+        Timestamp start = Timestamp.valueOf(LocalDateTime.now().minusMonths(1));
+        Timestamp end = Timestamp.valueOf(LocalDateTime.now());
         log.debug("查询与日期 {} 与 {} 之间", start, end);
         return orderItemRepository.sumCountByIdBetween(productEntity, start, end)
                 .orElse(0);
