@@ -32,7 +32,7 @@ require([
                     $('title').text(productData.name + constants.TITLE_SUFFIX);
                     // 获得评论数据
                     productData.comments = await product.getComments(curProductId);
-                    // 判断缓存，但是方法比较不科学
+                    // 判断缓存
                     if (JSON.stringify(productDataCache) === JSON.stringify(productData)) {
                         console.log("命中缓存");
                         return null;
