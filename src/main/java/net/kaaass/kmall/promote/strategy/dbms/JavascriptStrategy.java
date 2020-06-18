@@ -76,7 +76,6 @@ public class JavascriptStrategy extends BaseDbmsPromoteStrategy<OrderPromoteCont
             return new Result<>(ResultType.NOT_MATCH);
         }
         log.debug("脚本执行成功 {}", result);
-        // TODO 修改为直接返回Result
-        return new Result<>(ResultType.OK, (OrderPromoteContext) result);
+        return (Result<OrderPromoteContext>) result;
     }
 }
