@@ -26,7 +26,7 @@ public class CommonDiscountStrategy implements IPromoteStrategy<OrderPromoteCont
         float price = 0;
         boolean discounted = false;
         for (var item : products) {
-            var discount = metadataManager.getForProduct(item.getProduct().getId(), Constants.KEY_DISCOUNT, "");
+            var discount = metadataManager.getForProduct(item.getProduct().getId(), Constants.METAKEY_DISCOUNT, "");
             price = item.getPrice();
             if (discount.length() > 0) {
                 price = NumericUtils.moneyRound(price * Float.parseFloat(discount));

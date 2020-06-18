@@ -18,19 +18,19 @@
             <div id="carouselProduct" class="carousel slide border rounded overflow-hidden shadow-sm mb-3" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carouselProduct" data-slide-to="0" class="active"></li>
-                    <li data-target="#carouselProduct" data-slide-to="1"></li>
-                    <li data-target="#carouselProduct" data-slide-to="2"></li>
+                    {{#each extra.images}}
+                        <li data-target="#carouselProduct" data-slide-to="{{addOne @index}}"></li>
+                    {{/each}}
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <img src="{{thumbnail.url}}" class="d-block w-100" alt="商品描述-1">
                     </div>
-                    <div class="carousel-item">
-                        <img src="https://img.alicdn.com/imgextra/i1/2838892713/O1CN01sZjUot1Vub839zQ2C_!!2838892713.jpg_430x430q90.jpg" class="d-block w-100" alt="商品描述-2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="https://img.alicdn.com/imgextra/i3/2838892713/O1CN01NFW7vC1Vub40LiN1L_!!2838892713.jpg_430x430q90.jpg" class="d-block w-100" alt="商品描述-3">
-                    </div>
+                    {{#each extra.images}}
+                        <div class="carousel-item">
+                            <img src="{{url}}" class="d-block w-100" alt="商品描述-2">
+                        </div>
+                    {{/each}}
                 </div>
                 <a class="carousel-control-prev" href="#carouselProduct" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

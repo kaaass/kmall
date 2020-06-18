@@ -16,6 +16,14 @@ define([
         let templateCache = {};
 
         /**
+         * 注册模板函数
+         */
+
+        Handlebars.registerHelper("addOne", function (index, options) {
+            return parseInt(index) + 1;
+        });
+
+        /**
          * 弹出模态框
          * @param title
          * @param body
@@ -124,7 +132,7 @@ define([
                 return value;
             };
 
-            var myDate = timestamp? new Date(timestamp * 1000): new Date();
+            var myDate = timestamp ? new Date(timestamp * 1000) : new Date();
 
             var year = myDate.getFullYear();
             var month = zero(myDate.getMonth() + 1);
@@ -153,7 +161,7 @@ define([
          */
         let dateToTs = (date) => {
             date = date.substring(0, 19);
-            date = date.replace(/-/g,'/');
+            date = date.replace(/-/g, '/');
             return new Date(date).getTime() / 1000;
         };
 
@@ -183,7 +191,7 @@ define([
 
         return {
             requestParams: new URL(document.location.href).searchParams,
-            
+
             modal: modal,
             render: render,
             renderHbs: renderHbs,

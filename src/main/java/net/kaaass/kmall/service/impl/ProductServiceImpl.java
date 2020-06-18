@@ -9,6 +9,7 @@ import net.kaaass.kmall.dao.repository.CategoryRepository;
 import net.kaaass.kmall.dao.repository.CommentRepository;
 import net.kaaass.kmall.dao.repository.OrderItemRepository;
 import net.kaaass.kmall.dao.repository.ProductRepository;
+import net.kaaass.kmall.dto.MediaDto;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
@@ -28,11 +29,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -146,7 +146,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductExtraVo getExtraById(String id, int count, String uid) throws NotFoundException {
         var extra = new ProductExtraVo();
-        extra.setDetail(metadataManager.getForProduct(id, Constants.KEY_DETAIL));
+        extra.setDetail(metadataManager.getForProduct(id, Constants.METAKEY_DETAIL));
         String defaultAddress = null;
         try {
             defaultAddress = userService.getDefaultAddressEntityById(uid).getId();
@@ -155,6 +155,8 @@ public class ProductServiceImpl implements ProductService {
         var entity = getEntityById(id);
         extra.setPromotes(promoteService.getForSingleProduct(entity, count, uid, defaultAddress));
         extra.setMonthPurchase(getMonthPurchaseById(entity));
+        // 获得商品图片
+        extra.setImages(getProductImagesById(id));
         return extra;
     }
 
@@ -249,5 +251,20 @@ public class ProductServiceImpl implements ProductService {
         log.debug("查询与日期 {} 与 {} 之间", start, end);
         return orderItemRepository.sumCountByIdBetween(productEntity, start, end)
                 .orElse(0);
+    }
+
+    /**
+     * 获得商品图片
+     *
+     * @param id
+     * @return
+     */
+    private List<MediaDto> getProductImagesById(String id) {
+        var imgStr = metadataManager.getForProduct(id, Constants.METAKEY_IMAGES);
+        return Stream.of(imgStr.split(","))
+                .map(String::trim)
+                .map(resourceManager::getResource)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
     }
 }
