@@ -1,0 +1,7 @@
+{
+    "listeners" : [{
+        "event" : "net.kaaass.kmall.event.AfterControllerEvent",
+        "priority" : "LOWEST",
+        "file" : "after_controller.js"
+    }]
+}
