@@ -1,10 +1,8 @@
 # KMall
 
-[![Build Status](https://www.travis-ci.com/kaaass/kmall.svg?branch=master)](https://www.travis-ci.com/kaaass/kmall)
-
 一个由 SpringBoot + Hibernate 构建的简易商城。
 
-本项目为吉林大学软件学院面向对象课程设计荣誉课程(2018级)课程项目的代码仓库。
+本项目为吉林大学软件学院网页设计与网站建设(2018级)课程项目的源代码仓库。
 
 本项目的开发、测试环境均为Linux（Manjaro）。
 
@@ -40,5 +38,5 @@ https://github.com/MinecraftForge/MinecraftForge
 ## 未完成部分
 
 - [ ] 参数校验
-- [ ] 后台管理页面
+- [x] 后台管理页面
 - [ ] 丰富注释、文档、单元测试
