@@ -1,0 +1,21 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>键</th>
+        <th>值</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each metadata}}
+        <tr>
+            <td>{{@key}}</td>
+            <td>{{this}}</td>
+            <td>
+                <button class="btn btn-primary btn-edit btn-sm" metadata-key="{{@key}}">修改</button>
+                <button class="btn btn-danger btn-remove btn-sm" metadata-key="{{@key}}">移除</button>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

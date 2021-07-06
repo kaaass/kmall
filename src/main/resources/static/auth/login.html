@@ -7,10 +7,7 @@
 
     <title>登录 - KMall</title>
 
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/style.css?v=4.1.0" rel="stylesheet">
     <script>if (window.top !== window.self) {
         window.top.location = window.location;
@@ -19,7 +16,7 @@
 
 <body class="gray-bg">
 
-<div class="middle-box text-center loginscreen  animated fadeInDown">
+<div class="middle-box text-center loginscreen">
     <div>
         <div>
 
@@ -47,8 +44,8 @@
             <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
 
 
-            <p class="text-muted text-center"><a onclick="javascript:alert('暂未实现')">
-                <small>忘记密码了？</small>
+            <p class="text-muted text-center"><a href="register.html">
+                <small>没有账号？点我注册</small>
             </a>
             </p>
 
@@ -57,9 +54,9 @@
 </div>
 
 <!-- 全局js -->
-<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../js/jquery.slim.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/axios.min.js"></script>
 <script src="../js/auth/login.js"></script>
 
 </body>

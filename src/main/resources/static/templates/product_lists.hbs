@@ -9,9 +9,9 @@
                         {{#if quickBuy}}
                             <button class="btn btn-sm btn-outline-danger not-yet-sale">{{buyTips}}</button>
                         {{else}}
-                            <a href="/order/confirm.html?id={{id}}" class="btn btn-sm btn-outline-danger">{{buyTips}}</a>
+                            <a href="./order/confirm.html?id={{id}}" class="btn btn-sm btn-outline-danger">{{buyTips}}</a>
                         {{/if}}
-                        <a href="/item.html?id={{id}}" class="btn btn-sm btn-outline-primary">查看</a>
+                        <a href="./item.html?id={{id}}" class="btn btn-sm btn-outline-primary">查看</a>
                     </div>
                     <small class="text-muted">月销 {{extra.monthPurchase}}</small>
                 </div>

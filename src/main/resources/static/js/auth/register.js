@@ -31,7 +31,7 @@ jQuery(($) => {
     // 检查登录情况
     if (storage.getItem(KEY_AUTH) !== null) {
         warn("您已经登录！");
-        jumpTo("/index.html", 1000);
+        jumpTo("../index.html", 1000);
         return;
     }
 
@@ -56,7 +56,7 @@ jQuery(($) => {
         }
 
         // 注册请求
-        axios.post('/auth/register', {
+        axios.post('../auth/register', {
             phone: phone,
             password: password
         })

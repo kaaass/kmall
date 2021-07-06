@@ -1,0 +1,26 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>类别名称</th>
+        <th>父类</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each categories}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{name}}</td>
+            {{#if parent}}
+                <td>{{parent.id}} ({{parent.name}})</td>
+            {{else}}
+                <td>null</td>
+            {{/if}}
+            <td>
+                <button class="btn btn-danger btn-remove btn-sm" category-id="{{id}}">移除</button>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

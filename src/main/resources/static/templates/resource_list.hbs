@@ -1,0 +1,24 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>预览</th>
+        <th>类型</th>
+        <th>链接</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each resources}}
+        <tr>
+            <td>{{id}}</td>
+            <td><img width="100px" alt="预览" src="{{url}}"/></td>
+            <td>{{type}}</td>
+            <td>{{url}}</td>
+            <td>
+                <button class="btn btn-danger btn-remove btn-sm" resource-id="{{id}}">移除</button>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

@@ -3,6 +3,9 @@
  */
 define([], function () {
 
+    const BASE_URL = window.BASE_URL;
+    const API_BASE_URL = BASE_URL + "";
+
     return {
         KEY_AUTH: 'AUTH',
         KEY_NAME: 'NAME',
@@ -12,7 +15,7 @@ define([], function () {
         PARAM_TYPE: 'type',
         PARAM_CART_IDS: 'cartIds',
 
-        TEMPLATE_PATH: '/templates/',
+        TEMPLATE_PATH: BASE_URL + '/templates/',
         TEMPLATE_SUFFIX: '.hbs',
 
         TITLE_SUFFIX: " - KMall",
@@ -20,6 +23,11 @@ define([], function () {
         orderRequestType: {
             SINGLE: 'SINGLE',
             MULTI: 'MULTI'
-        }
+        },
+
+        BASE_URL: BASE_URL,
+        API_BASE_URL: API_BASE_URL,
+
+        TIME_AREA: +8,
     };
 });

@@ -9,5 +9,5 @@ jQuery(($) => {
     };
 
     storage.removeItem(KEY_AUTH);
-    jumpTo('/');
+    jumpTo('../');
 });

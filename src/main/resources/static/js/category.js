@@ -25,7 +25,7 @@ require([
         }
 
         // 获得分类并渲染
-        product.getCategories().then(data => {
+        product.getHierarchyCategories().then(data => {
             return functions.renderHbs($categories, TEMPLATE_CATEGORY, {
                 categories: data
             });

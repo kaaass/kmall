@@ -1,6 +1,7 @@
 jQuery(($) => {
     const KEY_AUTH = 'AUTH';
     const KEY_NAME = 'NAME';
+    const KEY_ADMIN_AUTH = 'ADMIN_AUTH';
     let storage = window.localStorage;
     let $btn = $('[type=submit]'),
         $phone = $('[name=phone]'),
@@ -31,7 +32,7 @@ jQuery(($) => {
     // 检查登录情况
     if (storage.getItem(KEY_AUTH) !== null) {
         warn("您已经登录！");
-        jumpTo("/index.html", 1000);
+        jumpTo("../index.html", 1000);
         return;
     }
 
@@ -53,7 +54,7 @@ jQuery(($) => {
         // 登录请求
         axios({
             method: 'post',
-            url: '/auth/login',
+            url: '../auth/login',
             params: {
                 phone: phone,
                 password: password
@@ -66,11 +67,21 @@ jQuery(($) => {
                     warn(data.message);
                     return;
                 }
-                // 保存登录凭据
-                storage.setItem(KEY_AUTH, data.data.authToken.token);
-                storage.setItem(KEY_NAME, data.data.phone);
-                success("登录成功！正在跳转至首页");
-                jumpTo("/index.html");
+                data = data.data;
+                if (data.admin) {
+                    // 特权用户
+                    // 保存登录凭据
+                    storage.setItem(KEY_ADMIN_AUTH, data.authToken.token);
+                    success("登录成功！正在跳转至首页");
+                    jumpTo("../admin/index.html");
+                } else {
+                    // 普通用户
+                    // 保存登录凭据
+                    storage.setItem(KEY_AUTH, data.authToken.token);
+                    storage.setItem(KEY_NAME, data.phone);
+                    success("登录成功！正在跳转至首页");
+                    jumpTo("../index.html");
+                }
             })
             .catch((e) => {
                 console.error("登录失败：", e);
