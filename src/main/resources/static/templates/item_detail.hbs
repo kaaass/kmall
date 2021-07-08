@@ -44,6 +44,16 @@
             <div class="row bg-white no-gutters border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
                     <h5 class="border-bottom border-gray pb-2 mb-3">详细介绍</h5>
+                    {{#each extra.template}}
+                        <h5>{{group}}</h5>
+                        <div class="container p-2">
+                        <ul>
+                            {{#each columns}}
+                                <li><p>{{@key}}：{{this}}</p></li>
+                            {{/each}}
+                        </ul>
+                        </div>
+                    {{/each}}
                     <div class="container p-2">
                         {{{extra.detail}}}
                     </div>
