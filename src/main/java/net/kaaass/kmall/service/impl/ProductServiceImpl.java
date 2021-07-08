@@ -13,6 +13,7 @@ import net.kaaass.kmall.dto.MediaDto;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
+import net.kaaass.kmall.mapper.PojoMapper;
 import net.kaaass.kmall.mapper.ProductMapper;
 import net.kaaass.kmall.mapper.UserMapper;
 import net.kaaass.kmall.service.CategoryService;
@@ -64,6 +65,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private PojoMapper pojoMapper;
 
     /**
      * 增加商品
@@ -217,7 +221,7 @@ public class ProductServiceImpl implements ProductService {
         var result = new ProductCommentResponse();
         var comments = commentRepository.findAllByProductIdOrderByRateDescCommentTimeDesc(id, pageable)
                 .stream()
-                .map(UserMapper.INSTANCE::commentEntityToVo)
+                .map(pojoMapper::entityToVo)
                 .collect(Collectors.toList());
         var rate = commentRepository.averageRateByProductId(id)
                 .map(NumericUtils::rateRound)
