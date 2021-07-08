@@ -123,7 +123,6 @@ define(['jquery', 'module/functions', 'module/auth'], function ($, functions, au
             }
             // 时间格式化
             product.startSellTimeReadable = functions.dateFormatTs(product.startSellTime, 'Y-m-d H:i:s');
-            product.publishDateReadable = functions.dateFormatTs(product.publishDate, 'Y-m-d H:i:s');
             // 缓存
             productCache[product.id] = product;
         }

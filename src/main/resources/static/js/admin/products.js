@@ -114,7 +114,6 @@ require([
                 rest: createCache ? createCache.rest : ""
             },
             startSellTimeReadable: createCache ? functions.dateFormatTs(createCache.startSellTime) : "",
-            publishDateReadable: createCache ? functions.dateFormatTs(createCache.publishDate) : "",
         });
         // 添加商品
         $add.unbind('click');
