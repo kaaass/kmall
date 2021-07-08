@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -87,5 +88,10 @@ public class MetadataManager {
         metadata.setValue(value);
         metadata.setLastUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
         productMetadataRepository.save(metadata);
+    }
+
+    public void deleteForProduct(String productId, String key) {
+        productMetadataRepository.findByProductIdAndKey(productId, key)
+                .ifPresent(entity -> productMetadataRepository.delete(entity));
     }
 }

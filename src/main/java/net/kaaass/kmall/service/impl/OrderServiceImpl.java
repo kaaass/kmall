@@ -24,12 +24,10 @@ import net.kaaass.kmall.exception.ForbiddenException;
 import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.mapper.OrderMapper;
+import net.kaaass.kmall.mapper.PojoMapper;
 import net.kaaass.kmall.promote.OrderPromoteContextFactory;
 import net.kaaass.kmall.promote.PromoteManager;
-import net.kaaass.kmall.service.OrderRequestContext;
-import net.kaaass.kmall.service.OrderService;
-import net.kaaass.kmall.service.OrderType;
-import net.kaaass.kmall.service.UserService;
+import net.kaaass.kmall.service.*;
 import net.kaaass.kmall.service.mq.OrderMessageProducer;
 import net.kaaass.kmall.util.Constants;
 import net.kaaass.kmall.util.StringUtils;
@@ -44,6 +42,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,6 +75,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private PojoMapper pojoMapper;
 
     @Override
     public OrderEntity getEntityById(String id) throws NotFoundException {
@@ -158,6 +163,14 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(OrderMapper.INSTANCE::orderEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDto> getAllByProduct(String pid, Pageable pageable) throws NotFoundException {
+        var product = productService.getEntityById(pid);
+        return orderRepository.findAllByProduct(product, pageable).stream()
+                .map(orderEntity -> pojoMapper.entityToDto(orderEntity))
+                .collect(Collectors.<OrderDto>toList());
     }
 
     @Override

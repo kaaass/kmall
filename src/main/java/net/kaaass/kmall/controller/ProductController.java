@@ -1,21 +1,26 @@
 package net.kaaass.kmall.controller;
 
+import net.kaaass.kmall.controller.request.MetadataRequest;
 import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.controller.response.ProductCommentResponse;
 import net.kaaass.kmall.dto.CommentDto;
 import net.kaaass.kmall.dto.ProductDto;
+import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.InternalErrorExeption;
 import net.kaaass.kmall.exception.NotFoundException;
 import net.kaaass.kmall.service.ProductService;
+import net.kaaass.kmall.service.metadata.MetadataManager;
 import net.kaaass.kmall.vo.CommentVo;
 import net.kaaass.kmall.vo.ProductExtraVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -24,6 +29,9 @@ public class ProductController extends BaseController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private MetadataManager metadataManager;
 
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
@@ -88,5 +96,25 @@ public class ProductController extends BaseController {
     @GetMapping("/{id}/comments/")
     public ProductCommentResponse getComments(@PathVariable String id, Pageable pageable) {
         return productService.getComments(id, pageable);
+    }
+
+    @GetMapping("/{id}/metadata/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Map<String, String> getAllForProduct(@PathVariable String id) {
+        return metadataManager.getAllForProduct(id);
+    }
+
+    @PostMapping("/{id}/metadata/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public boolean setForProduct(@PathVariable String id, @Validated @RequestBody MetadataRequest request) {
+        metadataManager.setForProduct(id, request.getKey(), request.getValue());
+        return true;
+    }
+
+    @DeleteMapping("/{id}/metadata/{key}/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public boolean deleteForProduct(@PathVariable String id, @PathVariable String key) {
+        metadataManager.deleteForProduct(id, key);
+        return true;
     }
 }

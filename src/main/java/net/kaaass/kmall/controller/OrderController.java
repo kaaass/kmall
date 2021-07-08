@@ -86,6 +86,12 @@ public class OrderController extends BaseController {
         return orderService.getAllByType(type, pageable);
     }
 
+    @GetMapping("/admin/product/{pid}/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<OrderDto> getAllByProduct(@PathVariable String pid, Pageable pageable) throws NotFoundException {
+        return orderService.getAllByProduct(pid, pageable);
+    }
+
     /**
      * 外部支付回调
      */
