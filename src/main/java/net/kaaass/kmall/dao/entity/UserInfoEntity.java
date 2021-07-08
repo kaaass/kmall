@@ -28,7 +28,7 @@ public class UserInfoEntity {
     private String wechat;
 
     @ManyToOne
-    @JoinColumn(name = "avatar")
+    @JoinColumn(name = "avatar", columnDefinition = "VARCHAR(255) DEFAULT 00000000000000000000000000000000")
     private MediaEntity avatar;
 
     @Column(name = "last_update_time",

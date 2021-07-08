@@ -62,7 +62,7 @@ require([
         for (const category of categories) {
             add(category.name, category.id);
             for (const sub of category.subs) {
-                add(sub.name, sub.id);
+                add("- " + sub.name, sub.id);
             }
         }
     });
