@@ -1,0 +1,21 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>名字</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each template}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{name}}</td>
+            <td>
+                <button class="btn btn-primary btn-edit btn-sm" key="{{id}}">修改</button>
+                <button class="btn btn-danger btn-remove btn-sm" key="{{id}}">移除</button>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

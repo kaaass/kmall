@@ -7,7 +7,8 @@ require([
     'module/constants',
     'module/auth',
     'module/product',
-    'bootstrap'], function ($, functions, constants, auth, product, _) {
+    'module/template',
+    'bootstrap'], function ($, functions, constants, auth, product, template, _) {
 
     let request = auth.getAxiosInstance(true);
     let $list = $('.table-responsive'),
@@ -38,8 +39,10 @@ require([
     // 渲染插件列表
     let render = async () => {
         let data = await product.getCategories();
+        let templatesData = await template.getAll();
         await functions.renderHbs($list, TEMPLATE_LIST, {
-            categories: data
+            categories: data,
+            templates: templatesData
         });
         // 移除
         $('.btn-remove').click(function () {
@@ -50,6 +53,15 @@ require([
                         functions.modal("信息", "删除分类成功！");
                     render();
                 });
+        });
+        // 设置模板
+        $('.btn-template').click(function () {
+            let id = $(this).attr('category-id');
+            let templateId = $(this).val();
+            if (templateId === "null") {
+                templateId = null;
+            }
+            template.setForCategory(id, templateId);
         });
     };
     render();

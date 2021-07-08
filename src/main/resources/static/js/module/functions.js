@@ -23,6 +23,13 @@ define([
             return parseInt(index) + 1;
         });
 
+        Handlebars.registerHelper('equal', function (v1, v2, options) {
+            if (v1 === v2) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
+        });
+
         /**
          * 弹出模态框
          * @param title

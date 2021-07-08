@@ -28,6 +28,7 @@ public interface PojoMapper {
 
     ProductDto entityToDto(ProductEntity productEntity);
 
+    @Mapping(target = "templateId", source = "template", qualifiedByName = "getTemplateId")
     CategoryDto entityToDto(CategoryEntity categoryEntity);
 
     ProductStorageDto entityToDto(ProductStorageEntity productStorageEntity);

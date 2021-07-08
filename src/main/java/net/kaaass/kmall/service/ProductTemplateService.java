@@ -15,4 +15,8 @@ public interface ProductTemplateService {
     ProductTemplateDto edit(String id, ProductTemplateRequest request) throws NotFoundException;
 
     void removeById(String id);
+
+    ProductTemplateDto get(String id) throws NotFoundException;
+
+    void setForCategory(String id, String cid) throws NotFoundException;
 }

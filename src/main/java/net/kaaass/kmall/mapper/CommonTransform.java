@@ -2,6 +2,7 @@ package net.kaaass.kmall.mapper;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.kaaass.kmall.dao.entity.ProductTemplateEntity;
 import net.kaaass.kmall.dao.entity.UserAuthEntity;
 import net.kaaass.kmall.dto.TemplateSchemaDto;
 import org.mapstruct.Mapper;
@@ -42,5 +43,10 @@ public class CommonTransform {
         } catch (IOException e) {
             return new ArrayList<>();
         }
+    }
+
+    @Named("getTemplateId")
+    public String getTemplateId(ProductTemplateEntity entity) {
+        return entity == null ? null : entity.getId();
     }
 }

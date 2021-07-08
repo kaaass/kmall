@@ -4,6 +4,7 @@
         <th>#</th>
         <th>类别名称</th>
         <th>父类</th>
+        <th>模板</th>
         <th>操作</th>
     </tr>
     </thead>
@@ -17,6 +18,20 @@
             {{else}}
                 <td>null</td>
             {{/if}}
+            <td>
+                <label>
+                    <select class="form-control btn-template" category-id="{{id}}" value="{{templateId}}">
+                        <option value="null">无</option>
+                        {{#each ../templates}}
+                            {{#equal ../templateId id}}
+                                <option value="{{id}}" selected = "selected">{{name}}</option>
+                            {{else}}
+                                <option value="{{id}}">{{name}}</option>
+                            {{/equal}}
+                        {{/each}}
+                    </select>
+                </label>
+            </td>
             <td>
                 <button class="btn btn-danger btn-remove btn-sm" category-id="{{id}}">移除</button>
             </td>

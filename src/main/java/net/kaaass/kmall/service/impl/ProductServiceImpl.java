@@ -145,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public ProductDto getById(String id) throws NotFoundException {
-        return ProductMapper.INSTANCE.productEntityToDto(getEntityById(id));
+        return pojoMapper.entityToDto(getEntityById(id));
     }
 
     @Override

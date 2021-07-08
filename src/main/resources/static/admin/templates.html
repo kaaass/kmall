@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
 
-    <title>商品管理 - KMall管理后台</title>
+    <title>模板管理 - KMall管理后台</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -41,7 +41,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="products.html">
+                        <a class="nav-link" href="products.html">
                             <span data-feather="shopping-cart"></span>
                             商品管理
                         </a>
@@ -71,7 +71,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="templates.html">
+                        <a class="nav-link active" href="templates.html">
                             <span data-feather="book-open"></span>
                             模板管理
                         </a>
@@ -113,10 +113,10 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 py-5">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 id="title" class="h2">元数据</h1>
+                <h1 id="title" class="h2">模板</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <button type="button" id="btn-create" class="btn btn-sm btn-outline-success">
-                        新增元数据
+                        新增模板
                     </button>
                 </div>
             </div>
@@ -128,12 +128,12 @@
     </div>
 </div>
 
-<!-- 添加商品模态框 -->
+<!-- 添加模态框 -->
 <div class="modal fade" id="metadataModal" tabindex="-1" role="dialog" aria-labelledby="productModalTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="productModalTitle">添加元数据</h5>
+                <h5 class="modal-title" id="productModalTitle">添加模板</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -141,12 +141,12 @@
             <div class="modal-body" id="metadataModalBody">
                 <div class="plugin-form">
                     <div class="form-group">
-                        <label for="key">键</label>
-                        <input type="text" class="form-control" id="key"/>
+                        <label for="name">名称</label>
+                        <input type="text" class="form-control" id="name"/>
                     </div>
                     <div class="form-group">
-                        <label for="value">值</label>
-                        <textarea type="text" class="form-control" id="value" rows="3"></textarea>
+                        <label for="template">模板语言</label>
+                        <textarea type="text" class="form-control" id="template" rows="5"></textarea>
                     </div>
                 </div>
             </div>
@@ -161,6 +161,6 @@
 <script src="../js/feather.min.js"></script>
 <script src="../js/require.min.js"></script>
 <script src="../js/config.js"></script>
-<script src="../js/admin/products-metadata.js"></script>
+<script src="../js/admin/templates.js"></script>
 </body>
 </html>

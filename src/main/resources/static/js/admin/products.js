@@ -54,6 +54,19 @@ require([
     // 加载图标
     feather.replace();
 
+    // 渲染分类列表
+    product.getHierarchyCategories().then(categories => {
+        let add = (name, id) => {
+            $(`<option value="${id}">${name}</option>`).appendTo($('#categoryId'));
+        };
+        for (const category of categories) {
+            add(category.name, category.id);
+            for (const sub of category.subs) {
+                add(sub.name, sub.id);
+            }
+        }
+    });
+
     // 渲染商品列表
     let render = async () => {
         await product.renderProductsByUrl('/product/', $list, TEMPLATE_LIST, false, true);

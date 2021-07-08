@@ -1,0 +1,21 @@
+{{#each template}}
+    <h5>组：{{group}}</h5>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>项目</th>
+            <th>内容</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each columns}}
+            <tr>
+                <td>{{@key}}</td>
+                <td><label>
+                    <input type="text" class="form-control entry" group="{{../group}}" key="{{@key}}" value="{{this}}">
+                </label></td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{/each}}
