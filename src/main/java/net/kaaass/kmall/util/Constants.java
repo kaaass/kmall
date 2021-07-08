@@ -20,6 +20,7 @@ public class Constants {
     public static final String METAKEY_DISCOUNT = "discount";
     public static final String METAKEY_DETAIL = "detail";
     public static final String METAKEY_IMAGES = "images";
+    public static final String METAKEY_TEMPLATE = "template";
 
     public static final String SCRIPT_TYPE_JAVASCRIPT = "javascript";
 

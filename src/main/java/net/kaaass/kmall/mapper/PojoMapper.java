@@ -42,4 +42,7 @@ public interface PojoMapper {
 
     @Mapping(target = "avatar", source = "user", qualifiedByName = "getAvatarFromAuth")
     CommentVo entityToVo(CommentEntity commentEntity);
+
+    @Mapping(target = "schema", source = "schema", qualifiedByName = "deserializeSchema")
+    ProductTemplateDto entityToDto(ProductTemplateEntity entity);
 }

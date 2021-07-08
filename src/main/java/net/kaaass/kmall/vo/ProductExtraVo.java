@@ -16,4 +16,6 @@ public class ProductExtraVo {
     private OrderPromoteResult promotes;
 
     private List<MediaDto> images;
+
+    private List<ActualTemplateVo> template;
 }

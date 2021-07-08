@@ -1,7 +1,9 @@
 package net.kaaass.kmall.mapper;
 
+import net.kaaass.kmall.controller.request.ProductTemplateRequest;
 import net.kaaass.kmall.controller.request.UserAddressRequest;
 import net.kaaass.kmall.dao.entity.OrderItemEntity;
+import net.kaaass.kmall.dao.entity.ProductTemplateEntity;
 import net.kaaass.kmall.dao.entity.PromoteStrategyEntity;
 import net.kaaass.kmall.dao.entity.UserAddressEntity;
 import net.kaaass.kmall.dto.CartDto;
@@ -11,7 +13,6 @@ import net.kaaass.kmall.promote.PromoteItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.mapstruct.factory.Mappers;
 
 /**
  * 从 POJO 创建实体
@@ -20,7 +21,6 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper(componentModel = "spring", uses = CommonTransform.class)
 public interface EntityCreator {
-    EntityCreator INSTANCE = Mappers.getMapper(EntityCreator.class);
 
     @Mappings({
             @Mapping(target = "product", expression = "java(null)"),
@@ -45,4 +45,6 @@ public interface EntityCreator {
             @Mapping(target = "lastUpdateTime", expression = "java(null)")
     })
     UserAddressEntity createUserAddressEntity(UserAddressRequest request);
+
+    ProductTemplateEntity createProductTemplateEntity(ProductTemplateRequest request);
 }

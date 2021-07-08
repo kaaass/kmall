@@ -8,27 +8,27 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
-@Table(name = "category")
-public class CategoryEntity {
+@Table(name = "product_template")
+public class ProductTemplateEntity {
 
     @Id
     @GenericGenerator(name = Constants.ID_GENERATOR, strategy = Constants.UUID)
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private String id;
 
-    @Column(name = "category_name")
+    @Column(name = "template_name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private CategoryEntity parent = null;
+    @Column(name = "template_schema")
+    private String schema;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "template_id")
-    private ProductTemplateEntity template = null;
+    @OneToMany(mappedBy = "template", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    private List<CategoryEntity> categories = new ArrayList<>();
 
     @Column(name = "create_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",

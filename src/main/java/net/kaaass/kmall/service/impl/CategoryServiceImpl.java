@@ -6,6 +6,7 @@ import net.kaaass.kmall.dao.entity.CategoryEntity;
 import net.kaaass.kmall.dao.repository.CategoryRepository;
 import net.kaaass.kmall.dto.CategoryDto;
 import net.kaaass.kmall.exception.NotFoundException;
+import net.kaaass.kmall.mapper.PojoMapper;
 import net.kaaass.kmall.mapper.ProductMapper;
 import net.kaaass.kmall.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private PojoMapper pojoMapper;
+
     @Override
     public Optional<CategoryDto> add(CategoryAddRequest categoryDto) {
         var entity = new CategoryEntity();
@@ -34,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
         entity.setParent(parent);
         try {
             return Optional.of(categoryRepository.save(entity))
-                    .map(ProductMapper.INSTANCE::categoryEntityToDto);
+                    .map(pojoMapper::entityToDto);
         } catch (Exception e) {
             log.info("插入时发生错误", e);
             return Optional.empty();
@@ -44,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto getById(String id) throws NotFoundException {
         return categoryRepository.findById(id)
-                .map(ProductMapper.INSTANCE::categoryEntityToDto)
+                .map(pojoMapper::entityToDto)
                 .orElseThrow(() -> new NotFoundException("未找到此分类！"));
     }
 
@@ -58,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDto> getAll(Pageable pageable) {
         return categoryRepository.findAll(pageable)
                 .stream()
-                .map(ProductMapper.INSTANCE::categoryEntityToDto)
+                .map(pojoMapper::entityToDto)
                 .collect(Collectors.toList());
     }
 
