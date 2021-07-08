@@ -15,6 +15,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
@@ -87,5 +89,17 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
         log.error("发生Throwable错误", e);
         // 不应该暴露栈信息给Rest接口
         return GlobalResponse.fail(StatusEnum.INTERNAL_ERROR, e.getMessage());
+    }
+
+    @ResponseBody
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public GlobalResponse<String> handleBeanValidateException(MethodArgumentNotValidException exception) {
+        var result = exception.getBindingResult();
+        var message = new StringBuilder();
+        result.getFieldErrors().forEach(error -> {
+            String msg = error.getDefaultMessage();
+            message.append(msg).append("; ");
+        });
+        return GlobalResponse.fail(StatusEnum.BAD_REQUEST, message.toString());
     }
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserAddressRepository extends JpaRepository<UserAddressEntity, String> {
 
-    List<UserAddressEntity> findAllByUid(String uid);
+    List<UserAddressEntity> findAllByUserId(String uid);
 
-    Optional<UserAddressEntity> findFirstByUidAndDefaultAddressTrue(String uid);
+    Optional<UserAddressEntity> findFirstByUserIdAndDefaultAddressTrue(String uid);
 }

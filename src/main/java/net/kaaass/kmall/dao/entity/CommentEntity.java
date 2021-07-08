@@ -19,8 +19,9 @@ public class CommentEntity {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private String id;
 
-    @Column(name = "uid")
-    private String uid; // TODO 改为ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "uid")
+    private UserAuthEntity user;
 
     @Column(name = "order_id")
     private String orderId;

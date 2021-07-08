@@ -194,6 +194,7 @@ public class OrderServiceImpl implements OrderService {
         entity.setRequestId(context.getRequestId());
         var request = context.getRequest();
         var address = userService.getAddressEntityByIdAndCheck(request.getAddressId(), context.getUid());
+        var user = userService.getAuthEntityById(context.getUid());
         entity.setAddress(address);
         /*
          打折逻辑
@@ -232,11 +233,10 @@ public class OrderServiceImpl implements OrderService {
             // 处理返回
             entity.setPrice(promoteResult.getPrice());
             entity.setMailPrice(promoteResult.getMailPrice());
-            OrderRequestContext finalContext = context;
             entity.setProducts(promoteResult.getProducts()
                     .stream()
                     .map(OrderMapper.INSTANCE::orderItemDtoToEntity)
-                    .peek(orderItemEntity -> orderItemEntity.setUid(finalContext.getUid()))
+                    .peek(orderItemEntity -> orderItemEntity.setUser(user))
                     .peek(orderItemEntity -> orderItemEntity.setOrder(entity))
                     .collect(Collectors.toList()));
             // 检查库存数量
@@ -315,6 +315,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto setCommented(String id, String uid, CommentRequest commentRequest) throws NotFoundException, ForbiddenException, BadRequestException {
         var entity = getEntityByIdAndCheck(id, uid);
+        var auth = userService.getAuthEntityById(uid);
         if (entity.getType() != OrderType.DELIVERED) {
             throw new BadRequestException("该订单当前不能评价！");
         }
@@ -323,7 +324,7 @@ public class OrderServiceImpl implements OrderService {
 
         for (var comment : commentRequest.getComments()) {
             var commentEntity = new CommentEntity();
-            commentEntity.setUid(uid);
+            commentEntity.setUser(auth);
             commentEntity.setOrderId(id);
             commentEntity.setProductId(comment.getProductId());
             commentEntity.setRate(comment.getRate());

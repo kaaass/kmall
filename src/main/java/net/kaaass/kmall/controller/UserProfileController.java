@@ -1,18 +1,25 @@
 package net.kaaass.kmall.controller;
 
+import net.kaaass.kmall.controller.request.UserAddressRequest;
 import net.kaaass.kmall.controller.request.UserInfoModifyRequest;
 import net.kaaass.kmall.controller.response.UserProfileResponse;
+import net.kaaass.kmall.dao.entity.UserAddressEntity;
 import net.kaaass.kmall.dao.repository.UserAddressRepository;
 import net.kaaass.kmall.dao.repository.UserInfoRepository;
 import net.kaaass.kmall.dto.UserAddressDto;
 import net.kaaass.kmall.dto.UserInfoDto;
 import net.kaaass.kmall.exception.BadRequestException;
 import net.kaaass.kmall.exception.NotFoundException;
+import net.kaaass.kmall.mapper.EntityCreator;
+import net.kaaass.kmall.mapper.PojoMapper;
 import net.kaaass.kmall.mapper.UserMapper;
 import net.kaaass.kmall.service.OrderService;
+import net.kaaass.kmall.service.UserService;
 import net.kaaass.kmall.service.metadata.ResourceManager;
+import net.kaaass.kmall.util.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -37,6 +44,15 @@ public class UserProfileController extends BaseController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private PojoMapper pojoMapper;
+
+    @Autowired
+    private EntityCreator entityCreator;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/")
     public UserProfileResponse getUserProfile() {
         var result = new UserProfileResponse();
@@ -52,7 +68,7 @@ public class UserProfileController extends BaseController {
         var entity = userInfoRepository.findByAuth(auth);
         entity.setAuth(auth);
         var avatar = resourceManager.getEntity(request.getAvatar())
-                        .orElseThrow(() -> new BadRequestException("头像资源不存在！"));
+                .orElseThrow(() -> new BadRequestException("头像资源不存在！"));
         entity.setAvatar(avatar);
         entity.setWechat(request.getWechat());
         entity.setLastUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
@@ -66,7 +82,7 @@ public class UserProfileController extends BaseController {
 
     @GetMapping("/address/")
     public List<UserAddressDto> getAllAddresses() throws NotFoundException {
-        return addressRepository.findAllByUid(getUid())
+        return addressRepository.findAllByUserId(getUid())
                 .stream()
                 .map(UserMapper.INSTANCE::userAddressEntityToDto)
                 .collect(Collectors.toList());
@@ -74,19 +90,55 @@ public class UserProfileController extends BaseController {
 
     @GetMapping("/address/{id}/")
     public UserAddressDto getAddressDtoById(@PathVariable String id) throws NotFoundException {
-        return addressRepository.findById(id)
-                .filter(addressEntity -> addressEntity.getUid().equals(getUid())) // 本人收货地址
-                .map(UserMapper.INSTANCE::userAddressEntityToDto)
-                .orElseThrow(() -> new NotFoundException("未找到此收货地址！"));
+        return pojoMapper.entityToDto(getAddressById(id));
     }
 
     @PostMapping("/address/")
-    public UserAddressDto addUserAddress(@RequestBody UserAddressDto userAddressDto) {
-        // TODO validate,去重
-        var entity = UserMapper.INSTANCE.userAddressDtoToEntity(userAddressDto);
-        entity.setUid(getUid());
-        entity.setLastUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
+    public UserAddressDto addUserAddress(@Validated @RequestBody UserAddressRequest request) throws NotFoundException {
+        var entity = entityCreator.createUserAddressEntity(request);
+        var auth = userService.getAuthEntityById(getUid());
+        entity.setUser(auth);
+        entity.setLastUpdateTime(TimeUtils.nowTimestamp());
         var result = addressRepository.save(entity);
-        return UserMapper.INSTANCE.userAddressEntityToDto(result);
+        return pojoMapper.entityToDto(result);
+    }
+
+    @PutMapping("/address/{id}/")
+    public UserAddressDto editUserAddress(@PathVariable String id,
+                                          @Validated @RequestBody UserAddressRequest request) throws NotFoundException {
+        var oldEntity = getAddressById(id);
+        var entity = entityCreator.createUserAddressEntity(request);
+        var auth = userService.getAuthEntityById(getUid());
+        entity.setId(id);
+        entity.setUser(auth);
+        entity.setLastUpdateTime(TimeUtils.nowTimestamp());
+        var result = addressRepository.save(entity);
+        return pojoMapper.entityToDto(result);
+    }
+
+    @DeleteMapping("/address/{id}/")
+    public boolean removeUserAddress(@PathVariable String id) throws NotFoundException {
+        var entity = getAddressById(id);
+        addressRepository.delete(entity);
+        return true;
+    }
+
+    @PostMapping("/address/{id}/default/")
+    public boolean setUserDefaultAddress(@PathVariable String id) throws NotFoundException {
+        var entity = getAddressById(id);
+        // 设置其他为非默认、当前为默认
+        var auth = entity.getUser();
+        for (var addr : auth.getAddresses()) {
+            addr.setDefaultAddress(addr.getId().equals(id));
+            addressRepository.save(addr);
+        }
+        return true;
+    }
+
+    private UserAddressEntity getAddressById(String id) throws NotFoundException {
+        return addressRepository.findById(id)
+                // 本人收货地址
+                .filter(addressEntity -> addressEntity.getUser().getId().equals(getUid()))
+                .orElseThrow(() -> new NotFoundException("未找到此收货地址！"));
     }
 }

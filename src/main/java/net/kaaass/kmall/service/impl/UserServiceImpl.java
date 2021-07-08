@@ -2,7 +2,9 @@ package net.kaaass.kmall.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.dao.entity.UserAddressEntity;
+import net.kaaass.kmall.dao.entity.UserAuthEntity;
 import net.kaaass.kmall.dao.repository.UserAddressRepository;
+import net.kaaass.kmall.dao.repository.UserAuthRepository;
 import net.kaaass.kmall.dao.repository.UserInfoRepository;
 import net.kaaass.kmall.dto.UserAddressDto;
 import net.kaaass.kmall.dto.UserInfoDto;
@@ -25,6 +27,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
+    @Autowired
+    private UserAuthRepository userAuthRepository;
+
+    @Override
+    public UserAuthEntity getAuthEntityById(String uid) throws NotFoundException {
+        return userAuthRepository.findById(uid)
+                .orElseThrow(() -> new NotFoundException("未找到用户！"));
+    }
+
     @Override
     public UserAddressEntity getAddressEntityById(String id) throws NotFoundException {
         return userAddressRepository.findById(id)
@@ -34,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserAddressEntity getAddressEntityByIdAndCheck(String id, String uid) throws NotFoundException {
         return userAddressRepository.findById(id)
-                .filter(addressEntity -> addressEntity.getUid().equals(uid))
+                .filter(addressEntity -> addressEntity.getUser().getId().equals(uid))
                 .orElseThrow(() -> new NotFoundException("未找到该地址！"));
     }
 
@@ -45,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserAddressEntity getDefaultAddressEntityById(String id) throws NotFoundException {
-        return userAddressRepository.findFirstByUidAndDefaultAddressTrue(id)
+        return userAddressRepository.findFirstByUserIdAndDefaultAddressTrue(id)
                 .orElseThrow(() -> new NotFoundException("未找到该地址！"));
     }
 

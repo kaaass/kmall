@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -36,6 +38,12 @@ public class UserAuthEntity {
     @Column(name = "validate",
             columnDefinition = "BOOLEAN DEFAULT FALSE")
     boolean validate = false;
+
+    @OneToOne(mappedBy = "auth", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    private UserInfoEntity userInfo;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    private List<UserAddressEntity> addresses = new ArrayList<>();
 
     @Column(name = "register_time",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",

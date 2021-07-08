@@ -18,8 +18,9 @@ public class OrderItemEntity {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private String id;
 
-    @Column(name = "uid")
-    private String uid;  // TODO 更改为ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "uid")
+    private UserAuthEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")

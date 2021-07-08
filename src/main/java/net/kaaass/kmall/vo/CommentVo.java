@@ -11,6 +11,8 @@ public class CommentVo {
 
     private String id;
 
+    private String avatar;
+
     private int rate;
 
     private String content;
