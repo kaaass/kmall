@@ -6,11 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.kaaass.kmall.controller.request.ProductAddRequest;
 import net.kaaass.kmall.controller.response.ProductCommentResponse;
 import net.kaaass.kmall.dao.entity.ProductEntity;
+import net.kaaass.kmall.dao.entity.ProductMetadataEntity;
 import net.kaaass.kmall.dao.entity.ProductStorageEntity;
-import net.kaaass.kmall.dao.repository.CategoryRepository;
-import net.kaaass.kmall.dao.repository.CommentRepository;
-import net.kaaass.kmall.dao.repository.OrderItemRepository;
-import net.kaaass.kmall.dao.repository.ProductRepository;
+import net.kaaass.kmall.dao.repository.*;
 import net.kaaass.kmall.dto.MediaDto;
 import net.kaaass.kmall.dto.ProductDto;
 import net.kaaass.kmall.exception.InternalErrorExeption;
@@ -36,6 +34,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -75,6 +74,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private ProductMetadataRepository productMetadataRepository;
 
     /**
      * 增加商品
@@ -249,6 +251,23 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllByNameIsLikeOrderByIndexOrderAscCreateTimeDesc(searchStr, pageable)
                 .stream()
                 .map(ProductMapper.INSTANCE::productEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDto> searchByTemplate(String key, String value, Pageable pageable) {
+        String criteria = "%\"" + key + "\":\"%" + value + "%\"%";
+        return productMetadataRepository.findAllByKeyAndValueLike(Constants.METAKEY_TEMPLATE, criteria, pageable)
+                .stream()
+                .map(ProductMetadataEntity::getProductId)
+                .map(s -> {
+                    try {
+                        return this.getEntityById(s);
+                    } catch (NotFoundException e) {
+                        return null;
+                    }
+                })
+                .map(pojoMapper::entityToDto)
                 .collect(Collectors.toList());
     }
 

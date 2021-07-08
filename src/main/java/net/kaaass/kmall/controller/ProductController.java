@@ -88,6 +88,11 @@ public class ProductController extends BaseController {
         return productService.search(keyword, pageable);
     }
 
+    @GetMapping("/search/{key}/")
+    public List<ProductDto> searchByTemplate(@PathVariable String key, @RequestParam String value, Pageable pageable) {
+        return productService.searchByTemplate(key, value, pageable);
+    }
+
     @GetMapping("/category/{categoryId}/")
     public List<ProductDto> getAllProductsByCategory(@PathVariable String categoryId, Pageable pageable) throws NotFoundException {
         return productService.getAllByCategory(categoryId, pageable);

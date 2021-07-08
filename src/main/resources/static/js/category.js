@@ -7,8 +7,9 @@ require([
         'module/constants',
         'module/auth',
         'module/product',
+        'module/template',
         'bootstrap'],
-    function ($, functions, constants, auth, product, _) {
+    function ($, functions, constants, auth, product, template, _) {
 
         const TEMPLATE_LIST = "product_lists";
         const TEMPLATE_CATEGORY = "categories";
@@ -25,10 +26,25 @@ require([
         }
 
         // 获得分类并渲染
-        product.getHierarchyCategories().then(data => {
-            return functions.renderHbs($categories, TEMPLATE_CATEGORY, {
+        product.getHierarchyCategories().then(async (data) => {
+            // 渲染分类
+            functions.renderHbs($categories, TEMPLATE_CATEGORY, {
                 categories: data
             });
+            // 设置按模板搜索
+            let templateId = product.categories[curCatId];
+            templateId = templateId === undefined ? null : templateId.templateId;
+            if (templateId == null) {
+                $('#search').remove();
+                return;
+            }
+            let $select = $('#template-key');
+            let templates = await template.get(templateId);
+            for (const schema of templates.schema) {
+                schema.columns.forEach(el => {
+                    $(`<option value="${el}">${schema.group}：${el}</option>`).appendTo($select);
+                });
+            }
         }).then(() => {
             // 当前高亮
             if (curCatId == null) {
@@ -57,6 +73,17 @@ require([
             // 获取单分类
             if (curCatId != null) {
                 product.renderProductsByUrl(`/product/category/${curCatId}/`, $list, TEMPLATE_LIST);
+            }
+        });
+
+        // 搜索
+        $('#template-value').keydown(function (e) {
+            let curKey = e.which;
+            if (curKey === 13) {
+                // 回车
+                let key = $('#template-key').val(),
+                    value = $(this).val();
+                product.renderProductsByUrl(`/product/search/${key}/?value=${value}`, $list, TEMPLATE_LIST);
             }
         });
     });

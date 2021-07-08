@@ -174,6 +174,7 @@ define(['jquery', 'module/functions', 'module/auth', 'module/product'], function
 
         cache,
         getAll,
+        get,
         add,
         edit,
         remove,

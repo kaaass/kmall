@@ -37,4 +37,6 @@ public interface ProductService {
     ProductCommentResponse getComments(String id, Pageable pageable);
 
     List<ProductDto> search(String keyword, Pageable pageable);
+
+    List<ProductDto> searchByTemplate(String key, String value, Pageable pageable);
 }
