@@ -8,6 +8,7 @@ import net.kaaass.kmall.controller.response.ProductCommentResponse;
 import net.kaaass.kmall.dao.entity.ProductEntity;
 import net.kaaass.kmall.dao.entity.ProductMetadataEntity;
 import net.kaaass.kmall.dao.entity.ProductStorageEntity;
+import net.kaaass.kmall.dao.mapper.CommentsMapper;
 import net.kaaass.kmall.dao.repository.*;
 import net.kaaass.kmall.dto.MediaDto;
 import net.kaaass.kmall.dto.ProductDto;
@@ -77,6 +78,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductMetadataRepository productMetadataRepository;
+
+    @Autowired
+    private CommentsMapper commentsMapper;
 
     /**
      * 增加商品
@@ -234,9 +238,7 @@ public class ProductServiceImpl implements ProductService {
                 .stream()
                 .map(pojoMapper::entityToVo)
                 .collect(Collectors.toList());
-        var rate = commentRepository.averageRateByProductId(id)
-                .map(NumericUtils::rateRound)
-                .orElse(null);
+        var rate = NumericUtils.rateRound(commentsMapper.averageRateByProductId(id));
         result.setComments(comments);
         result.setAverageRate(rate);
         return result;

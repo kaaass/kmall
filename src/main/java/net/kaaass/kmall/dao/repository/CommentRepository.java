@@ -13,7 +13,4 @@ public interface CommentRepository extends JpaRepository<CommentEntity, String> 
     List<CommentEntity> findAllByOrderByCommentTimeDesc(Pageable page);
 
     List<CommentEntity> findAllByProductIdOrderByRateDescCommentTimeDesc(String productId, Pageable page);
-
-    @Query("select avg(c.rate) from CommentEntity c where c.productId = ?1")
-    Optional<Float> averageRateByProductId(String productId);
 }

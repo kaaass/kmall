@@ -32,3 +32,4 @@ build/
 
 ### Config ###
 application.yml
+generatorConfig.xml
